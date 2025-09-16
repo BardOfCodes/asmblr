@@ -1,8 +1,18 @@
 import torch as th
 from ..base import BaseNode, InputSocket, OutputSocket, Connection
 from ..expr_node import GLNode
+from ..simple_registry import register_node
 # import splitweaver.symbolic as sws
 
+
+# Registration decorator
+def auto_register(cls):
+    """Decorator to automatically register a node class."""
+    register_node(cls)
+    return cls
+
+
+@auto_register
 class EvaluateLayoutNode(BaseNode):
     """
     Key Idea: Layout Expression -> Grid and Grid Ids
@@ -51,7 +61,7 @@ class EvaluateLayoutNode(BaseNode):
     def setup_base(self):
         self.arg_keys = ['expr', 'grid']
         self.default_values = {}
-    def inner_eval(self, sketcher_2d, copy=False):
+    def inner_eval(self, sketcher=None, **kwargs):
         expr = self.inputs.get('expr', None)
         # if its a GL Node, then we don't want to evlauate it fully
         seed = self.inputs.get('seed', None)
@@ -65,20 +75,20 @@ class EvaluateLayoutNode(BaseNode):
         if seed is not None:
             with th.random.fork_rng():
                 th.manual_seed(seed)
-                grid, grid_ids = grid_eval(expr.tensor(), sketcher_2d, grid=None)
+                grid, grid_ids = grid_eval(expr.tensor(), sketcher, grid=None)
         else:
-            grid, grid_ids = grid_eval(expr.tensor(), sketcher_2d, grid=None)
+            grid, grid_ids = grid_eval(expr.tensor(), sketcher, grid=None)
 
         if normalization_mode == 1:
-            simple_grid, _ = grid_eval(gs.CartesianGrid().tensor(), sketcher_2d, grid=None)
+            simple_grid, _ = grid_eval(gs.CartesianGrid().tensor(), sketcher, grid=None)
             grid = voronoi_style_normalize(grid_ids, simple_grid, simple_grid)
         elif normalization_mode == 2:
             # need to get the center from somewhere
             center = (center_x, center_y)
-            simple_grid, _ = grid_eval(gs.CartesianGrid().tensor(), sketcher_2d, grid=None)
+            simple_grid, _ = grid_eval(gs.CartesianGrid().tensor(), sketcher, grid=None)
             grid = voronoi_style_normalize(grid_ids, simple_grid, simple_grid, minfit=False, rotate=True, center=center)
         ############
-        grid, grid_ids = grid_eval(expr.tensor(), sketcher_2d)
+        grid, grid_ids = grid_eval(expr.tensor(), sketcher)
 
         self.register_output("grid", grid)
         self.register_output("grid_ids", grid_ids)

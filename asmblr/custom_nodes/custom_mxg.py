@@ -1,11 +1,20 @@
 
 from ..expr_node import GLNode
+from ..simple_registry import register_node
 import geolipi.symbolic as gls
 import sympy as sp
 import torch as th
 
 
+# Registration decorator
+def auto_register(cls):
+    """Decorator to automatically register a node class."""
+    register_node(cls)
+    return cls
+
+
 # polyline
+@auto_register
 class PolyLine2D(GLNode):
         
     def __init__(self, *args, **kwargs):
@@ -16,7 +25,7 @@ class PolyLine2D(GLNode):
         self.arg_keys = ['points']
         self.default_values = {}
 
-    def inner_eval(self, sketcher, copy=False):
+    def inner_eval(self, sketcher=None, **kwargs):
         arguments = [self.inputs.get(key, None) for key in self.arg_keys]
         # IDEA - If anything is none - dont pass anything beyond it.
         if isinstance(arguments[0], (tuple, sp.Tuple)):

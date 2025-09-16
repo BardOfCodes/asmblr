@@ -5,34 +5,41 @@ from typing import Any
 import sympy as sp
 import base64
 import geolipi.symbolic as gls
-from .var_nodes import BinaryOperator
 from .base import BaseNode
-import asmblr.dag as asmdag
+from .simple_registry import NODE_REGISTRY
 op_to_str = {
-    sp.Add: "ADD",
-    sp.Mul: "MUL",
-    sp.Pow: "POW",
-    sp.sin: "SIN",
-    sp.cos: "COS",
-    sp.tan: "TAN",
-    sp.asin: "ASIN",
-    sp.acos: "ACOS",
-    sp.atan: "ATAN",
-    sp.atan2: "ATAN2",
-    sp.log: "LOG",
-    sp.exp: "EXP",
-    sp.Abs: "ABS",
-    sp.Min: "MIN",
-    sp.Max: "MAX",
-    sp.floor: "FLOOR",
-    sp.ceiling: "CEIL",
-    sp.frac: "FRAC",
-    sp.sign: "SIGN",
-    sp.Mod: "MOD",
-    # sp.step: "STEP",
-    # sp.round: "ROUND",
-    # sp.Normalize: "NORMALIZE",
-    # sp.Norm: "NORM",
+    # Basic arithmetic operations
+    sp.Add: "add",
+    sp.Mul: "mul", 
+    sp.Pow: "pow",
+    # Note: sub, div, neg are handled by analyzing Add/Mul args, not separate classes
+    sp.sqrt: "sqrt",
+    # Trigonometric functions
+    sp.sin: "sin", 
+    sp.cos: "cos",
+    sp.tan: "tan",
+    sp.asin: "asin",
+    sp.acos: "acos",
+    sp.atan: "atan",
+    sp.atan2: "atan2",
+    # Exponential and logarithmic
+    sp.log: "log",
+    sp.exp: "exp",
+    # Comparison and utility functions
+    sp.Abs: "abs",
+    sp.Min: "min",
+    sp.Max: "max",
+    sp.floor: "floor",
+    sp.ceiling: "ceil",
+    sp.frac: "frac",
+    sp.sign: "sign",
+    sp.Mod: "mod",
+    # Additional functions to match param_evaluate.py
+    # Note: These may need custom SymPy implementations or special handling
+    # "step": "step",      # No direct SymPy equivalent
+    # "round": "round",    # sp.round exists but may need special handling
+    # "normalize": "normalize",  # No direct SymPy equivalent  
+    # "norm": "norm",      # No direct SymPy equivalent
 }
 
 def encode_image(image_path):
@@ -48,22 +55,42 @@ def convert_to_asmblr(expr: Any):
         left = convert_to_asmblr(expr.args[0])
         right = convert_to_asmblr(expr.args[1])
         op = op_to_str[expr.func]
-
-        binary_gl_expr = BinaryOperator(left=left.output_sockets['expr'], 
+        import asmblr.nodes as anode
+        binary_gl_expr = anode.BinaryOperator(left=left.output_sockets['expr'], 
                                       right=right.output_sockets['expr'], 
                                       op=op)
         return binary_gl_expr
     else:
-        args_list = []
-        for arg in expr.args:
-            if isinstance(arg, sp.Symbol):
-                if arg in expr.lookup_table:
-                    arg = expr.lookup_table[arg]
-                else:
-                    arg = arg.name
-            else:
-                arg = convert_to_asmblr(arg)
-            args_list.append(arg)
+        # Get the corresponding node class
+        corresponding_class = NODE_REGISTRY.get(expr.__class__.__name__, None)
+        if corresponding_class is None:
+            raise ValueError(f"Node class {expr.__class__.__name__} not found in NODE_REGISTRY")
         
-        corresponding_class = getattr(asmdag, expr.__class__.__name__)
-        return corresponding_class(*args_list)
+        # Convert arguments to appropriate values/nodes
+        converted_args = []
+        for arg in expr.args:
+            if isinstance(arg, (sp.Symbol, sp.Float, sp.Integer, int, float, bool, str, tuple, sp.Tuple)):
+                # Primitive value - convert to Python types
+                if isinstance(arg, sp.Symbol):
+                    if hasattr(expr, 'lookup_table') and arg in expr.lookup_table:
+                        converted_args.append(expr.lookup_table[arg])
+                    else:
+                        converted_args.append(arg.name)
+                elif isinstance(arg, (sp.Float, sp.Integer)):
+                    converted_args.append(float(arg) if isinstance(arg, sp.Float) else int(arg))
+                elif isinstance(arg, (sp.Tuple, tuple)):
+                    # Convert sympy Tuple to Python tuple, handling nested values
+                    if isinstance(arg, sp.Tuple):
+                        converted_args.append(tuple(float(x) if isinstance(x, sp.Float) else 
+                                                  int(x) if isinstance(x, sp.Integer) else x 
+                                                  for x in arg))
+                    else:
+                        converted_args.append(arg)
+                else:
+                    converted_args.append(arg)
+            else:
+                # Sub-expression - recursively convert to node
+                converted_args.append(convert_to_asmblr(arg))
+        
+        # Create node with converted arguments (using the new initialization pattern)
+        return corresponding_class(*converted_args)

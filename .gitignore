@@ -1,6 +1,9 @@
 # Project specific
 notebooks/*
 
+# Auto-generated nodes (regenerate with generate_nodes.py)
+asmblr/auto_nodes/
+
 # from: https://github.com/microsoft/vscode-python/blob/main/.gitignore
 .DS_Store
 .huskyrc.json

@@ -8,9 +8,10 @@ import copy
 import uuid
 import json
 import base64
+import gzip
 from io import BytesIO
 from PIL import Image
-from typing import Optional, Any, Dict
+from typing import Optional, Any, Dict, Union, Tuple
 from .settings import Settings
 
 
@@ -23,57 +24,192 @@ def copy_value(value: Any):
         return value
     else:
         return copy.deepcopy(value)
+
+
+def process_value_for_serialization(value: Any) -> Dict[str, Any]:
+    """
+    Process a value for JSON serialization.
+    
+    Returns a dictionary with 'type' and 'data' keys indicating how to reconstruct the value.
+    """
+    if value is None:
+        return {"type": "none", "data": None}
+    
+    elif isinstance(value, bool):
+        return {"type": "bool", "data": value}
+    
+    elif isinstance(value, str):
+        return {"type": "string", "data": value}
+    
+    elif isinstance(value, (int, float)):
+        # Convert single numbers to tuples as requested
+        return {"type": "tuple", "data": (value,)}
+    
+    elif isinstance(value, (tuple, list)):
+        # Keep tuples as tuples, convert lists to tuples
+        return {"type": "tuple", "data": tuple(value)}
+    
+    elif isinstance(value, th.Tensor):
+        # Compress torch tensor with gzip
+        tensor_bytes = value.cpu().numpy().tobytes()
+        compressed = gzip.compress(tensor_bytes)
+        encoded = base64.b64encode(compressed).decode('utf-8')
+        
+        return {
+            "type": "torch_tensor",
+            "data": encoded,
+            "shape": list(value.shape),
+            "dtype": str(value.dtype),
+            "device": str(value.device)
+        }
+    
+    elif isinstance(value, np.ndarray):
+        # Compress numpy array with gzip
+        array_bytes = value.tobytes()
+        compressed = gzip.compress(array_bytes)
+        encoded = base64.b64encode(compressed).decode('utf-8')
+        
+        return {
+            "type": "numpy_array", 
+            "data": encoded,
+            "shape": list(value.shape),
+            "dtype": str(value.dtype)
+        }
+    
+    else:
+        # Fallback for other types - try to convert to string
+        return {"type": "other", "data": str(value)}
+
+
+def unprocess_value_from_serialization(processed_data: Dict[str, Any]) -> Any:
+    """
+    Reconstruct a value from its processed serialization format.
+    """
+    value_type = processed_data["type"]
+    data = processed_data["data"]
+    
+    if value_type == "none":
+        return None
+    
+    elif value_type == "bool":
+        return data
+    
+    elif value_type == "string":
+        return data
+    
+    elif value_type == "tuple":
+        return tuple(data)
+    
+    elif value_type == "torch_tensor":
+        # Decompress torch tensor
+        compressed = base64.b64decode(data.encode('utf-8'))
+        tensor_bytes = gzip.decompress(compressed)
+        
+        # Reconstruct tensor
+        shape = processed_data["shape"]
+        dtype_str = processed_data["dtype"]
+        
+        # Map string dtype back to torch dtype
+        dtype_map = {
+            "torch.float32": th.float32,
+            "torch.float64": th.float64,
+            "torch.int32": th.int32,
+            "torch.int64": th.int64,
+            "torch.bool": th.bool,
+        }
+        dtype = dtype_map.get(dtype_str, th.float32)
+        
+        # Map torch dtype to numpy dtype
+        numpy_dtype_map = {
+            th.float32: np.float32,
+            th.float64: np.float64,
+            th.int32: np.int32,
+            th.int64: np.int64,
+            th.bool: np.bool_,
+        }
+        numpy_dtype = numpy_dtype_map.get(dtype, np.float32)
+        
+        # Create numpy array first, then convert to torch
+        np_array = np.frombuffer(tensor_bytes, dtype=numpy_dtype).reshape(shape)
+        tensor = th.from_numpy(np_array)
+        
+        return tensor
+    
+    elif value_type == "numpy_array":
+        # Decompress numpy array
+        compressed = base64.b64decode(data.encode('utf-8'))
+        array_bytes = gzip.decompress(compressed)
+        
+        # Reconstruct array
+        shape = processed_data["shape"]
+        dtype_str = processed_data["dtype"]
+        
+        # Create numpy array
+        array = np.frombuffer(array_bytes, dtype=dtype_str).reshape(shape)
+        return array
+    
+    elif value_type == "other":
+        # Try to evaluate as Python literal, fallback to string
+        try:
+            import ast
+            return ast.literal_eval(data)
+        except:
+            return data
+    
+    else:
+        raise ValueError(f"Unknown serialization type: {value_type}")
     
 
 
 class BaseNode(ABC):
-    input_sockets: dict
-    output_sockets: dict
-    clean: bool
-    unique_id: str
-    inputs: dict
-    outputs: dict
-    do_copy: bool
-    copy_data: bool
-
-    def __new__(cls, *args, **kwargs):
-        # Create the node instance
-        instance = super(BaseNode, cls).__new__(cls)
-        
-        # Perform setup that doesn't rely on arguments
-        instance.inputs = defaultdict()
-        instance.outputs = defaultdict()
-        instance.input_sockets = {}  # Store socket objects
-        instance.output_sockets = {}
-        instance.clean = True
-        instance.unique_id = str(uuid.uuid4())
-        
-        # Call setup_sockets in __new__, moving socket initialization here
-        instance.setup_base()
-        instance.setup_sockets()
-
-        return instance
-
-    @abstractmethod
-    def __init__(self, *args, **kwargs):
-        # Init should be relaxed; handle instance-specific configuration only
+    """Base class for all DAG nodes in ASMBLR."""
+    
+    def __init__(self, **kwargs):
+        """Initialize a BaseNode with proper two-phase initialization."""
+        # Core attributes
+        self.unique_id = str(uuid.uuid4())
+        self.inputs = {}
+        self.outputs = {}
+        self.clean = True
         self.do_copy = Settings.copy_mode
+        
+        # Type hints (optional, not enforced)
+        self.arg_types = getattr(self, 'arg_types', {})
+        
+        # Initialize sockets through template method pattern
+        try:
+            self.input_sockets = self._create_input_sockets()
+            self.output_sockets = self._create_output_sockets()
+        except Exception as e:
+            raise ValueError(f"Failed to initialize sockets: {str(e)}")
+        
+        # Apply any provided socket values
+        self._apply_socket_values(kwargs)
 
 
     @abstractmethod
-    def setup_sockets(self):
-        """Define input and output sockets in each subclass."""
+    def _create_input_sockets(self) -> Dict[str, 'InputSocket']:
+        """Create and return input sockets for this node type."""
+        pass
+    
+    @abstractmethod 
+    def _create_output_sockets(self) -> Dict[str, 'OutputSocket']:
+        """Create and return output sockets for this node type."""
         pass
 
     @abstractmethod
-    def setup_base(self):
-        """Define required variables for the sockets in each subclass."""
+    def inner_eval(self, sketcher=None, **kwargs):
+        """Node-specific evaluation logic."""
         pass
-
-    @abstractmethod
-    def inner_eval(self, copy=False, *args, **kwargs):
-        # Just do what is required.
-        pass
+    
+    def _apply_socket_values(self, values: Dict[str, Any]) -> None:
+        """Apply provided values to input sockets."""
+        for name, value in values.items():
+            if name in self.input_sockets:
+                try:
+                    self.input_sockets[name].set_value(value)
+                except Exception as e:
+                    raise ValueError(f"Failed to set value for socket '{name}': {str(e)}")
 
     def __str__(self):
         return self.__class__.__name__
@@ -81,41 +217,59 @@ class BaseNode(ABC):
     def __repr__(self):
         return self.__class__.__name__
 
-    def resolve_inputs(self, *args, **kwargs):
-        """Fetch inputs from connected sockets."""
+    def resolve_inputs(self, sketcher=None, **kwargs):
+        """Fetch inputs from connected sockets or use default values."""
         for name, socket in self.input_sockets.items():
-            value = socket.resolve(*args, **kwargs)
-            do_copy = self.do_copy
-            if value is not None:
-                self.inputs[name] = value
+            if socket.connections:
+                # Use connected values (evaluate connected nodes)
+                value = socket.resolve(sketcher, **kwargs)
+                if value is not None:
+                    self.inputs[name] = value
+            elif socket.value is not None:
+                # Use direct socket value (set via set_value)
+                self.inputs[name] = socket.value
+            # If neither connections nor direct value, leave unset (None)
 
-    def evaluate(self, *args, **kwargs):
+    def evaluate(self, sketcher=None, **kwargs):
+        """Evaluate this node, returning cached results if available."""
         self.clean = False
         if self.outputs:
-            return self.outputs  # If already computed, return cached output
-        else:
-            self.resolve_inputs(*args, **kwargs)  # Get data from input connections
-            self.inner_eval(*args, **kwargs)  # Run the node-specific evaluation logic
-            return self.outputs
+            return self.outputs  # Return cached output if available
+        
+        self.resolve_inputs(sketcher, **kwargs)  # Get data from input connections
+        self.inner_eval(sketcher, **kwargs)  # Run node-specific evaluation logic
+        return self.outputs
     
     def register_input(self, name, value, copy=None):
-        do_copy = False
-        if copy is None:
-            if self.copy_data:
-                do_copy = True
-        else:
-            do_copy = copy
+        """Register an input value for this node."""
+        try:
+            do_copy = False
+            if copy is None:
+                if hasattr(self, 'copy_data') and self.copy_data:
+                    do_copy = True
+            else:
+                do_copy = copy
 
-        if do_copy:
-            self.inputs[name] = copy_value(value)
-        else:
-            self.inputs[name] = value
+            if do_copy:
+                self.inputs[name] = copy_value(value)
+            else:
+                self.inputs[name] = value
+        except Exception as e:
+            raise ValueError(f"Failed to register input '{name}': {str(e)}")
 
     def register_output(self, name, value):
-        self.outputs[name] = value
+        """Register an output value for this node."""
+        try:
+            self.outputs[name] = value
+        except Exception as e:
+            raise ValueError(f"Failed to register output '{name}': {str(e)}")
     
     def socket_request_count(self, socket_name):
-        return len(self.output_sockets[socket_name].connections)
+        """Get the number of connections for an output socket."""
+        try:
+            return len(self.output_sockets[socket_name].connections)
+        except KeyError:
+            raise KeyError(f"Output socket '{socket_name}' does not exist")
     
     def clean_outputs(self):
         self.outputs = defaultdict()
@@ -145,7 +299,7 @@ class BaseNode(ABC):
         return graph_data  
 
     def to_dict(self, device="cpu"):
-        """Serialize the node and its connections to a Python-loadable format."""
+        """Serialize the node and its connections to a JSON-compatible format."""
         graph_data = {
             "nodes": [],
             "connections": []
@@ -160,15 +314,18 @@ class BaseNode(ABC):
             for key, socket in node.input_sockets.items():
                 if socket.value is not None:
                     socket_value = socket.value
-                    # Only move torch tensors to cpu
+                    # Move torch tensors to specified device before processing
                     if isinstance(socket_value, th.Tensor):
                         socket_value = socket_value.cpu() if device == "cpu" else socket_value
-                    data[key] = socket_value
+                    
+                    # Process the value for JSON serialization
+                    data[key] = process_value_for_serialization(socket_value)
+                    
             node_data["data"] = data
             graph_data["nodes"].append(node_data)
             node_map[node.unique_id] = node
 
-            # Serialize connections
+            # Serialize connections (unchanged - already simple)
             for output_name, output_socket in node.output_sockets.items():
                 for conn in output_socket.connections:
                     connection_data = {
@@ -250,32 +407,30 @@ class BaseNode(ABC):
 
         # A map from unique ID to the node instance
         node_map = {}
-        import asmblr.symbolic as asms
+        from .simple_registry import NODE_REGISTRY
         # Step 1: Recreate nodes
         for node_data in graph_data["nodes"]:
-            node_class = getattr(asms, node_data["name"])  # Get the class from the module
-            # node = node_class.__new__(node_class)  # Use __new__ to create the node
+            node_class = NODE_REGISTRY.get(node_data["name"], None)
+            if node_class is None:
+                raise ValueError(f"Node class {node_data['name']} not found in NODE_REGISTRY")
+            
             node = node_class()
             node.unique_id = node_data["id"]  # Assign the stored unique ID
 
-            # Restore input-socket default values (params)
-            collected_param = {}
-            for param_name, param_value in node_data["data"].items():
-                ## Custom conversion from sequence 0, 1, 2
-                if "_IMG" in param_name:
-                    # TODO: Improve handling of Image and other Tensors
-                    img_data = param_value.split(",")[1]
-                    img = Image.open(BytesIO(base64.b64decode(img_data)))
-                    img = np.array(img)
-                    img = th.tensor(img, dtype=th.float32) / 255.0
-                    node.input_sockets[param_name[:-4]].set_value(img)
-                elif isinstance(param_value, list):
-                    param_value = tuple(param_value)
-                    node.input_sockets[param_name].set_value(param_value)
-                else:
-                    node.input_sockets[param_name].set_value(param_value)
-            for key, value in collected_param.items():
-                node.input_sockets[key].set_value(tuple(value))
+            # Restore input-socket values using the new unprocessing function
+            for param_name, processed_value in node_data["data"].items():
+                try:
+                    # Unprocess the serialized value
+                    actual_value = unprocess_value_from_serialization(processed_value)
+                    node.input_sockets[param_name].set_value(actual_value)
+                except Exception as e:
+                    print(f"Warning: Failed to restore parameter {param_name} for node {node_data['name']}: {e}")
+                    # Try fallback for backward compatibility
+                    if isinstance(processed_value, list):
+                        node.input_sockets[param_name].set_value(tuple(processed_value))
+                    else:
+                        node.input_sockets[param_name].set_value(processed_value)
+            
             node_map[node.unique_id] = node  # Store in the node map
 
         # Step 2: Recreate connections
@@ -337,6 +492,8 @@ class BaseNode(ABC):
 
         
 class Connection:
+    """Represents a connection between two nodes through their sockets."""
+    
     def __init__(self, input_node: BaseNode, output_socket: str,
                  output_node: BaseNode, input_socket: str):
         self.input_node = input_node
@@ -344,13 +501,29 @@ class Connection:
         self.output_node = output_node
         self.input_socket = input_socket
 
+        # Validate connection
+        self._validate_connection()
+        
         # Register this connection in the nodes' sockets
-        self.input_node.output_sockets[output_socket].connect(self)
-        self.output_node.input_sockets[input_socket].connect(self)
+        try:
+            self.input_node.output_sockets[output_socket].connect(self)
+            self.output_node.input_sockets[input_socket].connect(self)
+        except KeyError as e:
+            raise KeyError(f"Socket not found during connection: {str(e)}")
+        except Exception as e:
+            raise RuntimeError(f"Failed to establish connection: {str(e)}")
+    
+    def _validate_connection(self):
+        """Validate that this connection is valid."""
+        if self.output_socket not in self.input_node.output_sockets:
+            raise ValueError(f"Output socket '{self.output_socket}' does not exist on input node")
+        
+        if self.input_socket not in self.output_node.input_sockets:
+            raise ValueError(f"Input socket '{self.input_socket}' does not exist on output node")
 
-    def get_output(self, sketcher_2d):
+    def get_output(self, sketcher=None, **kwargs):
         # Resolve the output of the input node and return the value
-        self.input_node.evaluate(sketcher_2d)
+        self.input_node.evaluate(sketcher, **kwargs)
         return self.input_node.outputs.get(self.output_socket, None)
 
 
@@ -410,10 +583,10 @@ class InputSocket:
         self.value = value
         self.connections = []  # Clear connection when directly set
 
-    def resolve(self, sketcher_2d):
+    def resolve(self, sketcher=None, **kwargs):
         # Resolve by returning the connected node's output or direct value
         if self.connections:
-            outputs = [conn.get_output(sketcher_2d) for conn in self.connections]
+            outputs = [conn.get_output(sketcher, **kwargs) for conn in self.connections]
             if len(outputs) == 1:
                 return outputs[0]
             else:

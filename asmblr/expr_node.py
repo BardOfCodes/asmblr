@@ -1,73 +1,130 @@
 
 import torch as th
 import sympy as sp
-import geolipi.symbolic as gls
-from typing import Any
+from typing import Any, Dict
 from .base import BaseNode, Connection, InputSocket, OutputSocket
 
+# Optional import for geolipi
+try:
+    import geolipi.symbolic as gls
+except ImportError:
+    gls = None
+
 class GLNode(BaseNode):
-    expr_class: Any
-    def __init__(self, *args, **kwargs):
-        # __init__ is now relaxed, just handling instance-specific setup
-        super().__init__(*args, **kwargs)
-
-    def setup_base(self):
-        self.arg_keys = []
-        self.default_values = {}
-        
-    def setup_sockets(self):
-        self.input_sockets = {key: InputSocket(key, self.default_values.get(key, None)) for key in self.arg_keys}
-        self.output_sockets = {"expr": OutputSocket("expr", parent=self),}
-
-    # This will just give the expression.
-    def __new__(cls, *args, **kwargs):
-        # Create the node instance using the default constructor
-        instance = super(GLNode, cls).__new__(cls)
-
-        # After setting up sockets in BaseNode, now handle connections
-        for ind, arg in enumerate(args):
-            if isinstance(arg, GLNode):
-                current_keys = list(instance.input_sockets.keys())
-                if ind < len(current_keys):
-                    input_socket_name = list(instance.input_sockets.keys())[ind]
-                else:
-                    input_socket_name = current_keys[-1]
-                Connection(input_node=arg, output_socket="expr", input_socket=input_socket_name, output_node=instance)
-            elif isinstance(arg, (int, float, tuple, sp.Symbol, sp.Tuple, th.Tensor)):
-                input_socket_name = list(instance.input_sockets.keys())[ind]
-                instance.input_sockets[input_socket_name].set_value(arg)
-            elif isinstance(arg, str):
-                instance.input_sockets[input_socket_name].set_value(arg)
-            else:
-                print("type", type(arg))
-                raise ValueError("What to do here?")
-        # Handle keyword arguments (for params like width, height)
-        for key, value in kwargs.items():
-            if isinstance(value, BaseNode) and not isinstance(value, GLNode):
-                raise ValueError("What to do here?")
-            elif isinstance(value, OutputSocket):
-                node = value.parent
-                if node is None:
-                    raise ValueError("OutputSocket's parent is None, cannot create Connection.")
-                Connection(input_node=node, output_socket=value.name, output_node=instance, input_socket=key)
-            else:
-                instance.input_sockets[key].set_value(value)
-                instance.default_values[key] = value
-        
-
-        return instance
+    """Base class for nodes that wrap geometric/symbolic expressions."""
     
-    def inner_eval(self, sketcher, copy=False):
-        arguments = [self.inputs.get(key, None) for key in self.arg_keys]
-        # IDEA - If anything is none - dont pass anything beyond it.
-        marked_ind = len(arguments)
-        for ind, arg in enumerate(arguments):
-            if not isinstance(arg, (tuple, str, sp.Tuple, sp.Symbol, th.Tensor, gls.GLExpr, gls.GLFunction)):
-                arguments[ind] = (arg,)
-            if arg is None:
-                marked_ind = ind
+    def __init__(self, *args, **kwargs):
+        """Initialize GLNode with expression class and arguments."""
+        # Extract GLNode-specific parameters, but preserve existing attributes
+        if 'expr_class' in kwargs:
+            self.expr_class = kwargs.pop('expr_class')
+        elif not hasattr(self, 'expr_class'):
+            self.expr_class = None
+        
+        # Set up argument configuration, preserve existing if set
+        if not hasattr(self, 'arg_keys'):
+            self.arg_keys = []
+        if not hasattr(self, 'default_values'):
+            self.default_values = {}
+        
+        # Call parent constructor with remaining kwargs
+        super().__init__(**kwargs)
+        
+        # Handle positional and keyword arguments for connections
+        self._handle_node_arguments(args, kwargs)
+    
+    def _create_input_sockets(self) -> Dict[str, InputSocket]:
+        """Create input sockets based on arg_keys."""
+        return {
+            key: InputSocket(key, self.default_values.get(key, None)) 
+            for key in self.arg_keys
+        }
+    
+    def _create_output_sockets(self) -> Dict[str, OutputSocket]:
+        """Create output sockets - GLNode typically has one 'expr' output."""
+        return {"expr": OutputSocket("expr", parent=self)}
+    
+    def _handle_node_arguments(self, args, kwargs):
+        """Handle positional and keyword arguments for node connections."""
+        # Handle positional arguments
+        if hasattr(self, 'is_variadic') and self.is_variadic and len(args) > 0:
+            # For variadic nodes, connect all args to the single input socket
+            variadic_socket = self.arg_keys[0] if self.arg_keys else 'inputs'
+            for arg in args:
+                self._connect_or_set_input(variadic_socket, arg)
+        else:
+            # For non-variadic nodes, map args to sockets by index
+            for ind, arg in enumerate(args):
+                if ind >= len(self.arg_keys):
+                    break  # Skip if we don't have enough sockets
+                    
+                input_socket_name = self.arg_keys[ind]
+                self._connect_or_set_input(input_socket_name, arg)
+        
+        # Handle keyword arguments
+        for key, value in kwargs.items():
+            if key in self.input_sockets:
+                self._connect_or_set_input(key, value)
+    
+    def _connect_or_set_input(self, socket_name: str, value):
+        """Connect or set input based on value type."""
+        if isinstance(value, BaseNode):
+            # Connect node's expr output to this socket
+            Connection(
+                input_node=value, 
+                output_socket="expr", 
+                output_node=self, 
+                input_socket=socket_name
+            )
+        elif isinstance(value, OutputSocket):
+            # Connect specific output socket to this input
+            Connection(
+                input_node=value.parent, 
+                output_socket=value.name, 
+                output_node=self, 
+                input_socket=socket_name
+            )
+        else:
+            # Set direct value (float, tuple, bool, etc.)
+            self.input_sockets[socket_name].set_value(value)
+    
+    def _get_input_socket_for_index(self, index: int) -> str:
+        """Get the input socket name for a given positional argument index."""
+        if index < len(self.arg_keys):
+            return self.arg_keys[index]
+        elif self.arg_keys:
+            return self.arg_keys[-1]  # Default to last socket for overflow
+        else:
+            return "args"  # Fallback
+
+    def inner_eval(self, sketcher=None, **kwargs):
+        """Evaluate the GLNode by creating the expression."""
+        # Gather arguments from inputs (these should now be evaluated expressions, not nodes)
+        arguments = []
+        for key in self.arg_keys:
+            arg = self.inputs.get(key, None)
+            if arg is not None:
+                # If arg is a tuple of expressions (from multi-input socket), unpack them
+                if isinstance(arg, tuple):
+                    arguments.extend(arg)
+                else:
+                    # For variadic nodes, don't wrap single expressions in tuples
+                    if hasattr(self, 'is_variadic') and self.is_variadic:
+                        arguments.append(arg)
+                    else:
+                        # Convert single values to tuples if needed for consistency
+                        valid_types = (str, sp.Tuple, sp.Symbol, th.Tensor)
+                        if gls is not None:
+                            valid_types = valid_types + (gls.GLExpr, gls.GLFunction)
+                        
+                        if not isinstance(arg, valid_types):
+                            arg = (arg,)
+                        arguments.append(arg)
+            else:
+                # Stop at first None argument (optional arguments)
                 break
-        arguments = arguments[:marked_ind]
+        
+        # Create the expression
         expr = self.expr_class(*arguments)
         self.register_output("expr", expr)
 
