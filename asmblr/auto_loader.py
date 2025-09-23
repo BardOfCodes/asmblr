@@ -10,6 +10,11 @@ from pathlib import Path
 from .simple_registry import register_node, NODE_REGISTRY
 from .type_parser import parse_geolipi_docstring, format_arg_types
 
+# Symbols we exclude from auto-generation; implemented manually elsewhere
+EXCLUDE_SYMBOLS = {
+    'PolyLine2D', 'EvaluateLayoutNode', 'VarSplitter',
+}
+
 
 def generate_geolipi_nodes_file(output_dir: Optional[str] = None) -> str:
     """
@@ -22,6 +27,8 @@ def generate_geolipi_nodes_file(output_dir: Optional[str] = None) -> str:
         Path to the generated file
     """
     from geolipi.torch_compute.maps import PRIMITIVE_MAP, COMBINATOR_MAP, MODIFIER_MAP, COLOR_FUNCTIONS
+    # New: also pull from class default_spec()
+    use_class_specs = True
     
     if output_dir is None:
         # Default to auto_nodes directory relative to this file
@@ -44,25 +51,28 @@ def generate_geolipi_nodes_file(output_dir: Optional[str] = None) -> str:
     # Collect all node information
     all_node_info = []
     
-    # Process primitives (geometric shapes) - ignore 'points' parameter
-    all_node_info.extend(_collect_node_info(
-        PRIMITIVE_MAP, "primitives", class_filter=exclude_custom_nodes, ignore_arg_inds=[0]
-    ))
+    if use_class_specs:
+        all_node_info.extend(_collect_from_specs())
+    else:
+        # Process primitives (geometric shapes) - ignore 'points' parameter
+        all_node_info.extend(_collect_node_info(
+            PRIMITIVE_MAP, "primitives", class_filter=exclude_custom_nodes, ignore_arg_inds=[0]
+        ))
     
-    # Process combinators (Union, Difference, etc.) - use all parameters
-    all_node_info.extend(_collect_node_info(
-        COMBINATOR_MAP, "combinators", ignore_arg_inds=[]
-    ))
+        # Process combinators (Union, Difference, etc.) - use all parameters
+        all_node_info.extend(_collect_node_info(
+            COMBINATOR_MAP, "combinators", ignore_arg_inds=[]
+        ))
     
-    # Process modifiers/transforms (Translate, Scale, etc.) - use all parameters
-    all_node_info.extend(_collect_node_info(
-        MODIFIER_MAP, "modifiers", ignore_arg_inds=[]
-    ))
+        # Process modifiers/transforms (Translate, Scale, etc.) - use all parameters
+        all_node_info.extend(_collect_node_info(
+            MODIFIER_MAP, "modifiers", ignore_arg_inds=[]
+        ))
     
-    # Process color functions - use all parameters
-    all_node_info.extend(_collect_node_info(
-        COLOR_FUNCTIONS, "color_functions", ignore_arg_inds=[]
-    ))
+        # Process color functions - use all parameters
+        all_node_info.extend(_collect_node_info(
+            COLOR_FUNCTIONS, "color_functions", ignore_arg_inds=[]
+        ))
     
     # Generate the Python file content
     file_content = _generate_file_content(all_node_info)
@@ -168,6 +178,50 @@ def _collect_node_info(
     return node_info_list
 
 
+def _collect_from_specs() -> List[Dict]:
+    from geolipi.symbolic.base import GLFunction
+    import geolipi.symbolic as gls
+    try:
+        import sysl.sysl.symbolic as sls
+        modules = [gls, sls]
+    except Exception:
+        modules = [gls]
+
+    node_info_list: List[Dict] = []
+    for mod in modules:
+        for name, obj in inspect.getmembers(mod, inspect.isclass):
+            if not issubclass(obj, GLFunction):
+                continue
+            if obj.__name__ in EXCLUDE_SYMBOLS:
+                continue
+            if not getattr(obj, "__module__", "").startswith(mod.__name__):
+                continue
+            # try default_spec
+            try:
+                spec = obj.default_spec()
+                if not isinstance(spec, dict):
+                    continue
+            except Exception:
+                continue
+
+            arg_keys = list(spec.keys())
+            arg_types = {k: (v.get("type", "") if isinstance(v, dict) else "") for k, v in spec.items()}
+            is_variadic = any(isinstance(v, dict) and v.get("varadic", False) for v in spec.values())
+
+            node_info = {
+                'name': obj.__name__,
+                'expr_class_name': obj.__name__,
+                'expr_class_module': obj.__module__,
+                'arg_keys': arg_keys,
+                'default_values': {},
+                'is_variadic': is_variadic,
+                'category': 'auto',
+                'arg_types': arg_types
+            }
+            node_info_list.append(node_info)
+    return node_info_list
+
+
 def _generate_file_content(all_node_info: List[Dict]) -> str:
     """Generate the Python file content for all nodes."""
     
@@ -234,12 +288,12 @@ def _generate_node_class(node_info: Dict) -> str:
     
     class_def = f'''class {name}(GLNode):
     """{import_line}"""
+    # Associate the expression class at class level for external tools
+    import {expr_class_module} as _expr_mod
+    expr_class = _expr_mod.{expr_class_name}
     
     def __init__(self, *args, **kwargs):
-        # Import the expression class dynamically to avoid circular imports
-        import {expr_class_module}
-        self.expr_class = {expr_class_module}.{expr_class_name}
-        
+        # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
