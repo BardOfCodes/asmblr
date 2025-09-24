@@ -141,7 +141,7 @@ def build_nodes_payload() -> Dict[str, Any]:
             'description': f'Auto-generated from {getattr(expr_class, "__module__", "")}.' if expr_class else 'Auto-generated',
             'inputs': inputs,
             'outputs': [
-                { 'key': 'expr', 'label': 'Expression', 'socketType': 'ExprSocket' }
+                { 'key': 'expr', 'label': 'expr', 'socketType': 'ExprSocket' }
             ],
             'controls': controls,
         }
