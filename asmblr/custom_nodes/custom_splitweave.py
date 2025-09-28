@@ -1,18 +1,11 @@
 import torch as th
 from ..base import BaseNode, InputSocket, OutputSocket, Connection
 from ..expr_node import GLNode
-from ..simple_registry import register_node
+from ..simple_registry import register_node, register_node_decorator
 # import splitweaver.symbolic as sws
 
 
-# Registration decorator
-def auto_register(cls):
-    """Decorator to automatically register a node class."""
-    register_node(cls)
-    return cls
-
-
-@auto_register
+@register_node_decorator
 class EvaluateLayoutNode(BaseNode):
     """
     Key Idea: Layout Expression -> Grid and Grid Ids

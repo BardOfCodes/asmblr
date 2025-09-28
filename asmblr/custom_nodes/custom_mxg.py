@@ -1,20 +1,13 @@
 
 from ..expr_node import GLNode
-from ..simple_registry import register_node
+from ..simple_registry import register_node_decorator
 import geolipi.symbolic as gls
 import sympy as sp
 import torch as th
 
 
-# Registration decorator
-def auto_register(cls):
-    """Decorator to automatically register a node class."""
-    register_node(cls)
-    return cls
-
-
 # polyline
-@auto_register
+@register_node_decorator
 class PolyLine2D(GLNode):
         
     def __init__(self, *args, **kwargs):

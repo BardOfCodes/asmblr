@@ -26,12 +26,7 @@ from .custom_nodes.custom_mxg import PolyLine2D
 from .custom_nodes.custom_splitweave import EvaluateLayoutNode
 from .custom_nodes.custom_geolipi import SplitVec2D, SplitVec3D, SplitVec4D
 
-# SySL custom nodes
-from .custom_nodes.custom_sysl import (
-    GeomOnlySmoothUnion, MatSolidV1, MatSolidV2, MatSolidV3,
-    SMPLMaterial, RGBMaterial, MaterialV3, NonEmissiveMaterialV3, 
-    MatReference, RegisterMaterial
-)
+# SySL custom nodes - now auto-generated in auto_nodes/sysl_nodes.py
 
 # Custom nodes are auto-registered via decorators when imported
 

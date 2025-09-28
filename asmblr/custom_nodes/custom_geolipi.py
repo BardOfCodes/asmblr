@@ -4,20 +4,14 @@ Custom geolipi nodes that require special behavior and cannot be auto-generated.
 
 from ..expr_node import GLNode
 from ..base import InputSocket, OutputSocket
-from ..simple_registry import register_node
+from ..simple_registry import register_node, register_node_decorator
 import sympy as sp
 import torch as th
 import geolipi.symbolic as gls
 
 
-# Registration decorator
-def auto_register(cls):
-    """Decorator to automatically register a node class."""
-    register_node(cls)
-    return cls
 
-
-@auto_register
+@register_node_decorator
 class SplitVec2D(GLNode):
     """Split a 2D vector into its components - requires multiple outputs."""
 
@@ -58,7 +52,7 @@ class SplitVec2D(GLNode):
             self.register_output(key, cur_expr)
 
 
-@auto_register
+@register_node_decorator
 class SplitVec3D(SplitVec2D):
     """Split a 3D vector into its components - requires multiple outputs."""
     
@@ -80,7 +74,7 @@ class SplitVec3D(SplitVec2D):
         return {key: OutputSocket(key, parent=self) for key in self.output_keys}
 
 
-@auto_register
+@register_node_decorator
 class SplitVec4D(SplitVec2D):
     """Split a 4D vector into its components - requires multiple outputs."""
         
