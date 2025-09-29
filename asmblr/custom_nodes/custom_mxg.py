@@ -5,17 +5,19 @@ import geolipi.symbolic as gls
 import sympy as sp
 import torch as th
 
-
+# I think it should be the Symbols in MXG -> SOLID. 
+# Extrusion. 
 # polyline
 @register_node_decorator
 class PolyLine2D(GLNode):
-        
+    node_category = 'primitive_2d'
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.expr_class = gls.PolyLine2D
-    
+
     def setup_base(self):
         self.arg_keys = ['points']
+        self.arg_types = {'points': 'List[Vector[2]]'}
         self.default_values = {}
 
     def inner_eval(self, sketcher=None, **kwargs):

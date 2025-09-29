@@ -9,7 +9,6 @@ import inspect
 import os
 from pathlib import Path
 from .simple_registry import register_node, NODE_REGISTRY
-from .type_parser import parse_geolipi_docstring, format_arg_types
 
 # Symbols we exclude from auto-generation; implemented manually elsewhere
 EXCLUDE_SYMBOLS = {
@@ -29,12 +28,11 @@ def generate_geolipi_nodes_file(output_dir: Optional[str] = None) -> str:
     """
     if output_dir is None:
         current_dir = Path(__file__).parent
-        output_dir = current_dir / "auto_nodes"
-    else:
-        output_dir = Path(output_dir)
+        output_dir = os.path.join(current_dir, "auto_nodes")
+    output_dir = Path(output_dir)
     
     output_dir.mkdir(exist_ok=True)
-    output_file = output_dir / "geolipi_nodes.py"
+    output_file = os.path.join(output_dir, "geolipi_nodes.py")
     
     # Collect geolipi node information
     geolipi_node_info = _collect_geolipi_nodes()
@@ -62,12 +60,11 @@ def generate_sysl_nodes_file(output_dir: Optional[str] = None) -> str:
     """
     if output_dir is None:
         current_dir = Path(__file__).parent
-        output_dir = current_dir / "auto_nodes"
-    else:
-        output_dir = Path(output_dir)
+        output_dir = os.path.join(current_dir, "auto_nodes")
+    output_dir = Path(output_dir)
     
     output_dir.mkdir(exist_ok=True)
-    output_file = output_dir / "sysl_nodes.py"
+    output_file = os.path.join(output_dir, "sysl_nodes.py")
     
     # Collect sysl node information
     sysl_node_info = _collect_sysl_nodes()
@@ -95,7 +92,7 @@ def generate_all_nodes_files(output_dir: Optional[str] = None) -> List[str]:
     """
     if output_dir is None:
         current_dir = Path(__file__).parent
-        output_dir = current_dir / "auto_nodes"
+        output_dir = os.path.join(current_dir, "auto_nodes")
     else:
         output_dir = Path(output_dir)
     
@@ -106,7 +103,7 @@ def generate_all_nodes_files(output_dir: Optional[str] = None) -> List[str]:
     sysl_file = generate_sysl_nodes_file(output_dir)
     
     # Create __init__.py to import from both files
-    init_file = output_dir / "__init__.py"
+    init_file = os.path.join(output_dir, "__init__.py")
     with open(init_file, 'w') as f:
         f.write('"""Auto-generated nodes for ASMBLR."""\n\n')
         f.write('from .geolipi_nodes import *\n')
@@ -178,72 +175,6 @@ def load_all_sysl_nodes() -> List[str]:
         registered_names = register_all_nodes()
         return registered_names
 
-
-def _collect_node_info(
-    primitive_map: Dict[Type, Callable],
-    category: str,
-    class_filter: Optional[Callable[[Type], bool]] = None,
-    ignore_arg_inds: List[int] = [0]
-) -> List[Dict]:
-    """Collect node information from a mapping for code generation."""
-    node_info_list = []
-    
-    for expr_class, execution_function in primitive_map.items():
-        if class_filter and not class_filter(expr_class):
-            continue
-        
-        # Inspect the execution function to get parameter names
-        sig = inspect.signature(execution_function)
-        all_params = list(sig.parameters.items())
-        
-        # Remove parameters at specified indices
-        filtered_params = [
-            (param_name, param) for i, (param_name, param) in enumerate(all_params)
-            if i not in ignore_arg_inds
-        ]
-        
-        # Handle variadic functions (*args) - these should accept multiple inputs
-        has_varargs = any(param.kind == inspect.Parameter.VAR_POSITIONAL for _, param in filtered_params)
-        
-        if has_varargs:
-            # For variadic functions like Union(*args), create a special multi-input socket
-            arg_keys = ['inputs']  # Single socket that accepts multiple connections
-            default_values = {}
-            is_variadic = True
-            arg_types = {'inputs': 'List[float]'}  # Default for variadic
-        else:
-            arg_keys = [param_name for param_name, param in filtered_params]
-            default_values = {
-                param_name: param.default 
-                for param_name, param in filtered_params
-                if param.default != inspect.Parameter.empty
-            }
-            is_variadic = False
-            
-            # Extract type hints from execution function docstring
-            docstring_types = {}
-            if hasattr(execution_function, '__doc__') and execution_function.__doc__:
-                docstring_types = parse_geolipi_docstring(execution_function.__doc__)
-            
-            # Format type hints to match arg_keys (excluding 'points' parameter)
-            arg_types = format_arg_types(arg_keys, docstring_types)
-        
-        node_info = {
-            'name': expr_class.__name__,
-            'expr_class_name': expr_class.__name__,
-            'expr_class_module': expr_class.__module__,
-            'arg_keys': arg_keys,
-            'default_values': default_values,
-            'is_variadic': is_variadic,
-            'category': category,
-            'arg_types': arg_types
-        }
-        
-        node_info_list.append(node_info)
-    
-    return node_info_list
-
-
 def _collect_geolipi_nodes() -> List[Dict]:
     """Collect nodes from geolipi registry, organized by source files."""
     import sys
@@ -251,7 +182,7 @@ def _collect_geolipi_nodes() -> List[Dict]:
     
     # Add the project paths to sys.path if not already there
     project_root = Path(__file__).parent.parent.parent  # Go up to mpspy root
-    geolipi_path = project_root / "geolipi"
+    geolipi_path = os.path.join(project_root, "geolipi")
     
     if str(geolipi_path) not in sys.path:
         sys.path.insert(0, str(geolipi_path))
@@ -403,43 +334,10 @@ def _collect_sysl_nodes() -> List[Dict]:
 def _get_category_from_module(module_path: str) -> str:
     """Determine category based on the module path."""
     if not module_path:
-        return ""
+        raise ValueError("Module path is empty")
     
-    # GeoLIPI categories
-    if "geolipi.symbolic" in module_path:
-        if "primitives_2d" in module_path:
-            return "primitives_2d"
-        elif "primitives_3d" in module_path:
-            return "primitives_3d"
-        elif "primitives_higher" in module_path:
-            return "primitives_higher"
-        elif "transforms_2d" in module_path:
-            return "transforms_2d"
-        elif "transforms_3d" in module_path:
-            return "transforms_3d"
-        elif "combinators" in module_path:
-            return "combinators"
-        elif "color" in module_path:
-            return "color"
-        elif "variables" in module_path:
-            return "variables"
-        elif "reference" in module_path:
-            return "reference"
-        else:
-            return "geolipi_other"
-    
-    # SySL categories
-    elif "sysl.symbolic" in module_path:
-        if "base" in module_path:
-            return "sysl_base"
-        elif "materials" in module_path:
-            return "materials"
-        elif "mat_solid_combinators" in module_path:
-            return "mat_solid_combinators"
-        else:
-            return "sysl_other"
-    
-    return "unknown"
+    mode = module_path.split(".")[-1]
+    return mode
 
 
 def _generate_file_content(all_node_info: List[Dict], library_name: str) -> str:
@@ -519,31 +417,8 @@ class {name}(GLNode):
     return class_def
 
 
-def get_auto_load_summary() -> dict:
-    """
-    Get summary of auto-loaded nodes.
-    
-    Returns:
-        Dictionary with node counts by category
-    """
-    all_nodes = list(NODE_REGISTRY.keys())
-    
-    summary = {
-        "total": len(all_nodes),
-        "3d_primitives": len([n for n in all_nodes if n.endswith('3D')]),
-        "2d_primitives": len([n for n in all_nodes if n.endswith('2D')]),
-        "operations": len([n for n in all_nodes if not n.endswith(('2D', '3D'))]),
-    }
-    
-    return summary
-
-
-
 # Auto-load nodes when module is imported
 import os
 if os.environ.get('ASMBLR_DISABLE_AUTO_LOAD') != '1':
     _loaded_nodes = load_all_symbolic_nodes()
-    _summary = get_auto_load_summary()
-    print(f"Auto-registered {_summary['total']} nodes "
-          f"({_summary['3d_primitives'] + _summary['2d_primitives']} primitives, "
-          f"{_summary['operations']} operations)")
+    print(f"Auto-registered {len(_loaded_nodes)} nodes")

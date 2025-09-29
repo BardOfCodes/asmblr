@@ -13,6 +13,7 @@ from io import BytesIO
 from PIL import Image
 from typing import Optional, Any, Dict, Union, Tuple
 from .settings import Settings
+from .serialize import make_json_compatible, deduplicate_nodes, process_value_for_serialization, unprocess_value_from_serialization
 
 
 def copy_value(value: Any):
@@ -25,140 +26,6 @@ def copy_value(value: Any):
     else:
         return copy.deepcopy(value)
 
-
-def process_value_for_serialization(value: Any) -> Dict[str, Any]:
-    """
-    Process a value for JSON serialization.
-    
-    Returns a dictionary with 'type' and 'data' keys indicating how to reconstruct the value.
-    """
-    if value is None:
-        return {"type": "none", "data": None}
-    
-    elif isinstance(value, bool):
-        return {"type": "bool", "data": value}
-    
-    elif isinstance(value, str):
-        return {"type": "string", "data": value}
-    
-    elif isinstance(value, (int, float)):
-        # Convert single numbers to tuples as requested
-        return {"type": "tuple", "data": (value,)}
-    
-    elif isinstance(value, (tuple, list)):
-        # Keep tuples as tuples, convert lists to tuples
-        return {"type": "tuple", "data": tuple(value)}
-    
-    elif isinstance(value, th.Tensor):
-        # Compress torch tensor with gzip
-        tensor_bytes = value.cpu().numpy().tobytes()
-        compressed = gzip.compress(tensor_bytes)
-        encoded = base64.b64encode(compressed).decode('utf-8')
-        
-        return {
-            "type": "torch_tensor",
-            "data": encoded,
-            "shape": list(value.shape),
-            "dtype": str(value.dtype),
-            "device": str(value.device)
-        }
-    
-    elif isinstance(value, np.ndarray):
-        # Compress numpy array with gzip
-        array_bytes = value.tobytes()
-        compressed = gzip.compress(array_bytes)
-        encoded = base64.b64encode(compressed).decode('utf-8')
-        
-        return {
-            "type": "numpy_array", 
-            "data": encoded,
-            "shape": list(value.shape),
-            "dtype": str(value.dtype)
-        }
-    
-    else:
-        # Fallback for other types - try to convert to string
-        return {"type": "other", "data": str(value)}
-
-
-def unprocess_value_from_serialization(processed_data: Dict[str, Any]) -> Any:
-    """
-    Reconstruct a value from its processed serialization format.
-    """
-    value_type = processed_data["type"]
-    data = processed_data["data"]
-    
-    if value_type == "none":
-        return None
-    
-    elif value_type == "bool":
-        return data
-    
-    elif value_type == "string":
-        return data
-    
-    elif value_type == "tuple":
-        return tuple(data)
-    
-    elif value_type == "torch_tensor":
-        # Decompress torch tensor
-        compressed = base64.b64decode(data.encode('utf-8'))
-        tensor_bytes = gzip.decompress(compressed)
-        
-        # Reconstruct tensor
-        shape = processed_data["shape"]
-        dtype_str = processed_data["dtype"]
-        
-        # Map string dtype back to torch dtype
-        dtype_map = {
-            "torch.float32": th.float32,
-            "torch.float64": th.float64,
-            "torch.int32": th.int32,
-            "torch.int64": th.int64,
-            "torch.bool": th.bool,
-        }
-        dtype = dtype_map.get(dtype_str, th.float32)
-        
-        # Map torch dtype to numpy dtype
-        numpy_dtype_map = {
-            th.float32: np.float32,
-            th.float64: np.float64,
-            th.int32: np.int32,
-            th.int64: np.int64,
-            th.bool: np.bool_,
-        }
-        numpy_dtype = numpy_dtype_map.get(dtype, np.float32)
-        
-        # Create numpy array first, then convert to torch
-        np_array = np.frombuffer(tensor_bytes, dtype=numpy_dtype).reshape(shape)
-        tensor = th.from_numpy(np_array)
-        
-        return tensor
-    
-    elif value_type == "numpy_array":
-        # Decompress numpy array
-        compressed = base64.b64decode(data.encode('utf-8'))
-        array_bytes = gzip.decompress(compressed)
-        
-        # Reconstruct array
-        shape = processed_data["shape"]
-        dtype_str = processed_data["dtype"]
-        
-        # Create numpy array
-        array = np.frombuffer(array_bytes, dtype=dtype_str).reshape(shape)
-        return array
-    
-    elif value_type == "other":
-        # Try to evaluate as Python literal, fallback to string
-        try:
-            import ast
-            return ast.literal_eval(data)
-        except:
-            return data
-    
-    else:
-        raise ValueError(f"Unknown serialization type: {value_type}")
-    
 
 
 class BaseNode(ABC):
@@ -286,17 +153,6 @@ class BaseNode(ABC):
                     conn.input_node.clean_graph()
             self.clean = True
     
-    def deduplicate_nodes(self, graph_data):
-        
-        node_map = {}
-        for node in graph_data["nodes"]:
-            node_id = node["id"]
-            if node_id not in node_map:
-                node_map[node_id] = node
-            else:
-                pass
-        graph_data["nodes"] = list(node_map.values())
-        return graph_data  
 
     def to_dict(self, device="cpu"):
         """Serialize the node and its connections to a JSON-compatible format."""
@@ -304,98 +160,16 @@ class BaseNode(ABC):
             "nodes": [],
             "connections": []
         }
-
-        def serialize_node(node, graph_data, node_map):
-            node_data = {
-                "id": node.unique_id,
-                "name": node.__class__.__name__,
-            }
-            data = {}
-            for key, socket in node.input_sockets.items():
-                if socket.value is not None:
-                    socket_value = socket.value
-                    # Move torch tensors to specified device before processing
-                    if isinstance(socket_value, th.Tensor):
-                        socket_value = socket_value.cpu() if device == "cpu" else socket_value
-                    
-                    # Process the value for JSON serialization
-                    data[key] = process_value_for_serialization(socket_value)
-                    
-            node_data["data"] = data
-            graph_data["nodes"].append(node_data)
-            node_map[node.unique_id] = node
-
-            # Serialize connections (unchanged - already simple)
-            for output_name, output_socket in node.output_sockets.items():
-                for conn in output_socket.connections:
-                    connection_data = {
-                        "source": node.unique_id,
-                        "sourceOutput": output_name,
-                        "target": conn.output_node.unique_id,
-                        "targetInput": conn.input_socket
-                    }
-                    graph_data["connections"].append(connection_data)
-
-        def traverse_graph(node, visited, graph_data, node_map):
-            if node.unique_id in visited:
-                return
-            visited.add(node.unique_id)
-            serialize_node(node, graph_data, node_map)
-            for socket in node.input_sockets.values():
-                if socket.connections:
-                    for conn in socket.connections:
-                        if conn.input_node:
-                            traverse_graph(conn.input_node, visited, graph_data, node_map)
-
         visited_nodes = set()
         node_map = {}
-        traverse_graph(self, visited_nodes, graph_data, node_map)
-        graph_data = self.deduplicate_nodes(graph_data)
-        return graph_data
-
-    def make_json_compatible(self, graph_data):
-        """Convert data to JSON-compatible types."""
-        node_data = graph_data['nodes']
-        compatible_data = []
-        for node in node_data:
-            compatible_node = {}
-            for key, socket_value in node['data'].items():
-                if isinstance(socket_value, th.Tensor):
-                    socket_value = socket_value.cpu()
-                    if len(socket_value.shape) == 0:
-                        processed = float(socket_value.item())
-                        key_name = key
-                    elif len(socket_value.shape) == 1:
-                        new_val = socket_value.cpu().numpy().tolist()
-                        processed = tuple([float(x) for x in new_val])
-                        key_name = key
-                    elif len(socket_value.shape) == 3:
-                        # TODO: Improve handling of Image and other Tensors
-                        img = socket_value.cpu().numpy()#.dtype(np.float64)
-                        pil_img = Image.fromarray((img * 255).astype(np.uint8))
-                        # Temp
-                        buff = BytesIO()
-                        pil_img.save(buff, format="PNG")
-                        new_image_string = base64.b64encode(buff.getvalue()).decode("utf-8")
-                        processed = f"data:image/png;base64,{new_image_string}"
-                        key_name = f"{key}_IMG"
-                    else:
-                        print(socket_value.shape)
-                        raise NotImplementedError("Not implemented yet.")
-                else:
-                    print(socket_value.shape)
-                    raise NotImplementedError("Not implemented yet.")
-                socket_value = processed
-                key = key_name
-                compatible_node[key] = socket_value
-            compatible_data.append(compatible_node)
-        graph_data['nodes'] = compatible_data
+        traverse_graph(self, visited_nodes, graph_data, node_map, device)
+        graph_data = deduplicate_nodes(graph_data)
         return graph_data
 
     def to_json(self, wrapper_name=None, device="cpu"):
         """Serialize the graph to JSON format."""
         graph_data = self.to_dict(device=device)
-        graph_data = self.make_json_compatible(graph_data)
+        graph_data = make_json_compatible(graph_data)
         if wrapper_name:
             graph_data = {wrapper_name: graph_data}
         return json.dumps(graph_data, cls=CustomJSONEncoder)
@@ -526,7 +300,6 @@ class Connection:
         self.input_node.evaluate(sketcher, **kwargs)
         return self.input_node.outputs.get(self.output_socket, None)
 
-
     def delete(self):
         """Disconnect and clean up."""
         self.input_node.output_sockets[self.output_socket].connections.remove(self)
@@ -607,3 +380,47 @@ class OutputSocket:
         if self.connections:
             return self.connections[0].output_node.outputs[self.name]
         return None
+
+
+def serialize_node(node, graph_data, node_map, device):
+    node_data = {
+        "id": node.unique_id,
+        "name": node.__class__.__name__,
+    }
+    data = {}
+    for key, socket in node.input_sockets.items():
+        if socket.value is not None:
+            socket_value = socket.value
+            # Move torch tensors to specified device before processing
+            if isinstance(socket_value, th.Tensor):
+                socket_value = socket_value.cpu() if device == "cpu" else socket_value
+            
+            # Process the value for JSON serialization
+            data[key] = process_value_for_serialization(socket_value)
+            
+    node_data["data"] = data
+    graph_data["nodes"].append(node_data)
+    node_map[node.unique_id] = node
+
+    # Serialize connections (unchanged - already simple)
+    for output_name, output_socket in node.output_sockets.items():
+        for conn in output_socket.connections:
+            connection_data = {
+                "source": node.unique_id,
+                "sourceOutput": output_name,
+                "target": conn.output_node.unique_id,
+                "targetInput": conn.input_socket
+            }
+            graph_data["connections"].append(connection_data)
+
+
+def traverse_graph(node, visited, graph_data, node_map, device):
+    if node.unique_id in visited:
+        return
+    visited.add(node.unique_id)
+    serialize_node(node, graph_data, node_map, device)
+    for socket in node.input_sockets.values():
+        if socket.connections:
+            for conn in socket.connections:
+                if conn.input_node:
+                    traverse_graph(conn.input_node, visited, graph_data, node_map, device)

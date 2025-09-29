@@ -203,7 +203,7 @@ class SMPLMaterial(GLNode):
     expr_class = _expr_mod.SMPLMaterial
     
     # Embed category metadata in the class
-    node_category = "sysl_materials"
+    node_category = "materials"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
@@ -226,7 +226,7 @@ class RGBMaterial(GLNode):
     expr_class = _expr_mod.RGBMaterial
     
     # Embed category metadata in the class
-    node_category = "sysl_materials"
+    node_category = "materials"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
@@ -249,7 +249,7 @@ class MaterialV3(GLNode):
     expr_class = _expr_mod.MaterialV3
     
     # Embed category metadata in the class
-    node_category = "sysl_materials"
+    node_category = "materials"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
@@ -272,7 +272,7 @@ class NonEmissiveMaterialV3(GLNode):
     expr_class = _expr_mod.NonEmissiveMaterialV3
     
     # Embed category metadata in the class
-    node_category = "sysl_materials"
+    node_category = "materials"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
@@ -295,7 +295,7 @@ class MatReference(GLNode):
     expr_class = _expr_mod.MatReference
     
     # Embed category metadata in the class
-    node_category = "sysl_materials"
+    node_category = "materials"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
@@ -318,7 +318,7 @@ class RegisterMaterial(GLNode):
     expr_class = _expr_mod.RegisterMaterial
     
     # Embed category metadata in the class
-    node_category = "sysl_materials"
+    node_category = "materials"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
@@ -341,7 +341,7 @@ class RGBGrid3D(GLNode):
     expr_class = _expr_mod.RGBGrid3D
     
     # Embed category metadata in the class
-    node_category = "sysl_materials"
+    node_category = "materials"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
@@ -364,7 +364,7 @@ class EncodedRGBGrid3D(GLNode):
     expr_class = _expr_mod.EncodedRGBGrid3D
     
     # Embed category metadata in the class
-    node_category = "sysl_materials"
+    node_category = "materials"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
@@ -387,7 +387,7 @@ class MatColorOnly(GLNode):
     expr_class = _expr_mod.MatColorOnly
     
     # Embed category metadata in the class
-    node_category = "sysl_combinators"
+    node_category = "mat_solid_combinators"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
@@ -410,7 +410,7 @@ class MatSmoothColorOnly(GLNode):
     expr_class = _expr_mod.MatSmoothColorOnly
     
     # Embed category metadata in the class
-    node_category = "sysl_combinators"
+    node_category = "mat_solid_combinators"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
@@ -433,7 +433,7 @@ class Repel(GLNode):
     expr_class = _expr_mod.Repel
     
     # Embed category metadata in the class
-    node_category = "sysl_combinators"
+    node_category = "mat_solid_combinators"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
@@ -456,7 +456,7 @@ class Avoid(GLNode):
     expr_class = _expr_mod.Avoid
     
     # Embed category metadata in the class
-    node_category = "sysl_combinators"
+    node_category = "mat_solid_combinators"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level

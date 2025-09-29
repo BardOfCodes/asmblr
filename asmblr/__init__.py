@@ -13,7 +13,7 @@ from .simple_registry import (
 from .settings import Settings, update_settings
 
 # Auto-loader (imports and registers nodes automatically)
-from .auto_loader import load_all_geolipi_nodes, get_auto_load_summary
+from .auto_loader import load_all_geolipi_nodes
 
 # Node inspection utilities
 from .inspect_nodes import inspect_node, list_nodes, search_nodes
@@ -23,7 +23,6 @@ from . import converter
 
 # Custom nodes (manual registration)
 from .custom_nodes.custom_mxg import PolyLine2D
-from .custom_nodes.custom_splitweave import EvaluateLayoutNode
 from .custom_nodes.custom_geolipi import SplitVec2D, SplitVec3D, SplitVec4D
 
 # SySL custom nodes - now auto-generated in auto_nodes/sysl_nodes.py

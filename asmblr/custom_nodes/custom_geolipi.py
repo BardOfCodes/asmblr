@@ -15,6 +15,8 @@ import geolipi.symbolic as gls
 class SplitVec2D(GLNode):
     """Split a 2D vector into its components - requires multiple outputs."""
 
+    # Embed category metadata in the class
+    node_category = "variables"
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.expr_class = gls.VarSplitter
@@ -23,7 +25,7 @@ class SplitVec2D(GLNode):
         """Create input sockets for SplitVec2D."""
         self.arg_keys = ['expr']
         self.default_values = {}
-        self.arg_types = {'expr': 'vec2'}
+        self.arg_types = {'expr': 'Expr'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -64,7 +66,7 @@ class SplitVec3D(SplitVec2D):
         """Create input sockets for SplitVec3D."""
         self.arg_keys = ['expr']
         self.default_values = {}
-        self.arg_types = {'expr': 'vec3'}
+        self.arg_types = {'expr': 'Expr'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
     
@@ -86,7 +88,7 @@ class SplitVec4D(SplitVec2D):
         """Create input sockets for SplitVec4D."""
         self.arg_keys = ['expr']
         self.default_values = {}
-        self.arg_types = {'expr': 'vec4'}
+        self.arg_types = {'expr': 'Expr'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
     

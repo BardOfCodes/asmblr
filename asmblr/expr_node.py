@@ -2,13 +2,10 @@
 import torch as th
 import sympy as sp
 from typing import Any, Dict
+import geolipi.symbolic as gls
 from .base import BaseNode, Connection, InputSocket, OutputSocket
 
-# Optional import for geolipi
-try:
-    import geolipi.symbolic as gls
-except ImportError:
-    gls = None
+VALID_INPUT_TYPES = (str, tuple, sp.Tuple, sp.Symbol, th.Tensor, gls.GLExpr, gls.GLFunction)
 
 class GLNode(BaseNode):
     """Base class for nodes that wrap geometric/symbolic expressions."""
@@ -103,26 +100,18 @@ class GLNode(BaseNode):
         arguments = []
         for key in self.arg_keys:
             arg = self.inputs.get(key, None)
-            if arg is not None:
-                # If arg is a tuple of expressions (from multi-input socket), unpack them
-                if isinstance(arg, tuple):
-                    arguments.extend(arg)
-                else:
-                    # For variadic nodes, don't wrap single expressions in tuples
-                    if hasattr(self, 'is_variadic') and self.is_variadic:
-                        arguments.append(arg)
-                    else:
-                        # Convert single values to tuples if needed for consistency
-                        valid_types = (str, sp.Tuple, sp.Symbol, th.Tensor)
-                        if gls is not None:
-                            valid_types = valid_types + (gls.GLExpr, gls.GLFunction)
-                        
-                        if not isinstance(arg, valid_types):
-                            arg = (arg,)
-                        arguments.append(arg)
-            else:
-                # Stop at first None argument (optional arguments)
+            if arg is None:
                 break
+            # For variadic nodes, don't wrap single expressions in tuples
+            if hasattr(self, 'is_variadic') and self.is_variadic:
+                for true_arg in arg:
+                    if not isinstance(true_arg, VALID_INPUT_TYPES):
+                        true_arg = (true_arg,)
+                    arguments.append(true_arg)
+            else:
+                if not isinstance(arg, VALID_INPUT_TYPES):
+                    arg = (arg,)
+                arguments.append(arg)
         
         # Create the expression
         expr = self.expr_class(*arguments)
