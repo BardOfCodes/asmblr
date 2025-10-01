@@ -22,7 +22,15 @@ from asmblr.simple_registry import NODE_REGISTRY
 
 # Type mapping constants - simplified approach
 # All sockets are expressions, controls use raw type strings
-
+EXCLUDE_SYMBOLS = {
+    'JoinUnion', 'EncodedRGBGrid3D', 'RGBGrid3D', "SDFGrid3D",
+    "TileUV2D", "SinRepeatX2D", "SinRepeatY2D",
+    "SinAlongAxisY2D", "SinDiagonal2D", "SinDiagonalFlip2D",
+    "SinRadial2D", "SquiggleX2D", "SquiggleY2D",
+    "SquiggleDiagonal2D", "SquiggleDiagonalFlip2D",
+    "SquiggleRadial2D", "SquiggleDistortion2D",
+    "EncodedLowPrecisionSDFGrid3D", "EncodedSDFGrid3D", "LowPrecisionSDFGrid3D"
+}
 # Expression type prefixes
 EXPR_TYPE_PREFIXES = ('expr', 'expr[')
 
@@ -58,6 +66,8 @@ def build_nodes_payload() -> Dict[str, Any]:
     nodes: List[Dict[str, Any]] = []
 
     for node_name, node_cls in NODE_REGISTRY.items():
+        if node_name in EXCLUDE_SYMBOLS:
+            continue
         expr_class = getattr(node_cls, 'expr_class', None)
         spec = _get_spec(expr_class) if expr_class is not None else {}
 

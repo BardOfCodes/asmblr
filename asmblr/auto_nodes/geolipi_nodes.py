@@ -12,159 +12,21 @@ from ..simple_registry import register_node_decorator
 
 
 @register_node_decorator
-class Sphere3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.Sphere3D"""
+class Arc2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Arc2D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.Sphere3D
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.Arc2D
     
     # Embed category metadata in the class
-    node_category = "primitives_3d"
+    node_category = "primitives_2d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Sphere3D."""
-        self.arg_keys = ['radius']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'radius': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Box3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.Box3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.Box3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Box3D."""
-        self.arg_keys = ['size']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'size': 'Vector[3]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Cuboid3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.Cuboid3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.Cuboid3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Cuboid3D."""
-        self.arg_keys = ['size']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'size': 'Vector[3]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class RoundedBox3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.RoundedBox3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.RoundedBox3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for RoundedBox3D."""
-        self.arg_keys = ['size', 'radius']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'size': 'Vector[3]', 'radius': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class BoxFrame3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.BoxFrame3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.BoxFrame3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for BoxFrame3D."""
-        self.arg_keys = ['b', 'e']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'b': 'Vector[3]', 'e': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Torus3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.Torus3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.Torus3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Torus3D."""
-        self.arg_keys = ['t']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'t': 'Vector[2]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class CappedTorus3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.CappedTorus3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.CappedTorus3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for CappedTorus3D."""
+        """Create input sockets for Arc2D."""
         self.arg_keys = ['angle', 'ra', 'rb']
         self.default_values = {}
         self.is_variadic = False
@@ -173,885 +35,11 @@ class CappedTorus3D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Link3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.Link3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.Link3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Link3D."""
-        self.arg_keys = ['le', 'r1', 'r2']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'le': 'float', 'r1': 'float', 'r2': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class InfiniteCylinder3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.InfiniteCylinder3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.InfiniteCylinder3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for InfiniteCylinder3D."""
-        self.arg_keys = ['c']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'c': 'Vector[3]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Cone3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.Cone3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.Cone3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Cone3D."""
-        self.arg_keys = ['angle', 'h']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'angle': 'float', 'h': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class InexactCone3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.InexactCone3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.InexactCone3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for InexactCone3D."""
-        self.arg_keys = ['angle', 'h']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'angle': 'float', 'h': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class InfiniteCone3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.InfiniteCone3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.InfiniteCone3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for InfiniteCone3D."""
-        self.arg_keys = ['angle']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'angle': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Plane3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.Plane3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.Plane3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Plane3D."""
-        self.arg_keys = ['n', 'h']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'n': 'Vector[3]', 'h': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class HexPrism3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.HexPrism3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.HexPrism3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for HexPrism3D."""
-        self.arg_keys = ['h']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'h': 'Vector[2]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class TriPrism3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.TriPrism3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.TriPrism3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for TriPrism3D."""
-        self.arg_keys = ['h']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'h': 'Vector[2]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Capsule3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.Capsule3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.Capsule3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Capsule3D."""
-        self.arg_keys = ['a', 'b', 'r']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'a': 'Vector[3]', 'b': 'Vector[3]', 'r': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class VerticalCapsule3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.VerticalCapsule3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.VerticalCapsule3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for VerticalCapsule3D."""
-        self.arg_keys = ['h', 'r']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'h': 'float', 'r': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class VerticalCappedCylinder3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.VerticalCappedCylinder3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.VerticalCappedCylinder3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for VerticalCappedCylinder3D."""
-        self.arg_keys = ['h', 'r']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'h': 'float', 'r': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class CappedCylinder3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.CappedCylinder3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.CappedCylinder3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for CappedCylinder3D."""
-        self.arg_keys = ['h', 'r']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'h': 'float', 'r': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Cylinder3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.Cylinder3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.Cylinder3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Cylinder3D."""
-        self.arg_keys = ['h', 'r']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'h': 'float', 'r': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class ArbitraryCappedCylinder3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.ArbitraryCappedCylinder3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.ArbitraryCappedCylinder3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for ArbitraryCappedCylinder3D."""
-        self.arg_keys = ['a', 'b', 'r']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'a': 'Vector[3]', 'b': 'Vector[3]', 'r': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class RoundedCylinder3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.RoundedCylinder3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.RoundedCylinder3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for RoundedCylinder3D."""
-        self.arg_keys = ['ra', 'rb', 'h']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'ra': 'float', 'rb': 'float', 'h': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class CappedCone3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.CappedCone3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.CappedCone3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for CappedCone3D."""
-        self.arg_keys = ['r1', 'r2', 'h']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'r1': 'float', 'r2': 'float', 'h': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class ArbitraryCappedCone(GLNode):
-    """# geolipi.symbolic.primitives_3d.ArbitraryCappedCone"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.ArbitraryCappedCone
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for ArbitraryCappedCone."""
-        self.arg_keys = ['a', 'b', 'ra', 'rb']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'a': 'Vector[3]', 'b': 'Vector[3]', 'ra': 'float', 'rb': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class SolidAngle3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.SolidAngle3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.SolidAngle3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for SolidAngle3D."""
-        self.arg_keys = ['angle', 'ra']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'angle': 'float', 'ra': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class CutSphere3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.CutSphere3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.CutSphere3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for CutSphere3D."""
-        self.arg_keys = ['r', 'h']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'r': 'float', 'h': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class CutHollowSphere(GLNode):
-    """# geolipi.symbolic.primitives_3d.CutHollowSphere"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.CutHollowSphere
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for CutHollowSphere."""
-        self.arg_keys = ['r', 'h', 't']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'r': 'float', 'h': 'float', 't': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class DeathStar3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.DeathStar3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.DeathStar3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for DeathStar3D."""
-        self.arg_keys = ['ra', 'rb', 'd']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'ra': 'float', 'rb': 'float', 'd': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class RoundCone3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.RoundCone3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.RoundCone3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for RoundCone3D."""
-        self.arg_keys = ['r1', 'r2', 'h']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'r1': 'float', 'r2': 'float', 'h': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class ArbitraryRoundCone3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.ArbitraryRoundCone3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.ArbitraryRoundCone3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for ArbitraryRoundCone3D."""
-        self.arg_keys = ['a', 'b', 'r1', 'r2']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'a': 'Vector[3]', 'b': 'Vector[3]', 'r1': 'float', 'r2': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class InexactEllipsoid3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.InexactEllipsoid3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.InexactEllipsoid3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for InexactEllipsoid3D."""
-        self.arg_keys = ['r']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'r': 'Vector[3]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class RevolvedVesica3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.RevolvedVesica3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.RevolvedVesica3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for RevolvedVesica3D."""
-        self.arg_keys = ['a', 'b', 'w']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'a': 'Vector[3]', 'b': 'Vector[3]', 'w': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Rhombus3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.Rhombus3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.Rhombus3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Rhombus3D."""
-        self.arg_keys = ['la', 'lb', 'h', 'ra']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'la': 'float', 'lb': 'float', 'h': 'float', 'ra': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Octahedron3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.Octahedron3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.Octahedron3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Octahedron3D."""
-        self.arg_keys = ['s']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'s': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class InexactOctahedron3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.InexactOctahedron3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.InexactOctahedron3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for InexactOctahedron3D."""
-        self.arg_keys = ['s']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'s': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Pyramid3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.Pyramid3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.Pyramid3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Pyramid3D."""
-        self.arg_keys = ['h']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'h': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Triangle3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.Triangle3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.Triangle3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Triangle3D."""
-        self.arg_keys = ['a', 'b', 'c']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'a': 'Vector[3]', 'b': 'Vector[3]', 'c': 'Vector[3]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Quadrilateral3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.Quadrilateral3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.Quadrilateral3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Quadrilateral3D."""
-        self.arg_keys = ['a', 'b', 'c', 'd']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'a': 'Vector[3]', 'b': 'Vector[3]', 'c': 'Vector[3]', 'd': 'Vector[3]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class NoParamCuboid3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.NoParamCuboid3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.NoParamCuboid3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for NoParamCuboid3D."""
-        self.arg_keys = []
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class NoParamSphere3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.NoParamSphere3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.NoParamSphere3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for NoParamSphere3D."""
-        self.arg_keys = []
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class NoParamCylinder3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.NoParamCylinder3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.NoParamCylinder3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for NoParamCylinder3D."""
-        self.arg_keys = []
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class InexactSuperQuadrics3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.InexactSuperQuadrics3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.InexactSuperQuadrics3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for InexactSuperQuadrics3D."""
-        self.arg_keys = ['skew_vec', 'epsilon_1', 'epsilon_2']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'skew_vec': 'Vector[3]', 'epsilon_1': 'float', 'epsilon_2': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class InexactAnisotropicGaussian3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.InexactAnisotropicGaussian3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.InexactAnisotropicGaussian3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for InexactAnisotropicGaussian3D."""
-        self.arg_keys = ['center', 'axial_radii', 'scale_constant']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'center': 'Vector[3]', 'axial_radii': 'Vector[3]', 'scale_constant': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class SDFGrid3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.SDFGrid3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.SDFGrid3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for SDFGrid3D."""
-        self.arg_keys = ['sdf_grid']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'sdf_grid': 'Tensor[float, (D,H,W)]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class NullExpression3D(GLNode):
-    """# geolipi.symbolic.primitives_3d.NullExpression3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.NullExpression3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for NullExpression3D."""
-        self.arg_keys = []
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Circle2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Circle2D"""
+class BlobbyCross2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.BlobbyCross2D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Circle2D
+    expr_class = _expr_mod.BlobbyCross2D
     
     # Embed category metadata in the class
     node_category = "primitives_2d"
@@ -1061,34 +49,11 @@ class Circle2D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Circle2D."""
-        self.arg_keys = ['radius']
+        """Create input sockets for BlobbyCross2D."""
+        self.arg_keys = ['he']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'radius': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class RoundedBox2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.RoundedBox2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.RoundedBox2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for RoundedBox2D."""
-        self.arg_keys = ['bounds', 'radius']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'bounds': 'Vector[2]', 'radius': 'Vector[4]'}
+        self.arg_types = {'he': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -1116,11 +81,11 @@ class Box2D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Rectangle2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Rectangle2D"""
+class Circle2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Circle2D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Rectangle2D
+    expr_class = _expr_mod.Circle2D
     
     # Embed category metadata in the class
     node_category = "primitives_2d"
@@ -1130,20 +95,20 @@ class Rectangle2D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Rectangle2D."""
-        self.arg_keys = ['size']
+        """Create input sockets for Circle2D."""
+        self.arg_keys = ['radius']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'size': 'Vector[2]'}
+        self.arg_types = {'radius': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class OrientedBox2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.OrientedBox2D"""
+class CircleWave2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.CircleWave2D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.OrientedBox2D
+    expr_class = _expr_mod.CircleWave2D
     
     # Embed category metadata in the class
     node_category = "primitives_2d"
@@ -1153,20 +118,20 @@ class OrientedBox2D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for OrientedBox2D."""
-        self.arg_keys = ['start_point', 'end_point', 'thickness']
+        """Create input sockets for CircleWave2D."""
+        self.arg_keys = ['tb', 'ra']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'start_point': 'Vector[2]', 'end_point': 'Vector[2]', 'thickness': 'float'}
+        self.arg_types = {'tb': 'float', 'ra': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Rhombus2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Rhombus2D"""
+class CoolS2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.CoolS2D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Rhombus2D
+    expr_class = _expr_mod.CoolS2D
     
     # Embed category metadata in the class
     node_category = "primitives_2d"
@@ -1176,513 +141,7 @@ class Rhombus2D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Rhombus2D."""
-        self.arg_keys = ['size']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'size': 'Vector[2]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Trapezoid2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Trapezoid2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Trapezoid2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Trapezoid2D."""
-        self.arg_keys = ['r1', 'r2', 'height']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'r1': 'float', 'r2': 'float', 'height': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Parallelogram2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Parallelogram2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Parallelogram2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Parallelogram2D."""
-        self.arg_keys = ['width', 'height', 'skew']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'width': 'float', 'height': 'float', 'skew': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class EquilateralTriangle2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.EquilateralTriangle2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.EquilateralTriangle2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for EquilateralTriangle2D."""
-        self.arg_keys = ['side_length']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'side_length': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class IsoscelesTriangle2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.IsoscelesTriangle2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.IsoscelesTriangle2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for IsoscelesTriangle2D."""
-        self.arg_keys = ['wi_hi']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'wi_hi': 'Vector[2]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Triangle2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Triangle2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Triangle2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Triangle2D."""
-        self.arg_keys = ['p0', 'p1', 'p2']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'p0': 'Vector[2]', 'p1': 'Vector[2]', 'p2': 'Vector[2]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class UnevenCapsule2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.UnevenCapsule2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.UnevenCapsule2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for UnevenCapsule2D."""
-        self.arg_keys = ['r1', 'r2', 'h']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'r1': 'float', 'r2': 'float', 'h': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class RegularPentagon2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.RegularPentagon2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.RegularPentagon2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for RegularPentagon2D."""
-        self.arg_keys = ['r']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'r': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class RegularHexagon2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.RegularHexagon2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.RegularHexagon2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for RegularHexagon2D."""
-        self.arg_keys = ['r']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'r': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class RegularOctagon2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.RegularOctagon2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.RegularOctagon2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for RegularOctagon2D."""
-        self.arg_keys = ['r']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'r': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Hexagram2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Hexagram2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Hexagram2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Hexagram2D."""
-        self.arg_keys = ['r']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'r': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Star2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Star2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Star2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Star2D."""
-        self.arg_keys = ['r', 'rf']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'r': 'float', 'rf': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class RegularStar2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.RegularStar2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.RegularStar2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for RegularStar2D."""
-        self.arg_keys = ['r', 'n', 'm']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'r': 'float', 'n': 'int', 'm': 'int'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Pie2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Pie2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Pie2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Pie2D."""
-        self.arg_keys = ['c', 'r']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'c': 'Vector[2]', 'r': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class CutDisk2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.CutDisk2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.CutDisk2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for CutDisk2D."""
-        self.arg_keys = ['r', 'h']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'r': 'float', 'h': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Arc2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Arc2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Arc2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Arc2D."""
-        self.arg_keys = ['angle', 'ra', 'rb']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'angle': 'float', 'ra': 'float', 'rb': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class HorseShoe2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.HorseShoe2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.HorseShoe2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for HorseShoe2D."""
-        self.arg_keys = ['angle', 'r', 'w']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'angle': 'float', 'r': 'float', 'w': 'Vector[2]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Vesica2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Vesica2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Vesica2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Vesica2D."""
-        self.arg_keys = ['r', 'd']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'r': 'float', 'd': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class OrientedVesica2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.OrientedVesica2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.OrientedVesica2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for OrientedVesica2D."""
-        self.arg_keys = ['a', 'b', 'w']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'a': 'Vector[2]', 'b': 'Vector[2]', 'w': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Moon2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Moon2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Moon2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Moon2D."""
-        self.arg_keys = ['d', 'ra', 'rb']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'d': 'float', 'ra': 'float', 'rb': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class RoundedCross2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.RoundedCross2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.RoundedCross2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for RoundedCross2D."""
-        self.arg_keys = ['h']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'h': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Egg2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Egg2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Egg2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Egg2D."""
-        self.arg_keys = ['ra', 'rb']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'ra': 'float', 'rb': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Heart2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Heart2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Heart2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Heart2D."""
+        """Create input sockets for CoolS2D."""
         self.arg_keys = []
         self.default_values = {}
         self.is_variadic = False
@@ -1714,11 +173,11 @@ class Cross2D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class RoundedX2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.RoundedX2D"""
+class CutDisk2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.CutDisk2D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.RoundedX2D
+    expr_class = _expr_mod.CutDisk2D
     
     # Embed category metadata in the class
     node_category = "primitives_2d"
@@ -1728,20 +187,20 @@ class RoundedX2D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for RoundedX2D."""
-        self.arg_keys = ['w', 'r']
+        """Create input sockets for CutDisk2D."""
+        self.arg_keys = ['r', 'h']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'w': 'float', 'r': 'float'}
+        self.arg_types = {'r': 'float', 'h': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Polygon2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Polygon2D"""
+class Egg2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Egg2D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Polygon2D
+    expr_class = _expr_mod.Egg2D
     
     # Embed category metadata in the class
     node_category = "primitives_2d"
@@ -1751,11 +210,11 @@ class Polygon2D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Polygon2D."""
-        self.arg_keys = ['verts']
+        """Create input sockets for Egg2D."""
+        self.arg_keys = ['ra', 'rb']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'verts': 'List[Vector[2]]'}
+        self.arg_types = {'ra': 'float', 'rb': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -1783,11 +242,11 @@ class Ellipse2D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Parabola2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Parabola2D"""
+class EquilateralTriangle2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.EquilateralTriangle2D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Parabola2D
+    expr_class = _expr_mod.EquilateralTriangle2D
     
     # Embed category metadata in the class
     node_category = "primitives_2d"
@@ -1797,20 +256,20 @@ class Parabola2D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Parabola2D."""
-        self.arg_keys = ['k']
+        """Create input sockets for EquilateralTriangle2D."""
+        self.arg_keys = ['side_length']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'k': 'float'}
+        self.arg_types = {'side_length': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class ParabolaSegment2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.ParabolaSegment2D"""
+class Heart2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Heart2D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.ParabolaSegment2D
+    expr_class = _expr_mod.Heart2D
     
     # Embed category metadata in the class
     node_category = "primitives_2d"
@@ -1820,99 +279,7 @@ class ParabolaSegment2D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for ParabolaSegment2D."""
-        self.arg_keys = ['wi', 'he']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'wi': 'float', 'he': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class BlobbyCross2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.BlobbyCross2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.BlobbyCross2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for BlobbyCross2D."""
-        self.arg_keys = ['he']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'he': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Tunnel2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Tunnel2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Tunnel2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Tunnel2D."""
-        self.arg_keys = ['wh']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'wh': 'Vector[2]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Stairs2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Stairs2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Stairs2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Stairs2D."""
-        self.arg_keys = ['wh', 'n']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'wh': 'Vector[2]', 'n': 'int'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class QuadraticCircle2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.QuadraticCircle2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.QuadraticCircle2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for QuadraticCircle2D."""
+        """Create input sockets for Heart2D."""
         self.arg_keys = []
         self.default_values = {}
         self.is_variadic = False
@@ -1921,11 +288,11 @@ class QuadraticCircle2D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class CoolS2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.CoolS2D"""
+class Hexagram2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Hexagram2D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.CoolS2D
+    expr_class = _expr_mod.Hexagram2D
     
     # Embed category metadata in the class
     node_category = "primitives_2d"
@@ -1935,20 +302,20 @@ class CoolS2D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for CoolS2D."""
-        self.arg_keys = []
+        """Create input sockets for Hexagram2D."""
+        self.arg_keys = ['r']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {}
+        self.arg_types = {'r': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class CircleWave2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.CircleWave2D"""
+class HorseShoe2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.HorseShoe2D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.CircleWave2D
+    expr_class = _expr_mod.HorseShoe2D
     
     # Embed category metadata in the class
     node_category = "primitives_2d"
@@ -1958,11 +325,11 @@ class CircleWave2D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for CircleWave2D."""
-        self.arg_keys = ['tb', 'ra']
+        """Create input sockets for HorseShoe2D."""
+        self.arg_keys = ['angle', 'r', 'w']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'tb': 'float', 'ra': 'float'}
+        self.arg_types = {'angle': 'float', 'r': 'float', 'w': 'Vector[2]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -1990,11 +357,11 @@ class Hyperbola2D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class QuadraticBezierCurve2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.QuadraticBezierCurve2D"""
+class InstantiatedPrim2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.InstantiatedPrim2D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.QuadraticBezierCurve2D
+    expr_class = _expr_mod.InstantiatedPrim2D
     
     # Embed category metadata in the class
     node_category = "primitives_2d"
@@ -2004,20 +371,20 @@ class QuadraticBezierCurve2D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for QuadraticBezierCurve2D."""
-        self.arg_keys = ['A', 'B', 'C']
+        """Create input sockets for InstantiatedPrim2D."""
+        self.arg_keys = ['primitive']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'A': 'Vector[2]', 'B': 'Vector[2]', 'C': 'Vector[2]'}
+        self.arg_types = {'primitive': 'str'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Segment2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Segment2D"""
+class IsoscelesTriangle2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.IsoscelesTriangle2D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Segment2D
+    expr_class = _expr_mod.IsoscelesTriangle2D
     
     # Embed category metadata in the class
     node_category = "primitives_2d"
@@ -2027,20 +394,20 @@ class Segment2D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Segment2D."""
-        self.arg_keys = ['start_point', 'end_point']
+        """Create input sockets for IsoscelesTriangle2D."""
+        self.arg_keys = ['wi_hi']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'start_point': 'Vector[2]', 'end_point': 'Vector[2]'}
+        self.arg_types = {'wi_hi': 'Vector[2]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class NoParamRectangle2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.NoParamRectangle2D"""
+class Moon2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Moon2D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.NoParamRectangle2D
+    expr_class = _expr_mod.Moon2D
     
     # Embed category metadata in the class
     node_category = "primitives_2d"
@@ -2050,11 +417,11 @@ class NoParamRectangle2D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for NoParamRectangle2D."""
-        self.arg_keys = []
+        """Create input sockets for Moon2D."""
+        self.arg_keys = ['d', 'ra', 'rb']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {}
+        self.arg_types = {'d': 'float', 'ra': 'float', 'rb': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -2074,6 +441,29 @@ class NoParamCircle2D(GLNode):
     
     def _create_input_sockets(self):
         """Create input sockets for NoParamCircle2D."""
+        self.arg_keys = []
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class NoParamRectangle2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.NoParamRectangle2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.NoParamRectangle2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for NoParamRectangle2D."""
         self.arg_keys = []
         self.default_values = {}
         self.is_variadic = False
@@ -2128,6 +518,489 @@ class NullExpression2D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
+class OrientedBox2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.OrientedBox2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.OrientedBox2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for OrientedBox2D."""
+        self.arg_keys = ['start_point', 'end_point', 'thickness']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'start_point': 'Vector[2]', 'end_point': 'Vector[2]', 'thickness': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class OrientedVesica2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.OrientedVesica2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.OrientedVesica2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for OrientedVesica2D."""
+        self.arg_keys = ['a', 'b', 'w']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'a': 'Vector[2]', 'b': 'Vector[2]', 'w': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Parabola2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Parabola2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.Parabola2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Parabola2D."""
+        self.arg_keys = ['k']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'k': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class ParabolaSegment2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.ParabolaSegment2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.ParabolaSegment2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for ParabolaSegment2D."""
+        self.arg_keys = ['wi', 'he']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'wi': 'float', 'he': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Parallelogram2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Parallelogram2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.Parallelogram2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Parallelogram2D."""
+        self.arg_keys = ['width', 'height', 'skew']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'width': 'float', 'height': 'float', 'skew': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Pie2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Pie2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.Pie2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Pie2D."""
+        self.arg_keys = ['c', 'r']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'c': 'Vector[2]', 'r': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Polygon2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Polygon2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.Polygon2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Polygon2D."""
+        self.arg_keys = ['verts']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'verts': 'List[Vector[2]]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class QuadraticBezierCurve2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.QuadraticBezierCurve2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.QuadraticBezierCurve2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for QuadraticBezierCurve2D."""
+        self.arg_keys = ['A', 'B', 'C']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'A': 'Vector[2]', 'B': 'Vector[2]', 'C': 'Vector[2]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class QuadraticCircle2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.QuadraticCircle2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.QuadraticCircle2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for QuadraticCircle2D."""
+        self.arg_keys = []
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Rectangle2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Rectangle2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.Rectangle2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Rectangle2D."""
+        self.arg_keys = ['size']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'size': 'Vector[2]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class RegularHexagon2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.RegularHexagon2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.RegularHexagon2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for RegularHexagon2D."""
+        self.arg_keys = ['r']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'r': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class RegularOctagon2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.RegularOctagon2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.RegularOctagon2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for RegularOctagon2D."""
+        self.arg_keys = ['r']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'r': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class RegularPentagon2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.RegularPentagon2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.RegularPentagon2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for RegularPentagon2D."""
+        self.arg_keys = ['r']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'r': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class RegularStar2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.RegularStar2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.RegularStar2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for RegularStar2D."""
+        self.arg_keys = ['r', 'n', 'm']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'r': 'float', 'n': 'int', 'm': 'int'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Rhombus2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Rhombus2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.Rhombus2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Rhombus2D."""
+        self.arg_keys = ['size']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'size': 'Vector[2]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class RoundedBox2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.RoundedBox2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.RoundedBox2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for RoundedBox2D."""
+        self.arg_keys = ['bounds', 'radius']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'bounds': 'Vector[2]', 'radius': 'Vector[4]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class RoundedCross2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.RoundedCross2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.RoundedCross2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for RoundedCross2D."""
+        self.arg_keys = ['h']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'h': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class RoundedX2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.RoundedX2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.RoundedX2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for RoundedX2D."""
+        self.arg_keys = ['w', 'r']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'w': 'float', 'r': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Segment2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Segment2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.Segment2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Segment2D."""
+        self.arg_keys = ['start_point', 'end_point']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'start_point': 'Vector[2]', 'end_point': 'Vector[2]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Stairs2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Stairs2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.Stairs2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Stairs2D."""
+        self.arg_keys = ['wh', 'n']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'wh': 'Vector[2]', 'n': 'int'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Star2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Star2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.Star2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Star2D."""
+        self.arg_keys = ['r', 'rf']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'r': 'float', 'rf': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
 class TileUV2D(GLNode):
     """# geolipi.symbolic.primitives_2d.TileUV2D"""
     # Associate the expression class at class level for external tools
@@ -2151,370 +1024,1359 @@ class TileUV2D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Union(GLNode):
-    """# geolipi.symbolic.combinators.Union"""
+class Trapezoid2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Trapezoid2D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.combinators as _expr_mod
-    expr_class = _expr_mod.Union
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.Trapezoid2D
     
     # Embed category metadata in the class
-    node_category = "combinators"
+    node_category = "primitives_2d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Union."""
-        self.arg_keys = ['expr']
-        self.default_values = {}
-        self.is_variadic = True
-        self.arg_types = {'expr': 'Expr'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class JoinUnion(GLNode):
-    """# geolipi.symbolic.combinators.JoinUnion"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.combinators as _expr_mod
-    expr_class = _expr_mod.JoinUnion
-    
-    # Embed category metadata in the class
-    node_category = "combinators"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for JoinUnion."""
-        self.arg_keys = ['expr']
-        self.default_values = {}
-        self.is_variadic = True
-        self.arg_types = {'expr': 'Expr'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Intersection(GLNode):
-    """# geolipi.symbolic.combinators.Intersection"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.combinators as _expr_mod
-    expr_class = _expr_mod.Intersection
-    
-    # Embed category metadata in the class
-    node_category = "combinators"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Intersection."""
-        self.arg_keys = ['expr']
-        self.default_values = {}
-        self.is_variadic = True
-        self.arg_types = {'expr': 'Expr'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Complement(GLNode):
-    """# geolipi.symbolic.combinators.Complement"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.combinators as _expr_mod
-    expr_class = _expr_mod.Complement
-    
-    # Embed category metadata in the class
-    node_category = "combinators"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Complement."""
-        self.arg_keys = ['expr']
+        """Create input sockets for Trapezoid2D."""
+        self.arg_keys = ['r1', 'r2', 'height']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr'}
+        self.arg_types = {'r1': 'float', 'r2': 'float', 'height': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Difference(GLNode):
-    """# geolipi.symbolic.combinators.Difference"""
+class Triangle2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Triangle2D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.combinators as _expr_mod
-    expr_class = _expr_mod.Difference
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.Triangle2D
     
     # Embed category metadata in the class
-    node_category = "combinators"
+    node_category = "primitives_2d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Difference."""
-        self.arg_keys = ['expr_0', 'expr_1']
+        """Create input sockets for Triangle2D."""
+        self.arg_keys = ['p0', 'p1', 'p2']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr_0': 'Expr', 'expr_1': 'Expr'}
+        self.arg_types = {'p0': 'Vector[2]', 'p1': 'Vector[2]', 'p2': 'Vector[2]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class SwitchedDifference(GLNode):
-    """# geolipi.symbolic.combinators.SwitchedDifference"""
+class Tunnel2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Tunnel2D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.combinators as _expr_mod
-    expr_class = _expr_mod.SwitchedDifference
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.Tunnel2D
     
     # Embed category metadata in the class
-    node_category = "combinators"
+    node_category = "primitives_2d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for SwitchedDifference."""
-        self.arg_keys = ['expr_0', 'expr_1']
+        """Create input sockets for Tunnel2D."""
+        self.arg_keys = ['wh']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr_0': 'Expr', 'expr_1': 'Expr'}
+        self.arg_types = {'wh': 'Vector[2]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class SmoothUnion(GLNode):
-    """# geolipi.symbolic.combinators.SmoothUnion"""
+class UnevenCapsule2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.UnevenCapsule2D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.combinators as _expr_mod
-    expr_class = _expr_mod.SmoothUnion
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.UnevenCapsule2D
     
     # Embed category metadata in the class
-    node_category = "combinators"
+    node_category = "primitives_2d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for SmoothUnion."""
-        self.arg_keys = ['expr_0', 'expr_1', 'k']
+        """Create input sockets for UnevenCapsule2D."""
+        self.arg_keys = ['r1', 'r2', 'h']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr_0': 'Expr', 'expr_1': 'Expr', 'k': 'float'}
+        self.arg_types = {'r1': 'float', 'r2': 'float', 'h': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class SmoothIntersection(GLNode):
-    """# geolipi.symbolic.combinators.SmoothIntersection"""
+class Vesica2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Vesica2D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.combinators as _expr_mod
-    expr_class = _expr_mod.SmoothIntersection
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.Vesica2D
     
     # Embed category metadata in the class
-    node_category = "combinators"
+    node_category = "primitives_2d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for SmoothIntersection."""
-        self.arg_keys = ['expr_0', 'expr_1', 'k']
+        """Create input sockets for Vesica2D."""
+        self.arg_keys = ['r', 'd']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr_0': 'Expr', 'expr_1': 'Expr', 'k': 'float'}
+        self.arg_types = {'r': 'float', 'd': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class SmoothDifference(GLNode):
-    """# geolipi.symbolic.combinators.SmoothDifference"""
+class ArbitraryCappedCone(GLNode):
+    """# geolipi.symbolic.primitives_3d.ArbitraryCappedCone"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.combinators as _expr_mod
-    expr_class = _expr_mod.SmoothDifference
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.ArbitraryCappedCone
     
     # Embed category metadata in the class
-    node_category = "combinators"
+    node_category = "primitives_3d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for SmoothDifference."""
-        self.arg_keys = ['expr_0', 'expr_1', 'k']
+        """Create input sockets for ArbitraryCappedCone."""
+        self.arg_keys = ['a', 'b', 'ra', 'rb']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr_0': 'Expr', 'expr_1': 'Expr', 'k': 'float'}
+        self.arg_types = {'a': 'Vector[3]', 'b': 'Vector[3]', 'ra': 'float', 'rb': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class NarySmoothUnion(GLNode):
-    """# geolipi.symbolic.combinators.NarySmoothUnion"""
+class ArbitraryCappedCylinder3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.ArbitraryCappedCylinder3D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.combinators as _expr_mod
-    expr_class = _expr_mod.NarySmoothUnion
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.ArbitraryCappedCylinder3D
     
     # Embed category metadata in the class
-    node_category = "combinators"
+    node_category = "primitives_3d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for NarySmoothUnion."""
-        self.arg_keys = ['expr_0', 'expr_1', 'k']
+        """Create input sockets for ArbitraryCappedCylinder3D."""
+        self.arg_keys = ['a', 'b', 'r']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr_0': 'Expr', 'expr_1': 'Expr', 'k': 'float'}
+        self.arg_types = {'a': 'Vector[3]', 'b': 'Vector[3]', 'r': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class NarySmoothIntersection(GLNode):
-    """# geolipi.symbolic.combinators.NarySmoothIntersection"""
+class ArbitraryRoundCone3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.ArbitraryRoundCone3D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.combinators as _expr_mod
-    expr_class = _expr_mod.NarySmoothIntersection
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.ArbitraryRoundCone3D
     
     # Embed category metadata in the class
-    node_category = "combinators"
+    node_category = "primitives_3d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for NarySmoothIntersection."""
-        self.arg_keys = ['expr_0', 'expr_1', 'k']
+        """Create input sockets for ArbitraryRoundCone3D."""
+        self.arg_keys = ['a', 'b', 'r1', 'r2']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr_0': 'Expr', 'expr_1': 'Expr', 'k': 'float'}
+        self.arg_types = {'a': 'Vector[3]', 'b': 'Vector[3]', 'r1': 'float', 'r2': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class XOR(GLNode):
-    """# geolipi.symbolic.combinators.XOR"""
+class Box3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.Box3D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.combinators as _expr_mod
-    expr_class = _expr_mod.XOR
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.Box3D
     
     # Embed category metadata in the class
-    node_category = "combinators"
+    node_category = "primitives_3d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for XOR."""
-        self.arg_keys = ['expr_0', 'expr_1']
+        """Create input sockets for Box3D."""
+        self.arg_keys = ['size']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr_0': 'Expr', 'expr_1': 'Expr'}
+        self.arg_types = {'size': 'Vector[3]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Translate2D(GLNode):
-    """# geolipi.symbolic.transforms_2d.Translate2D"""
+class BoxFrame3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.BoxFrame3D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_2d as _expr_mod
-    expr_class = _expr_mod.Translate2D
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.BoxFrame3D
     
     # Embed category metadata in the class
-    node_category = "transforms_2d"
+    node_category = "primitives_3d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Translate2D."""
-        self.arg_keys = ['expr', 'offset']
+        """Create input sockets for BoxFrame3D."""
+        self.arg_keys = ['b', 'e']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'offset': 'Vector[2]'}
+        self.arg_types = {'b': 'Vector[3]', 'e': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class EulerRotate2D(GLNode):
-    """# geolipi.symbolic.transforms_2d.EulerRotate2D"""
+class CappedCone3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.CappedCone3D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_2d as _expr_mod
-    expr_class = _expr_mod.EulerRotate2D
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.CappedCone3D
     
     # Embed category metadata in the class
-    node_category = "transforms_2d"
+    node_category = "primitives_3d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for EulerRotate2D."""
-        self.arg_keys = ['expr', 'angle']
+        """Create input sockets for CappedCone3D."""
+        self.arg_keys = ['r1', 'r2', 'h']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'angle': 'float'}
+        self.arg_types = {'r1': 'float', 'r2': 'float', 'h': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Scale2D(GLNode):
-    """# geolipi.symbolic.transforms_2d.Scale2D"""
+class CappedCylinder3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.CappedCylinder3D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_2d as _expr_mod
-    expr_class = _expr_mod.Scale2D
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.CappedCylinder3D
     
     # Embed category metadata in the class
-    node_category = "transforms_2d"
+    node_category = "primitives_3d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Scale2D."""
-        self.arg_keys = ['expr', 'scale']
+        """Create input sockets for CappedCylinder3D."""
+        self.arg_keys = ['h', 'r']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'scale': 'Vector[2]'}
+        self.arg_types = {'h': 'float', 'r': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Shear2D(GLNode):
-    """# geolipi.symbolic.transforms_2d.Shear2D"""
+class CappedTorus3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.CappedTorus3D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_2d as _expr_mod
-    expr_class = _expr_mod.Shear2D
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.CappedTorus3D
     
     # Embed category metadata in the class
-    node_category = "transforms_2d"
+    node_category = "primitives_3d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Shear2D."""
-        self.arg_keys = ['expr', 'shear']
+        """Create input sockets for CappedTorus3D."""
+        self.arg_keys = ['angle', 'ra', 'rb']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'shear': 'Vector[2]'}
+        self.arg_types = {'angle': 'float', 'ra': 'float', 'rb': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Capsule3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.Capsule3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.Capsule3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Capsule3D."""
+        self.arg_keys = ['a', 'b', 'r']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'a': 'Vector[3]', 'b': 'Vector[3]', 'r': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Cone3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.Cone3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.Cone3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Cone3D."""
+        self.arg_keys = ['angle', 'h']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'angle': 'float', 'h': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Cuboid3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.Cuboid3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.Cuboid3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Cuboid3D."""
+        self.arg_keys = ['size']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'size': 'Vector[3]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class CutHollowSphere(GLNode):
+    """# geolipi.symbolic.primitives_3d.CutHollowSphere"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.CutHollowSphere
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for CutHollowSphere."""
+        self.arg_keys = ['r', 'h', 't']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'r': 'float', 'h': 'float', 't': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class CutSphere3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.CutSphere3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.CutSphere3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for CutSphere3D."""
+        self.arg_keys = ['r', 'h']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'r': 'float', 'h': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Cylinder3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.Cylinder3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.Cylinder3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Cylinder3D."""
+        self.arg_keys = ['h', 'r']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'h': 'float', 'r': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class DeathStar3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.DeathStar3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.DeathStar3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for DeathStar3D."""
+        self.arg_keys = ['ra', 'rb', 'd']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'ra': 'float', 'rb': 'float', 'd': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class HexPrism3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.HexPrism3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.HexPrism3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for HexPrism3D."""
+        self.arg_keys = ['h']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'h': 'Vector[2]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class InexactAnisotropicGaussian3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.InexactAnisotropicGaussian3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.InexactAnisotropicGaussian3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for InexactAnisotropicGaussian3D."""
+        self.arg_keys = ['center', 'axial_radii', 'scale_constant']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'center': 'Vector[3]', 'axial_radii': 'Vector[3]', 'scale_constant': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class InexactCone3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.InexactCone3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.InexactCone3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for InexactCone3D."""
+        self.arg_keys = ['angle', 'h']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'angle': 'float', 'h': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class InexactEllipsoid3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.InexactEllipsoid3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.InexactEllipsoid3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for InexactEllipsoid3D."""
+        self.arg_keys = ['r']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'r': 'Vector[3]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class InexactOctahedron3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.InexactOctahedron3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.InexactOctahedron3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for InexactOctahedron3D."""
+        self.arg_keys = ['s']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'s': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class InexactSuperQuadrics3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.InexactSuperQuadrics3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.InexactSuperQuadrics3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for InexactSuperQuadrics3D."""
+        self.arg_keys = ['skew_vec', 'epsilon_1', 'epsilon_2']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'skew_vec': 'Vector[3]', 'epsilon_1': 'float', 'epsilon_2': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class InfiniteCone3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.InfiniteCone3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.InfiniteCone3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for InfiniteCone3D."""
+        self.arg_keys = ['angle']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'angle': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class InfiniteCylinder3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.InfiniteCylinder3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.InfiniteCylinder3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for InfiniteCylinder3D."""
+        self.arg_keys = ['c']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'c': 'Vector[3]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Link3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.Link3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.Link3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Link3D."""
+        self.arg_keys = ['le', 'r1', 'r2']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'le': 'float', 'r1': 'float', 'r2': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class NoParamCuboid3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.NoParamCuboid3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.NoParamCuboid3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for NoParamCuboid3D."""
+        self.arg_keys = []
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class NoParamCylinder3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.NoParamCylinder3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.NoParamCylinder3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for NoParamCylinder3D."""
+        self.arg_keys = []
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class NoParamSphere3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.NoParamSphere3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.NoParamSphere3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for NoParamSphere3D."""
+        self.arg_keys = []
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class NullExpression3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.NullExpression3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.NullExpression3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for NullExpression3D."""
+        self.arg_keys = []
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Octahedron3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.Octahedron3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.Octahedron3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Octahedron3D."""
+        self.arg_keys = ['s']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'s': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Plane3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.Plane3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.Plane3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Plane3D."""
+        self.arg_keys = ['n', 'h']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'n': 'Vector[3]', 'h': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Pyramid3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.Pyramid3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.Pyramid3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Pyramid3D."""
+        self.arg_keys = ['h']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'h': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Quadrilateral3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.Quadrilateral3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.Quadrilateral3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Quadrilateral3D."""
+        self.arg_keys = ['a', 'b', 'c', 'd']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'a': 'Vector[3]', 'b': 'Vector[3]', 'c': 'Vector[3]', 'd': 'Vector[3]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class RevolvedVesica3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.RevolvedVesica3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.RevolvedVesica3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for RevolvedVesica3D."""
+        self.arg_keys = ['a', 'b', 'w']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'a': 'Vector[3]', 'b': 'Vector[3]', 'w': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Rhombus3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.Rhombus3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.Rhombus3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Rhombus3D."""
+        self.arg_keys = ['la', 'lb', 'h', 'ra']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'la': 'float', 'lb': 'float', 'h': 'float', 'ra': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class RoundCone3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.RoundCone3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.RoundCone3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for RoundCone3D."""
+        self.arg_keys = ['r1', 'r2', 'h']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'r1': 'float', 'r2': 'float', 'h': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class RoundedBox3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.RoundedBox3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.RoundedBox3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for RoundedBox3D."""
+        self.arg_keys = ['size', 'radius']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'size': 'Vector[3]', 'radius': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class RoundedCylinder3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.RoundedCylinder3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.RoundedCylinder3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for RoundedCylinder3D."""
+        self.arg_keys = ['ra', 'rb', 'h']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'ra': 'float', 'rb': 'float', 'h': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class SDFGrid3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.SDFGrid3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.SDFGrid3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for SDFGrid3D."""
+        self.arg_keys = ['sdf_grid']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'sdf_grid': 'Tensor[float, (D,H,W)]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class SolidAngle3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.SolidAngle3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.SolidAngle3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for SolidAngle3D."""
+        self.arg_keys = ['angle', 'ra']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'angle': 'float', 'ra': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Sphere3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.Sphere3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.Sphere3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Sphere3D."""
+        self.arg_keys = ['radius']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'radius': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Torus3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.Torus3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.Torus3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Torus3D."""
+        self.arg_keys = ['t']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'t': 'Vector[2]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class TriPrism3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.TriPrism3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.TriPrism3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for TriPrism3D."""
+        self.arg_keys = ['h']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'h': 'Vector[2]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Triangle3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.Triangle3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.Triangle3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Triangle3D."""
+        self.arg_keys = ['a', 'b', 'c']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'a': 'Vector[3]', 'b': 'Vector[3]', 'c': 'Vector[3]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class VerticalCappedCylinder3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.VerticalCappedCylinder3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.VerticalCappedCylinder3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for VerticalCappedCylinder3D."""
+        self.arg_keys = ['h', 'r']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'h': 'float', 'r': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class VerticalCapsule3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.VerticalCapsule3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.VerticalCapsule3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for VerticalCapsule3D."""
+        self.arg_keys = ['h', 'r']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'h': 'float', 'r': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class CubicBezierExtrude3D(GLNode):
+    """# geolipi.symbolic.primitives_higher.CubicBezierExtrude3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_higher as _expr_mod
+    expr_class = _expr_mod.CubicBezierExtrude3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_higher"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for CubicBezierExtrude3D."""
+        self.arg_keys = ['input', 'controls', 'height']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'input': 'Expr', 'controls': 'Tuple[Vector[2],Vector[2],Vector[2]]', 'height': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class LinearCurve1D(GLNode):
+    """# geolipi.symbolic.primitives_higher.LinearCurve1D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_higher as _expr_mod
+    expr_class = _expr_mod.LinearCurve1D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_higher"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for LinearCurve1D."""
+        self.arg_keys = ['points']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'points': 'List[Vector[2]]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class LinearExtrude3D(GLNode):
+    """# geolipi.symbolic.primitives_higher.LinearExtrude3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_higher as _expr_mod
+    expr_class = _expr_mod.LinearExtrude3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_higher"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for LinearExtrude3D."""
+        self.arg_keys = ['input', 'height']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'input': 'Expr', 'height': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class PolyQuadBezierExtrude3D(GLNode):
+    """# geolipi.symbolic.primitives_higher.PolyQuadBezierExtrude3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_higher as _expr_mod
+    expr_class = _expr_mod.PolyQuadBezierExtrude3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_higher"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for PolyQuadBezierExtrude3D."""
+        self.arg_keys = ['input', 'controls', 'height']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'input': 'Expr', 'controls': 'List[Vector[2]]', 'height': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class PolyStraightLineCurve1D(GLNode):
+    """# geolipi.symbolic.primitives_higher.PolyStraightLineCurve1D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_higher as _expr_mod
+    expr_class = _expr_mod.PolyStraightLineCurve1D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_higher"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for PolyStraightLineCurve1D."""
+        self.arg_keys = ['points']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'points': 'List[Vector[2]]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class QuadraticBezierExtrude3D(GLNode):
+    """# geolipi.symbolic.primitives_higher.QuadraticBezierExtrude3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_higher as _expr_mod
+    expr_class = _expr_mod.QuadraticBezierExtrude3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_higher"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for QuadraticBezierExtrude3D."""
+        self.arg_keys = ['input', 'control', 'height']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'input': 'Expr', 'control': 'Vector[2]', 'height': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class QuadraticCurve1D(GLNode):
+    """# geolipi.symbolic.primitives_higher.QuadraticCurve1D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_higher as _expr_mod
+    expr_class = _expr_mod.QuadraticCurve1D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_higher"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for QuadraticCurve1D."""
+        self.arg_keys = ['points']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'points': 'Tuple[Vector[2],Vector[2],Vector[2]]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Revolution3D(GLNode):
+    """# geolipi.symbolic.primitives_higher.Revolution3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_higher as _expr_mod
+    expr_class = _expr_mod.Revolution3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_higher"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Revolution3D."""
+        self.arg_keys = ['input', 'radius']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'input': 'Expr', 'radius': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class SimpleExtrusion3D(GLNode):
+    """# geolipi.symbolic.primitives_higher.SimpleExtrusion3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_higher as _expr_mod
+    expr_class = _expr_mod.SimpleExtrusion3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_higher"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for SimpleExtrusion3D."""
+        self.arg_keys = ['input', 'height']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'input': 'Expr', 'height': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -2542,6 +2404,98 @@ class Affine2D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
+class AxialReflect2D(GLNode):
+    """# geolipi.symbolic.transforms_2d.AxialReflect2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.transforms_2d as _expr_mod
+    expr_class = _expr_mod.AxialReflect2D
+    
+    # Embed category metadata in the class
+    node_category = "transforms_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for AxialReflect2D."""
+        self.arg_keys = ['expr', 'axis']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'axis': 'Enum["AX2D"|"AY2D"]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class AxialScaleSymmetry2D(GLNode):
+    """# geolipi.symbolic.transforms_2d.AxialScaleSymmetry2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.transforms_2d as _expr_mod
+    expr_class = _expr_mod.AxialScaleSymmetry2D
+    
+    # Embed category metadata in the class
+    node_category = "transforms_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for AxialScaleSymmetry2D."""
+        self.arg_keys = ['expr', 'distance', 'count', 'axis']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int', 'axis': 'Enum["AX2D"|"AY2D"]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class AxialTranslationSymmetry2D(GLNode):
+    """# geolipi.symbolic.transforms_2d.AxialTranslationSymmetry2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.transforms_2d as _expr_mod
+    expr_class = _expr_mod.AxialTranslationSymmetry2D
+    
+    # Embed category metadata in the class
+    node_category = "transforms_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for AxialTranslationSymmetry2D."""
+        self.arg_keys = ['expr', 'distance', 'count', 'axis']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int', 'axis': 'Enum["AX2D"|"AY2D"]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Dilate2D(GLNode):
+    """# geolipi.symbolic.transforms_2d.Dilate2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.transforms_2d as _expr_mod
+    expr_class = _expr_mod.Dilate2D
+    
+    # Embed category metadata in the class
+    node_category = "transforms_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Dilate2D."""
+        self.arg_keys = ['expr', 'k']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'k': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
 class Distort2D(GLNode):
     """# geolipi.symbolic.transforms_2d.Distort2D"""
     # Associate the expression class at class level for external tools
@@ -2565,11 +2519,11 @@ class Distort2D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class ReflectCoords2D(GLNode):
-    """# geolipi.symbolic.transforms_2d.ReflectCoords2D"""
+class Erode2D(GLNode):
+    """# geolipi.symbolic.transforms_2d.Erode2D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.transforms_2d as _expr_mod
-    expr_class = _expr_mod.ReflectCoords2D
+    expr_class = _expr_mod.Erode2D
     
     # Embed category metadata in the class
     node_category = "transforms_2d"
@@ -2579,11 +2533,57 @@ class ReflectCoords2D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for ReflectCoords2D."""
-        self.arg_keys = ['expr', 'normal']
+        """Create input sockets for Erode2D."""
+        self.arg_keys = ['expr', 'k']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'normal': 'Vector[2]'}
+        self.arg_types = {'expr': 'Expr', 'k': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class EulerRotate2D(GLNode):
+    """# geolipi.symbolic.transforms_2d.EulerRotate2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.transforms_2d as _expr_mod
+    expr_class = _expr_mod.EulerRotate2D
+    
+    # Embed category metadata in the class
+    node_category = "transforms_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for EulerRotate2D."""
+        self.arg_keys = ['expr', 'angle']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'angle': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Onion2D(GLNode):
+    """# geolipi.symbolic.transforms_2d.Onion2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.transforms_2d as _expr_mod
+    expr_class = _expr_mod.Onion2D
+    
+    # Embed category metadata in the class
+    node_category = "transforms_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Onion2D."""
+        self.arg_keys = ['expr', 'k']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'k': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -2603,6 +2603,29 @@ class Reflect2D(GLNode):
     
     def _create_input_sockets(self):
         """Create input sockets for Reflect2D."""
+        self.arg_keys = ['expr', 'normal']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'normal': 'Vector[2]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class ReflectCoords2D(GLNode):
+    """# geolipi.symbolic.transforms_2d.ReflectCoords2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.transforms_2d as _expr_mod
+    expr_class = _expr_mod.ReflectCoords2D
+    
+    # Embed category metadata in the class
+    node_category = "transforms_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for ReflectCoords2D."""
         self.arg_keys = ['expr', 'normal']
         self.default_values = {}
         self.is_variadic = False
@@ -2657,11 +2680,11 @@ class ReflectY2D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class AxialReflect2D(GLNode):
-    """# geolipi.symbolic.transforms_2d.AxialReflect2D"""
+class RotationSymmetry2D(GLNode):
+    """# geolipi.symbolic.transforms_2d.RotationSymmetry2D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.transforms_2d as _expr_mod
-    expr_class = _expr_mod.AxialReflect2D
+    expr_class = _expr_mod.RotationSymmetry2D
     
     # Embed category metadata in the class
     node_category = "transforms_2d"
@@ -2671,11 +2694,103 @@ class AxialReflect2D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for AxialReflect2D."""
-        self.arg_keys = ['expr', 'axis']
+        """Create input sockets for RotationSymmetry2D."""
+        self.arg_keys = ['expr', 'angle', 'count']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'axis': 'Enum["AX2D"|"AY2D"]'}
+        self.arg_types = {'expr': 'Expr', 'angle': 'float', 'count': 'int'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Scale2D(GLNode):
+    """# geolipi.symbolic.transforms_2d.Scale2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.transforms_2d as _expr_mod
+    expr_class = _expr_mod.Scale2D
+    
+    # Embed category metadata in the class
+    node_category = "transforms_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Scale2D."""
+        self.arg_keys = ['expr', 'scale']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'scale': 'Vector[2]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class ScaleSymmetry2D(GLNode):
+    """# geolipi.symbolic.transforms_2d.ScaleSymmetry2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.transforms_2d as _expr_mod
+    expr_class = _expr_mod.ScaleSymmetry2D
+    
+    # Embed category metadata in the class
+    node_category = "transforms_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for ScaleSymmetry2D."""
+        self.arg_keys = ['expr', 'distance', 'count']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Shear2D(GLNode):
+    """# geolipi.symbolic.transforms_2d.Shear2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.transforms_2d as _expr_mod
+    expr_class = _expr_mod.Shear2D
+    
+    # Embed category metadata in the class
+    node_category = "transforms_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Shear2D."""
+        self.arg_keys = ['expr', 'shear']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'shear': 'Vector[2]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Translate2D(GLNode):
+    """# geolipi.symbolic.transforms_2d.Translate2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.transforms_2d as _expr_mod
+    expr_class = _expr_mod.Translate2D
+    
+    # Embed category metadata in the class
+    node_category = "transforms_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Translate2D."""
+        self.arg_keys = ['expr', 'offset']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'offset': 'Vector[2]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -2699,29 +2814,6 @@ class TranslationSymmetry2D(GLNode):
         self.default_values = {}
         self.is_variadic = False
         self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class AxialTranslationSymmetry2D(GLNode):
-    """# geolipi.symbolic.transforms_2d.AxialTranslationSymmetry2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_2d as _expr_mod
-    expr_class = _expr_mod.AxialTranslationSymmetry2D
-    
-    # Embed category metadata in the class
-    node_category = "transforms_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for AxialTranslationSymmetry2D."""
-        self.arg_keys = ['expr', 'distance', 'count', 'axis']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int', 'axis': 'Enum["AX2D"|"AY2D"]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -2772,186 +2864,71 @@ class TranslationSymmetryY2D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class RotationSymmetry2D(GLNode):
-    """# geolipi.symbolic.transforms_2d.RotationSymmetry2D"""
+class AxialReflect3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.AxialReflect3D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_2d as _expr_mod
-    expr_class = _expr_mod.RotationSymmetry2D
+    import geolipi.symbolic.transforms_3d as _expr_mod
+    expr_class = _expr_mod.AxialReflect3D
     
     # Embed category metadata in the class
-    node_category = "transforms_2d"
+    node_category = "transforms_3d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for RotationSymmetry2D."""
-        self.arg_keys = ['expr', 'angle', 'count']
+        """Create input sockets for AxialReflect3D."""
+        self.arg_keys = ['expr', 'axis']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'angle': 'float', 'count': 'int'}
+        self.arg_types = {'expr': 'Expr', 'axis': 'Enum["AX3D"|"AY3D"|"AZ3D"]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class ScaleSymmetry2D(GLNode):
-    """# geolipi.symbolic.transforms_2d.ScaleSymmetry2D"""
+class AxialRotationSymmetry3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.AxialRotationSymmetry3D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_2d as _expr_mod
-    expr_class = _expr_mod.ScaleSymmetry2D
+    import geolipi.symbolic.transforms_3d as _expr_mod
+    expr_class = _expr_mod.AxialRotationSymmetry3D
     
     # Embed category metadata in the class
-    node_category = "transforms_2d"
+    node_category = "transforms_3d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for ScaleSymmetry2D."""
-        self.arg_keys = ['expr', 'distance', 'count']
+        """Create input sockets for AxialRotationSymmetry3D."""
+        self.arg_keys = ['expr', 'angle', 'count', 'axis']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int'}
+        self.arg_types = {'expr': 'Expr', 'angle': 'float', 'count': 'int', 'axis': 'Enum["AX3D"|"AY3D"|"AZ3D"]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class AxialScaleSymmetry2D(GLNode):
-    """# geolipi.symbolic.transforms_2d.AxialScaleSymmetry2D"""
+class AxialTranslationSymmetry3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.AxialTranslationSymmetry3D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_2d as _expr_mod
-    expr_class = _expr_mod.AxialScaleSymmetry2D
+    import geolipi.symbolic.transforms_3d as _expr_mod
+    expr_class = _expr_mod.AxialTranslationSymmetry3D
     
     # Embed category metadata in the class
-    node_category = "transforms_2d"
+    node_category = "transforms_3d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for AxialScaleSymmetry2D."""
+        """Create input sockets for AxialTranslationSymmetry3D."""
         self.arg_keys = ['expr', 'distance', 'count', 'axis']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int', 'axis': 'Enum["AX2D"|"AY2D"]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Dilate2D(GLNode):
-    """# geolipi.symbolic.transforms_2d.Dilate2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_2d as _expr_mod
-    expr_class = _expr_mod.Dilate2D
-    
-    # Embed category metadata in the class
-    node_category = "transforms_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Dilate2D."""
-        self.arg_keys = ['expr', 'k']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'k': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Erode2D(GLNode):
-    """# geolipi.symbolic.transforms_2d.Erode2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_2d as _expr_mod
-    expr_class = _expr_mod.Erode2D
-    
-    # Embed category metadata in the class
-    node_category = "transforms_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Erode2D."""
-        self.arg_keys = ['expr', 'k']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'k': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Onion2D(GLNode):
-    """# geolipi.symbolic.transforms_2d.Onion2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_2d as _expr_mod
-    expr_class = _expr_mod.Onion2D
-    
-    # Embed category metadata in the class
-    node_category = "transforms_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Onion2D."""
-        self.arg_keys = ['expr', 'k']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'k': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Translate3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.Translate3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.Translate3D
-    
-    # Embed category metadata in the class
-    node_category = "transforms_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Translate3D."""
-        self.arg_keys = ['expr', 'offset']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'offset': 'Vector[3]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class EulerRotate3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.EulerRotate3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.EulerRotate3D
-    
-    # Embed category metadata in the class
-    node_category = "transforms_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for EulerRotate3D."""
-        self.arg_keys = ['expr', 'angles']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'angles': 'Vector[3]'}
+        self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int', 'axis': 'Enum["AX3D"|"AY3D"|"AZ3D"]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -2979,11 +2956,11 @@ class AxisAngleRotate3D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class RotateMatrix3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.RotateMatrix3D"""
+class Bend3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.Bend3D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.RotateMatrix3D
+    expr_class = _expr_mod.Bend3D
     
     # Embed category metadata in the class
     node_category = "transforms_3d"
@@ -2993,20 +2970,20 @@ class RotateMatrix3D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for RotateMatrix3D."""
-        self.arg_keys = ['expr', 'matrix']
+        """Create input sockets for Bend3D."""
+        self.arg_keys = ['expr', 'amount']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'matrix': 'Matrix[3,3]'}
+        self.arg_types = {'expr': 'Expr', 'amount': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Scale3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.Scale3D"""
+class Dilate3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.Dilate3D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.Scale3D
+    expr_class = _expr_mod.Dilate3D
     
     # Embed category metadata in the class
     node_category = "transforms_3d"
@@ -3016,57 +2993,11 @@ class Scale3D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Scale3D."""
-        self.arg_keys = ['expr', 'scale']
+        """Create input sockets for Dilate3D."""
+        self.arg_keys = ['expr', 'k']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'scale': 'Vector[3]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class QuaternionRotate3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.QuaternionRotate3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.QuaternionRotate3D
-    
-    # Embed category metadata in the class
-    node_category = "transforms_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for QuaternionRotate3D."""
-        self.arg_keys = ['expr', 'quat']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'quat': 'Vector[4]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Shear3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.Shear3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.Shear3D
-    
-    # Embed category metadata in the class
-    node_category = "transforms_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Shear3D."""
-        self.arg_keys = ['expr', 'shear']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'shear': 'Vector[6]'}
+        self.arg_types = {'expr': 'Expr', 'k': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -3094,11 +3025,11 @@ class Distort3D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Twist3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.Twist3D"""
+class Erode3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.Erode3D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.Twist3D
+    expr_class = _expr_mod.Erode3D
     
     # Embed category metadata in the class
     node_category = "transforms_3d"
@@ -3108,20 +3039,20 @@ class Twist3D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Twist3D."""
-        self.arg_keys = ['expr', 'amount']
+        """Create input sockets for Erode3D."""
+        self.arg_keys = ['expr', 'k']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'amount': 'float'}
+        self.arg_types = {'expr': 'Expr', 'k': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Bend3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.Bend3D"""
+class EulerRotate3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.EulerRotate3D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.Bend3D
+    expr_class = _expr_mod.EulerRotate3D
     
     # Embed category metadata in the class
     node_category = "transforms_3d"
@@ -3131,20 +3062,20 @@ class Bend3D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Bend3D."""
-        self.arg_keys = ['expr', 'amount']
+        """Create input sockets for EulerRotate3D."""
+        self.arg_keys = ['expr', 'angles']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'amount': 'float'}
+        self.arg_types = {'expr': 'Expr', 'angles': 'Vector[3]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class ReflectCoords3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.ReflectCoords3D"""
+class NegOnlyOnion3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.NegOnlyOnion3D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.ReflectCoords3D
+    expr_class = _expr_mod.NegOnlyOnion3D
     
     # Embed category metadata in the class
     node_category = "transforms_3d"
@@ -3154,11 +3085,57 @@ class ReflectCoords3D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for ReflectCoords3D."""
-        self.arg_keys = ['expr', 'normal']
+        """Create input sockets for NegOnlyOnion3D."""
+        self.arg_keys = ['expr', 'k']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'normal': 'Vector[3]'}
+        self.arg_types = {'expr': 'Expr', 'k': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Onion3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.Onion3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.transforms_3d as _expr_mod
+    expr_class = _expr_mod.Onion3D
+    
+    # Embed category metadata in the class
+    node_category = "transforms_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Onion3D."""
+        self.arg_keys = ['expr', 'k']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'k': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class QuaternionRotate3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.QuaternionRotate3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.transforms_3d as _expr_mod
+    expr_class = _expr_mod.QuaternionRotate3D
+    
+    # Embed category metadata in the class
+    node_category = "transforms_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for QuaternionRotate3D."""
+        self.arg_keys = ['expr', 'quat']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'quat': 'Vector[4]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -3178,6 +3155,29 @@ class Reflect3D(GLNode):
     
     def _create_input_sockets(self):
         """Create input sockets for Reflect3D."""
+        self.arg_keys = ['expr', 'normal']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'normal': 'Vector[3]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class ReflectCoords3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.ReflectCoords3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.transforms_3d as _expr_mod
+    expr_class = _expr_mod.ReflectCoords3D
+    
+    # Embed category metadata in the class
+    node_category = "transforms_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for ReflectCoords3D."""
         self.arg_keys = ['expr', 'normal']
         self.default_values = {}
         self.is_variadic = False
@@ -3255,11 +3255,11 @@ class ReflectZ3D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class AxialReflect3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.AxialReflect3D"""
+class RotateMatrix3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.RotateMatrix3D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.AxialReflect3D
+    expr_class = _expr_mod.RotateMatrix3D
     
     # Embed category metadata in the class
     node_category = "transforms_3d"
@@ -3269,126 +3269,11 @@ class AxialReflect3D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for AxialReflect3D."""
-        self.arg_keys = ['expr', 'axis']
+        """Create input sockets for RotateMatrix3D."""
+        self.arg_keys = ['expr', 'matrix']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'axis': 'Enum["AX3D"|"AY3D"|"AZ3D"]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class TranslationSymmetry3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.TranslationSymmetry3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.TranslationSymmetry3D
-    
-    # Embed category metadata in the class
-    node_category = "transforms_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for TranslationSymmetry3D."""
-        self.arg_keys = ['expr', 'distance', 'count']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class AxialTranslationSymmetry3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.AxialTranslationSymmetry3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.AxialTranslationSymmetry3D
-    
-    # Embed category metadata in the class
-    node_category = "transforms_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for AxialTranslationSymmetry3D."""
-        self.arg_keys = ['expr', 'distance', 'count', 'axis']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int', 'axis': 'Enum["AX3D"|"AY3D"|"AZ3D"]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class TranslationSymmetryX3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.TranslationSymmetryX3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.TranslationSymmetryX3D
-    
-    # Embed category metadata in the class
-    node_category = "transforms_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for TranslationSymmetryX3D."""
-        self.arg_keys = ['expr', 'distance', 'count']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class TranslationSymmetryY3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.TranslationSymmetryY3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.TranslationSymmetryY3D
-    
-    # Embed category metadata in the class
-    node_category = "transforms_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for TranslationSymmetryY3D."""
-        self.arg_keys = ['expr', 'distance', 'count']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class TranslationSymmetryZ3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.TranslationSymmetryZ3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.TranslationSymmetryZ3D
-    
-    # Embed category metadata in the class
-    node_category = "transforms_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for TranslationSymmetryZ3D."""
-        self.arg_keys = ['expr', 'distance', 'count']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int'}
+        self.arg_types = {'expr': 'Expr', 'matrix': 'Matrix[3,3]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -3412,29 +3297,6 @@ class RotationSymmetry3D(GLNode):
         self.default_values = {}
         self.is_variadic = False
         self.arg_types = {'expr': 'Expr', 'angle': 'float', 'count': 'int'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class AxialRotationSymmetry3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.AxialRotationSymmetry3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.AxialRotationSymmetry3D
-    
-    # Embed category metadata in the class
-    node_category = "transforms_3d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for AxialRotationSymmetry3D."""
-        self.arg_keys = ['expr', 'angle', 'count', 'axis']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'angle': 'float', 'count': 'int', 'axis': 'Enum["AX3D"|"AY3D"|"AZ3D"]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -3508,11 +3370,11 @@ class RotationSymmetryZ3D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Dilate3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.Dilate3D"""
+class Scale3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.Scale3D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.Dilate3D
+    expr_class = _expr_mod.Scale3D
     
     # Embed category metadata in the class
     node_category = "transforms_3d"
@@ -3522,20 +3384,20 @@ class Dilate3D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Dilate3D."""
-        self.arg_keys = ['expr', 'k']
+        """Create input sockets for Scale3D."""
+        self.arg_keys = ['expr', 'scale']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'k': 'float'}
+        self.arg_types = {'expr': 'Expr', 'scale': 'Vector[3]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Erode3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.Erode3D"""
+class Shear3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.Shear3D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.Erode3D
+    expr_class = _expr_mod.Shear3D
     
     # Embed category metadata in the class
     node_category = "transforms_3d"
@@ -3545,20 +3407,20 @@ class Erode3D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Erode3D."""
-        self.arg_keys = ['expr', 'k']
+        """Create input sockets for Shear3D."""
+        self.arg_keys = ['expr', 'shear']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'k': 'float'}
+        self.arg_types = {'expr': 'Expr', 'shear': 'Vector[6]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Onion3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.Onion3D"""
+class Translate3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.Translate3D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.Onion3D
+    expr_class = _expr_mod.Translate3D
     
     # Embed category metadata in the class
     node_category = "transforms_3d"
@@ -3568,20 +3430,20 @@ class Onion3D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Onion3D."""
-        self.arg_keys = ['expr', 'k']
+        """Create input sockets for Translate3D."""
+        self.arg_keys = ['expr', 'offset']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'k': 'float'}
+        self.arg_types = {'expr': 'Expr', 'offset': 'Vector[3]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class NegOnlyOnion3D(GLNode):
-    """# geolipi.symbolic.transforms_3d.NegOnlyOnion3D"""
+class TranslationSymmetry3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.TranslationSymmetry3D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.transforms_3d as _expr_mod
-    expr_class = _expr_mod.NegOnlyOnion3D
+    expr_class = _expr_mod.TranslationSymmetry3D
     
     # Embed category metadata in the class
     node_category = "transforms_3d"
@@ -3591,218 +3453,471 @@ class NegOnlyOnion3D(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for NegOnlyOnion3D."""
-        self.arg_keys = ['expr', 'k']
+        """Create input sockets for TranslationSymmetry3D."""
+        self.arg_keys = ['expr', 'distance', 'count']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'k': 'float'}
+        self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Revolution3D(GLNode):
-    """# geolipi.symbolic.primitives_higher.Revolution3D"""
+class TranslationSymmetryX3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.TranslationSymmetryX3D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_higher as _expr_mod
-    expr_class = _expr_mod.Revolution3D
+    import geolipi.symbolic.transforms_3d as _expr_mod
+    expr_class = _expr_mod.TranslationSymmetryX3D
     
     # Embed category metadata in the class
-    node_category = "primitives_higher"
+    node_category = "transforms_3d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Revolution3D."""
-        self.arg_keys = ['input', 'radius']
+        """Create input sockets for TranslationSymmetryX3D."""
+        self.arg_keys = ['expr', 'distance', 'count']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'input': 'Expr', 'radius': 'float'}
+        self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class SimpleExtrusion3D(GLNode):
-    """# geolipi.symbolic.primitives_higher.SimpleExtrusion3D"""
+class TranslationSymmetryY3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.TranslationSymmetryY3D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_higher as _expr_mod
-    expr_class = _expr_mod.SimpleExtrusion3D
+    import geolipi.symbolic.transforms_3d as _expr_mod
+    expr_class = _expr_mod.TranslationSymmetryY3D
     
     # Embed category metadata in the class
-    node_category = "primitives_higher"
+    node_category = "transforms_3d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for SimpleExtrusion3D."""
-        self.arg_keys = ['input', 'height']
+        """Create input sockets for TranslationSymmetryY3D."""
+        self.arg_keys = ['expr', 'distance', 'count']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'input': 'Expr', 'height': 'float'}
+        self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class LinearExtrude3D(GLNode):
-    """# geolipi.symbolic.primitives_higher.LinearExtrude3D"""
+class TranslationSymmetryZ3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.TranslationSymmetryZ3D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_higher as _expr_mod
-    expr_class = _expr_mod.LinearExtrude3D
+    import geolipi.symbolic.transforms_3d as _expr_mod
+    expr_class = _expr_mod.TranslationSymmetryZ3D
     
     # Embed category metadata in the class
-    node_category = "primitives_higher"
+    node_category = "transforms_3d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for LinearExtrude3D."""
-        self.arg_keys = ['input', 'height']
+        """Create input sockets for TranslationSymmetryZ3D."""
+        self.arg_keys = ['expr', 'distance', 'count']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'input': 'Expr', 'height': 'float'}
+        self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class QuadraticBezierExtrude3D(GLNode):
-    """# geolipi.symbolic.primitives_higher.QuadraticBezierExtrude3D"""
+class Twist3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.Twist3D"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_higher as _expr_mod
-    expr_class = _expr_mod.QuadraticBezierExtrude3D
+    import geolipi.symbolic.transforms_3d as _expr_mod
+    expr_class = _expr_mod.Twist3D
     
     # Embed category metadata in the class
-    node_category = "primitives_higher"
+    node_category = "transforms_3d"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for QuadraticBezierExtrude3D."""
-        self.arg_keys = ['input', 'control', 'height']
+        """Create input sockets for Twist3D."""
+        self.arg_keys = ['expr', 'amount']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'input': 'Expr', 'control': 'Vector[2]', 'height': 'float'}
+        self.arg_types = {'expr': 'Expr', 'amount': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class PolyQuadBezierExtrude3D(GLNode):
-    """# geolipi.symbolic.primitives_higher.PolyQuadBezierExtrude3D"""
+class Complement(GLNode):
+    """# geolipi.symbolic.combinators.Complement"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_higher as _expr_mod
-    expr_class = _expr_mod.PolyQuadBezierExtrude3D
+    import geolipi.symbolic.combinators as _expr_mod
+    expr_class = _expr_mod.Complement
     
     # Embed category metadata in the class
-    node_category = "primitives_higher"
+    node_category = "combinators"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for PolyQuadBezierExtrude3D."""
-        self.arg_keys = ['input', 'controls', 'height']
+        """Create input sockets for Complement."""
+        self.arg_keys = ['expr']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'input': 'Expr', 'controls': 'List[Vector[2]]', 'height': 'float'}
+        self.arg_types = {'expr': 'Expr'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class CubicBezierExtrude3D(GLNode):
-    """# geolipi.symbolic.primitives_higher.CubicBezierExtrude3D"""
+class Difference(GLNode):
+    """# geolipi.symbolic.combinators.Difference"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_higher as _expr_mod
-    expr_class = _expr_mod.CubicBezierExtrude3D
+    import geolipi.symbolic.combinators as _expr_mod
+    expr_class = _expr_mod.Difference
     
     # Embed category metadata in the class
-    node_category = "primitives_higher"
+    node_category = "combinators"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for CubicBezierExtrude3D."""
-        self.arg_keys = ['input', 'controls', 'height']
+        """Create input sockets for Difference."""
+        self.arg_keys = ['expr_0', 'expr_1']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'input': 'Expr', 'controls': 'Tuple[Vector[2],Vector[2],Vector[2]]', 'height': 'float'}
+        self.arg_types = {'expr_0': 'Expr', 'expr_1': 'Expr'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class LinearCurve1D(GLNode):
-    """# geolipi.symbolic.primitives_higher.LinearCurve1D"""
+class Intersection(GLNode):
+    """# geolipi.symbolic.combinators.Intersection"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_higher as _expr_mod
-    expr_class = _expr_mod.LinearCurve1D
+    import geolipi.symbolic.combinators as _expr_mod
+    expr_class = _expr_mod.Intersection
     
     # Embed category metadata in the class
-    node_category = "primitives_higher"
+    node_category = "combinators"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for LinearCurve1D."""
-        self.arg_keys = ['points']
+        """Create input sockets for Intersection."""
+        self.arg_keys = ['expr']
         self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'points': 'List[Vector[2]]'}
+        self.is_variadic = True
+        self.arg_types = {'expr': 'Expr'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class QuadraticCurve1D(GLNode):
-    """# geolipi.symbolic.primitives_higher.QuadraticCurve1D"""
+class JoinUnion(GLNode):
+    """# geolipi.symbolic.combinators.JoinUnion"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_higher as _expr_mod
-    expr_class = _expr_mod.QuadraticCurve1D
+    import geolipi.symbolic.combinators as _expr_mod
+    expr_class = _expr_mod.JoinUnion
     
     # Embed category metadata in the class
-    node_category = "primitives_higher"
+    node_category = "combinators"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for QuadraticCurve1D."""
-        self.arg_keys = ['points']
+        """Create input sockets for JoinUnion."""
+        self.arg_keys = ['expr']
         self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'points': 'Tuple[Vector[2],Vector[2],Vector[2]]'}
+        self.is_variadic = True
+        self.arg_types = {'expr': 'Expr'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
 @register_node_decorator
-class PolyStraightLineCurve1D(GLNode):
-    """# geolipi.symbolic.primitives_higher.PolyStraightLineCurve1D"""
+class NarySmoothIntersection(GLNode):
+    """# geolipi.symbolic.combinators.NarySmoothIntersection"""
     # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_higher as _expr_mod
-    expr_class = _expr_mod.PolyStraightLineCurve1D
+    import geolipi.symbolic.combinators as _expr_mod
+    expr_class = _expr_mod.NarySmoothIntersection
     
     # Embed category metadata in the class
-    node_category = "primitives_higher"
+    node_category = "combinators"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for PolyStraightLineCurve1D."""
-        self.arg_keys = ['points']
+        """Create input sockets for NarySmoothIntersection."""
+        self.arg_keys = ['expr_0', 'expr_1', 'k']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'points': 'List[Vector[2]]'}
+        self.arg_types = {'expr_0': 'Expr', 'expr_1': 'Expr', 'k': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class NarySmoothUnion(GLNode):
+    """# geolipi.symbolic.combinators.NarySmoothUnion"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.combinators as _expr_mod
+    expr_class = _expr_mod.NarySmoothUnion
+    
+    # Embed category metadata in the class
+    node_category = "combinators"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for NarySmoothUnion."""
+        self.arg_keys = ['expr_0', 'expr_1', 'k']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr_0': 'Expr', 'expr_1': 'Expr', 'k': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class SmoothDifference(GLNode):
+    """# geolipi.symbolic.combinators.SmoothDifference"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.combinators as _expr_mod
+    expr_class = _expr_mod.SmoothDifference
+    
+    # Embed category metadata in the class
+    node_category = "combinators"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for SmoothDifference."""
+        self.arg_keys = ['expr_0', 'expr_1', 'k']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr_0': 'Expr', 'expr_1': 'Expr', 'k': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class SmoothIntersection(GLNode):
+    """# geolipi.symbolic.combinators.SmoothIntersection"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.combinators as _expr_mod
+    expr_class = _expr_mod.SmoothIntersection
+    
+    # Embed category metadata in the class
+    node_category = "combinators"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for SmoothIntersection."""
+        self.arg_keys = ['expr_0', 'expr_1', 'k']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr_0': 'Expr', 'expr_1': 'Expr', 'k': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class SmoothUnion(GLNode):
+    """# geolipi.symbolic.combinators.SmoothUnion"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.combinators as _expr_mod
+    expr_class = _expr_mod.SmoothUnion
+    
+    # Embed category metadata in the class
+    node_category = "combinators"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for SmoothUnion."""
+        self.arg_keys = ['expr_0', 'expr_1', 'k']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr_0': 'Expr', 'expr_1': 'Expr', 'k': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class SwitchedDifference(GLNode):
+    """# geolipi.symbolic.combinators.SwitchedDifference"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.combinators as _expr_mod
+    expr_class = _expr_mod.SwitchedDifference
+    
+    # Embed category metadata in the class
+    node_category = "combinators"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for SwitchedDifference."""
+        self.arg_keys = ['expr_0', 'expr_1']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr_0': 'Expr', 'expr_1': 'Expr'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Union(GLNode):
+    """# geolipi.symbolic.combinators.Union"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.combinators as _expr_mod
+    expr_class = _expr_mod.Union
+    
+    # Embed category metadata in the class
+    node_category = "combinators"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Union."""
+        self.arg_keys = ['expr']
+        self.default_values = {}
+        self.is_variadic = True
+        self.arg_types = {'expr': 'Expr'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class XOR(GLNode):
+    """# geolipi.symbolic.combinators.XOR"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.combinators as _expr_mod
+    expr_class = _expr_mod.XOR
+    
+    # Embed category metadata in the class
+    node_category = "combinators"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for XOR."""
+        self.arg_keys = ['expr_0', 'expr_1']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr_0': 'Expr', 'expr_1': 'Expr'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class AlphaMask2D(GLNode):
+    """# geolipi.symbolic.color.AlphaMask2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.color as _expr_mod
+    expr_class = _expr_mod.AlphaMask2D
+    
+    # Embed category metadata in the class
+    node_category = "color"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for AlphaMask2D."""
+        self.arg_keys = ['canvas']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'canvas': 'Expr'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class AlphaToSDF2D(GLNode):
+    """# geolipi.symbolic.color.AlphaToSDF2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.color as _expr_mod
+    expr_class = _expr_mod.AlphaToSDF2D
+    
+    # Embed category metadata in the class
+    node_category = "color"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for AlphaToSDF2D."""
+        self.arg_keys = ['expr', 'dx', 'canvas_shape']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'dx': 'float', 'canvas_shape': 'Vector[2]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class ApplyColor2D(GLNode):
+    """# geolipi.symbolic.color.ApplyColor2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.color as _expr_mod
+    expr_class = _expr_mod.ApplyColor2D
+    
+    # Embed category metadata in the class
+    node_category = "color"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for ApplyColor2D."""
+        self.arg_keys = ['expr', 'color']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'color': 'Union[Vector[4]|str]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class DestinationAtop(GLNode):
+    """# geolipi.symbolic.color.DestinationAtop"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.color as _expr_mod
+    expr_class = _expr_mod.DestinationAtop
+    
+    # Embed category metadata in the class
+    node_category = "color"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for DestinationAtop."""
+        self.arg_keys = ['canvas_0', 'canvas_1']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'canvas_0': 'Expr', 'canvas_1': 'Expr'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -3876,11 +3991,11 @@ class DestinationOver(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class DestinationAtop(GLNode):
-    """# geolipi.symbolic.color.DestinationAtop"""
+class HSL2RGB(GLNode):
+    """# geolipi.symbolic.color.HSL2RGB"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.color as _expr_mod
-    expr_class = _expr_mod.DestinationAtop
+    expr_class = _expr_mod.HSL2RGB
     
     # Embed category metadata in the class
     node_category = "color"
@@ -3890,7 +4005,214 @@ class DestinationAtop(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for DestinationAtop."""
+        """Create input sockets for HSL2RGB."""
+        self.arg_keys = ['hsl']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'hsl': 'Vector[3]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class HSV2RGB(GLNode):
+    """# geolipi.symbolic.color.HSV2RGB"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.color as _expr_mod
+    expr_class = _expr_mod.HSV2RGB
+    
+    # Embed category metadata in the class
+    node_category = "color"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for HSV2RGB."""
+        self.arg_keys = ['hsv']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'hsv': 'Vector[3]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class HueShift(GLNode):
+    """# geolipi.symbolic.color.HueShift"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.color as _expr_mod
+    expr_class = _expr_mod.HueShift
+    
+    # Embed category metadata in the class
+    node_category = "color"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for HueShift."""
+        self.arg_keys = ['rgb', 'amount']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'rgb': 'Vector[3]', 'amount': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class ModifyColor2D(GLNode):
+    """# geolipi.symbolic.color.ModifyColor2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.color as _expr_mod
+    expr_class = _expr_mod.ModifyColor2D
+    
+    # Embed category metadata in the class
+    node_category = "color"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for ModifyColor2D."""
+        self.arg_keys = ['canvas', 'color']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'canvas': 'Expr', 'color': 'Union[Vector[4]|str]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class ModifyColorTritone2D(GLNode):
+    """# geolipi.symbolic.color.ModifyColorTritone2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.color as _expr_mod
+    expr_class = _expr_mod.ModifyColorTritone2D
+    
+    # Embed category metadata in the class
+    node_category = "color"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for ModifyColorTritone2D."""
+        self.arg_keys = ['canvas', 'color_a', 'color_b', 'color_c']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'canvas': 'Expr', 'color_a': 'Union[Vector[4]|str]', 'color_b': 'Union[Vector[4]|str]', 'color_c': 'Union[Vector[4]|str]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class ModifyOpacity2D(GLNode):
+    """# geolipi.symbolic.color.ModifyOpacity2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.color as _expr_mod
+    expr_class = _expr_mod.ModifyOpacity2D
+    
+    # Embed category metadata in the class
+    node_category = "color"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for ModifyOpacity2D."""
+        self.arg_keys = ['canvas', 'alpha']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'canvas': 'Expr', 'alpha': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class RGB2HSL(GLNode):
+    """# geolipi.symbolic.color.RGB2HSL"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.color as _expr_mod
+    expr_class = _expr_mod.RGB2HSL
+    
+    # Embed category metadata in the class
+    node_category = "color"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for RGB2HSL."""
+        self.arg_keys = ['rgb']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'rgb': 'Vector[3]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class RGB2HSV(GLNode):
+    """# geolipi.symbolic.color.RGB2HSV"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.color as _expr_mod
+    expr_class = _expr_mod.RGB2HSV
+    
+    # Embed category metadata in the class
+    node_category = "color"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for RGB2HSV."""
+        self.arg_keys = ['rgb']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'rgb': 'Vector[3]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class SVGXOR(GLNode):
+    """# geolipi.symbolic.color.SVGXOR"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.color as _expr_mod
+    expr_class = _expr_mod.SVGXOR
+    
+    # Embed category metadata in the class
+    node_category = "color"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for SVGXOR."""
+        self.arg_keys = ['canvas_0', 'canvas_1']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'canvas_0': 'Expr', 'canvas_1': 'Expr'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class SourceAtop(GLNode):
+    """# geolipi.symbolic.color.SourceAtop"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.color as _expr_mod
+    expr_class = _expr_mod.SourceAtop
+    
+    # Embed category metadata in the class
+    node_category = "color"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for SourceAtop."""
         self.arg_keys = ['canvas_0', 'canvas_1']
         self.default_values = {}
         self.is_variadic = False
@@ -3968,144 +4290,6 @@ class SourceOver(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class SourceAtop(GLNode):
-    """# geolipi.symbolic.color.SourceAtop"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.color as _expr_mod
-    expr_class = _expr_mod.SourceAtop
-    
-    # Embed category metadata in the class
-    node_category = "color"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for SourceAtop."""
-        self.arg_keys = ['canvas_0', 'canvas_1']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'canvas_0': 'Expr', 'canvas_1': 'Expr'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class SVGXOR(GLNode):
-    """# geolipi.symbolic.color.SVGXOR"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.color as _expr_mod
-    expr_class = _expr_mod.SVGXOR
-    
-    # Embed category metadata in the class
-    node_category = "color"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for SVGXOR."""
-        self.arg_keys = ['canvas_0', 'canvas_1']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'canvas_0': 'Expr', 'canvas_1': 'Expr'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class ApplyColor2D(GLNode):
-    """# geolipi.symbolic.color.ApplyColor2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.color as _expr_mod
-    expr_class = _expr_mod.ApplyColor2D
-    
-    # Embed category metadata in the class
-    node_category = "color"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for ApplyColor2D."""
-        self.arg_keys = ['expr', 'color']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'color': 'Union[Vector[4]|str]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class ModifyOpacity2D(GLNode):
-    """# geolipi.symbolic.color.ModifyOpacity2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.color as _expr_mod
-    expr_class = _expr_mod.ModifyOpacity2D
-    
-    # Embed category metadata in the class
-    node_category = "color"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for ModifyOpacity2D."""
-        self.arg_keys = ['canvas', 'alpha']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'canvas': 'Expr', 'alpha': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class ModifyColor2D(GLNode):
-    """# geolipi.symbolic.color.ModifyColor2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.color as _expr_mod
-    expr_class = _expr_mod.ModifyColor2D
-    
-    # Embed category metadata in the class
-    node_category = "color"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for ModifyColor2D."""
-        self.arg_keys = ['canvas', 'color']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'canvas': 'Expr', 'color': 'Union[Vector[4]|str]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class ModifyColorTritone2D(GLNode):
-    """# geolipi.symbolic.color.ModifyColorTritone2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.color as _expr_mod
-    expr_class = _expr_mod.ModifyColorTritone2D
-    
-    # Embed category metadata in the class
-    node_category = "color"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for ModifyColorTritone2D."""
-        self.arg_keys = ['canvas', 'color_a', 'color_b', 'color_c']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'canvas': 'Expr', 'color_a': 'Union[Vector[4]|str]', 'color_b': 'Union[Vector[4]|str]', 'color_c': 'Union[Vector[4]|str]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
 class SourceOverSequence(GLNode):
     """# geolipi.symbolic.color.SourceOverSequence"""
     # Associate the expression class at class level for external tools
@@ -4125,190 +4309,6 @@ class SourceOverSequence(GLNode):
         self.default_values = {}
         self.is_variadic = True
         self.arg_types = {'canvas': 'Expr'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class AlphaMask2D(GLNode):
-    """# geolipi.symbolic.color.AlphaMask2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.color as _expr_mod
-    expr_class = _expr_mod.AlphaMask2D
-    
-    # Embed category metadata in the class
-    node_category = "color"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for AlphaMask2D."""
-        self.arg_keys = ['canvas']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'canvas': 'Expr'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class AlphaToSDF2D(GLNode):
-    """# geolipi.symbolic.color.AlphaToSDF2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.color as _expr_mod
-    expr_class = _expr_mod.AlphaToSDF2D
-    
-    # Embed category metadata in the class
-    node_category = "color"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for AlphaToSDF2D."""
-        self.arg_keys = ['expr', 'dx', 'canvas_shape']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'dx': 'float', 'canvas_shape': 'Vector[2]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class RGB2HSL(GLNode):
-    """# geolipi.symbolic.color.RGB2HSL"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.color as _expr_mod
-    expr_class = _expr_mod.RGB2HSL
-    
-    # Embed category metadata in the class
-    node_category = "color"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for RGB2HSL."""
-        self.arg_keys = ['rgb']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'rgb': 'Vector[3]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class RGB2HSV(GLNode):
-    """# geolipi.symbolic.color.RGB2HSV"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.color as _expr_mod
-    expr_class = _expr_mod.RGB2HSV
-    
-    # Embed category metadata in the class
-    node_category = "color"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for RGB2HSV."""
-        self.arg_keys = ['rgb']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'rgb': 'Vector[3]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class HSV2RGB(GLNode):
-    """# geolipi.symbolic.color.HSV2RGB"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.color as _expr_mod
-    expr_class = _expr_mod.HSV2RGB
-    
-    # Embed category metadata in the class
-    node_category = "color"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for HSV2RGB."""
-        self.arg_keys = ['hsv']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'hsv': 'Vector[3]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class HSL2RGB(GLNode):
-    """# geolipi.symbolic.color.HSL2RGB"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.color as _expr_mod
-    expr_class = _expr_mod.HSL2RGB
-    
-    # Embed category metadata in the class
-    node_category = "color"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for HSL2RGB."""
-        self.arg_keys = ['hsl']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'hsl': 'Vector[3]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class HueShift(GLNode):
-    """# geolipi.symbolic.color.HueShift"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.color as _expr_mod
-    expr_class = _expr_mod.HueShift
-    
-    # Embed category metadata in the class
-    node_category = "color"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for HueShift."""
-        self.arg_keys = ['rgb', 'amount']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'rgb': 'Vector[3]', 'amount': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class UnaryOperator(GLNode):
-    """# geolipi.symbolic.variables.UnaryOperator"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.variables as _expr_mod
-    expr_class = _expr_mod.UnaryOperator
-    
-    # Embed category metadata in the class
-    node_category = "variables"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for UnaryOperator."""
-        self.arg_keys = ['expr', 'op']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'op': 'Enum["sin"|"cos"|"tan"|"log"|"exp"|"sqrt"|"abs"|"floor"|"ceil"|"round"|"frac"|"sign"|"normalize"|"norm"|"neg"]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -4336,52 +4336,6 @@ class BinaryOperator(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class VectorOperator(GLNode):
-    """# geolipi.symbolic.variables.VectorOperator"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.variables as _expr_mod
-    expr_class = _expr_mod.VectorOperator
-    
-    # Embed category metadata in the class
-    node_category = "variables"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for VectorOperator."""
-        self.arg_keys = ['expr', 'op']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'expr': 'Expr', 'op': 'Enum["normalize"]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class VecList(GLNode):
-    """# geolipi.symbolic.variables.VecList"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.variables as _expr_mod
-    expr_class = _expr_mod.VecList
-    
-    # Embed category metadata in the class
-    node_category = "variables"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for VecList."""
-        self.arg_keys = ['vectors', 'count']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'vectors': 'List[Vector[3]]', 'count': 'int'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
 class Float(GLNode):
     """# geolipi.symbolic.variables.Float"""
     # Associate the expression class at class level for external tools
@@ -4405,11 +4359,11 @@ class Float(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Vec2(GLNode):
-    """# geolipi.symbolic.variables.Vec2"""
+class UnaryOperator(GLNode):
+    """# geolipi.symbolic.variables.UnaryOperator"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.variables as _expr_mod
-    expr_class = _expr_mod.Vec2
+    expr_class = _expr_mod.UnaryOperator
     
     # Embed category metadata in the class
     node_category = "variables"
@@ -4419,57 +4373,11 @@ class Vec2(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for Vec2."""
-        self.arg_keys = ['x', 'y']
+        """Create input sockets for UnaryOperator."""
+        self.arg_keys = ['expr', 'op']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'x': 'float', 'y': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Vec3(GLNode):
-    """# geolipi.symbolic.variables.Vec3"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.variables as _expr_mod
-    expr_class = _expr_mod.Vec3
-    
-    # Embed category metadata in the class
-    node_category = "variables"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Vec3."""
-        self.arg_keys = ['x', 'y', 'z']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'x': 'float', 'y': 'float', 'z': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class Vec4(GLNode):
-    """# geolipi.symbolic.variables.Vec4"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.variables as _expr_mod
-    expr_class = _expr_mod.Vec4
-    
-    # Embed category metadata in the class
-    node_category = "variables"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Vec4."""
-        self.arg_keys = ['x', 'y', 'z', 'w']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'x': 'float', 'y': 'float', 'z': 'float', 'w': 'float'}
+        self.arg_types = {'expr': 'Expr', 'op': 'Enum["sin"|"cos"|"tan"|"log"|"exp"|"sqrt"|"abs"|"floor"|"ceil"|"round"|"frac"|"sign"|"normalize"|"norm"|"neg"]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -4565,206 +4473,323 @@ class UniformVec4(GLNode):
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
+@register_node_decorator
+class Vec2(GLNode):
+    """# geolipi.symbolic.variables.Vec2"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.variables as _expr_mod
+    expr_class = _expr_mod.Vec2
+    
+    # Embed category metadata in the class
+    node_category = "variables"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Vec2."""
+        self.arg_keys = ['x', 'y']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'x': 'float', 'y': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Vec3(GLNode):
+    """# geolipi.symbolic.variables.Vec3"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.variables as _expr_mod
+    expr_class = _expr_mod.Vec3
+    
+    # Embed category metadata in the class
+    node_category = "variables"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Vec3."""
+        self.arg_keys = ['x', 'y', 'z']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'x': 'float', 'y': 'float', 'z': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Vec4(GLNode):
+    """# geolipi.symbolic.variables.Vec4"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.variables as _expr_mod
+    expr_class = _expr_mod.Vec4
+    
+    # Embed category metadata in the class
+    node_category = "variables"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Vec4."""
+        self.arg_keys = ['x', 'y', 'z', 'w']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'x': 'float', 'y': 'float', 'z': 'float', 'w': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class VecList(GLNode):
+    """# geolipi.symbolic.variables.VecList"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.variables as _expr_mod
+    expr_class = _expr_mod.VecList
+    
+    # Embed category metadata in the class
+    node_category = "variables"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for VecList."""
+        self.arg_keys = ['vectors', 'count']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'vectors': 'List[Vector[3]]', 'count': 'int'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class VectorOperator(GLNode):
+    """# geolipi.symbolic.variables.VectorOperator"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.variables as _expr_mod
+    expr_class = _expr_mod.VectorOperator
+    
+    # Embed category metadata in the class
+    node_category = "variables"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for VectorOperator."""
+        self.arg_keys = ['expr', 'op']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'op': 'Enum["normalize"]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
 def register_all_nodes() -> List[str]:
     """Return list of all auto-registered GeoLIPI nodes."""
     # All nodes are registered via the @register_node_decorator
     return [
-        "Sphere3D",
-        "Box3D",
-        "Cuboid3D",
-        "RoundedBox3D",
-        "BoxFrame3D",
-        "Torus3D",
-        "CappedTorus3D",
-        "Link3D",
-        "InfiniteCylinder3D",
-        "Cone3D",
-        "InexactCone3D",
-        "InfiniteCone3D",
-        "Plane3D",
-        "HexPrism3D",
-        "TriPrism3D",
-        "Capsule3D",
-        "VerticalCapsule3D",
-        "VerticalCappedCylinder3D",
-        "CappedCylinder3D",
-        "Cylinder3D",
-        "ArbitraryCappedCylinder3D",
-        "RoundedCylinder3D",
-        "CappedCone3D",
-        "ArbitraryCappedCone",
-        "SolidAngle3D",
-        "CutSphere3D",
-        "CutHollowSphere",
-        "DeathStar3D",
-        "RoundCone3D",
-        "ArbitraryRoundCone3D",
-        "InexactEllipsoid3D",
-        "RevolvedVesica3D",
-        "Rhombus3D",
-        "Octahedron3D",
-        "InexactOctahedron3D",
-        "Pyramid3D",
-        "Triangle3D",
-        "Quadrilateral3D",
-        "NoParamCuboid3D",
-        "NoParamSphere3D",
-        "NoParamCylinder3D",
-        "InexactSuperQuadrics3D",
-        "InexactAnisotropicGaussian3D",
-        "SDFGrid3D",
-        "NullExpression3D",
-        "Circle2D",
-        "RoundedBox2D",
-        "Box2D",
-        "Rectangle2D",
-        "OrientedBox2D",
-        "Rhombus2D",
-        "Trapezoid2D",
-        "Parallelogram2D",
-        "EquilateralTriangle2D",
-        "IsoscelesTriangle2D",
-        "Triangle2D",
-        "UnevenCapsule2D",
-        "RegularPentagon2D",
-        "RegularHexagon2D",
-        "RegularOctagon2D",
-        "Hexagram2D",
-        "Star2D",
-        "RegularStar2D",
-        "Pie2D",
-        "CutDisk2D",
         "Arc2D",
-        "HorseShoe2D",
-        "Vesica2D",
-        "OrientedVesica2D",
-        "Moon2D",
-        "RoundedCross2D",
-        "Egg2D",
-        "Heart2D",
-        "Cross2D",
-        "RoundedX2D",
-        "Polygon2D",
-        "Ellipse2D",
-        "Parabola2D",
-        "ParabolaSegment2D",
         "BlobbyCross2D",
-        "Tunnel2D",
-        "Stairs2D",
-        "QuadraticCircle2D",
-        "CoolS2D",
+        "Box2D",
+        "Circle2D",
         "CircleWave2D",
+        "CoolS2D",
+        "Cross2D",
+        "CutDisk2D",
+        "Egg2D",
+        "Ellipse2D",
+        "EquilateralTriangle2D",
+        "Heart2D",
+        "Hexagram2D",
+        "HorseShoe2D",
         "Hyperbola2D",
-        "QuadraticBezierCurve2D",
-        "Segment2D",
-        "NoParamRectangle2D",
+        "InstantiatedPrim2D",
+        "IsoscelesTriangle2D",
+        "Moon2D",
         "NoParamCircle2D",
+        "NoParamRectangle2D",
         "NoParamTriangle2D",
         "NullExpression2D",
+        "OrientedBox2D",
+        "OrientedVesica2D",
+        "Parabola2D",
+        "ParabolaSegment2D",
+        "Parallelogram2D",
+        "Pie2D",
+        "PolyArc2D",
+        "Polygon2D",
+        "QuadraticBezierCurve2D",
+        "QuadraticCircle2D",
+        "Rectangle2D",
+        "RegularHexagon2D",
+        "RegularOctagon2D",
+        "RegularPentagon2D",
+        "RegularStar2D",
+        "Rhombus2D",
+        "RoundedBox2D",
+        "RoundedCross2D",
+        "RoundedX2D",
+        "Segment2D",
+        "Stairs2D",
+        "Star2D",
         "TileUV2D",
-        "Union",
-        "JoinUnion",
-        "Intersection",
-        "Complement",
-        "Difference",
-        "SwitchedDifference",
-        "SmoothUnion",
-        "SmoothIntersection",
-        "SmoothDifference",
-        "NarySmoothUnion",
-        "NarySmoothIntersection",
-        "XOR",
-        "Translate2D",
-        "EulerRotate2D",
-        "Scale2D",
-        "Shear2D",
+        "Trapezoid2D",
+        "Triangle2D",
+        "Tunnel2D",
+        "UnevenCapsule2D",
+        "Vesica2D",
+        "ArbitraryCappedCone",
+        "ArbitraryCappedCylinder3D",
+        "ArbitraryRoundCone3D",
+        "Box3D",
+        "BoxFrame3D",
+        "CappedCone3D",
+        "CappedCylinder3D",
+        "CappedTorus3D",
+        "Capsule3D",
+        "Cone3D",
+        "Cuboid3D",
+        "CutHollowSphere",
+        "CutSphere3D",
+        "Cylinder3D",
+        "DeathStar3D",
+        "HexPrism3D",
+        "InexactAnisotropicGaussian3D",
+        "InexactCone3D",
+        "InexactEllipsoid3D",
+        "InexactOctahedron3D",
+        "InexactSuperQuadrics3D",
+        "InfiniteCone3D",
+        "InfiniteCylinder3D",
+        "Link3D",
+        "NoParamCuboid3D",
+        "NoParamCylinder3D",
+        "NoParamSphere3D",
+        "NullExpression3D",
+        "Octahedron3D",
+        "Plane3D",
+        "Pyramid3D",
+        "Quadrilateral3D",
+        "RevolvedVesica3D",
+        "Rhombus3D",
+        "RoundCone3D",
+        "RoundedBox3D",
+        "RoundedCylinder3D",
+        "SDFGrid3D",
+        "SolidAngle3D",
+        "Sphere3D",
+        "Torus3D",
+        "TriPrism3D",
+        "Triangle3D",
+        "VerticalCappedCylinder3D",
+        "VerticalCapsule3D",
+        "CubicBezierExtrude3D",
+        "LinearCurve1D",
+        "LinearExtrude3D",
+        "PolyQuadBezierExtrude3D",
+        "PolyStraightLineCurve1D",
+        "QuadraticBezierExtrude3D",
+        "QuadraticCurve1D",
+        "Revolution3D",
+        "SimpleExtrusion3D",
         "Affine2D",
+        "AxialReflect2D",
+        "AxialScaleSymmetry2D",
+        "AxialTranslationSymmetry2D",
+        "Dilate2D",
         "Distort2D",
-        "ReflectCoords2D",
+        "Erode2D",
+        "EulerRotate2D",
+        "Onion2D",
         "Reflect2D",
+        "ReflectCoords2D",
         "ReflectX2D",
         "ReflectY2D",
-        "AxialReflect2D",
+        "RotationSymmetry2D",
+        "Scale2D",
+        "ScaleSymmetry2D",
+        "Shear2D",
+        "Translate2D",
         "TranslationSymmetry2D",
-        "AxialTranslationSymmetry2D",
         "TranslationSymmetryX2D",
         "TranslationSymmetryY2D",
-        "RotationSymmetry2D",
-        "ScaleSymmetry2D",
-        "AxialScaleSymmetry2D",
-        "Dilate2D",
-        "Erode2D",
-        "Onion2D",
-        "Translate3D",
-        "EulerRotate3D",
+        "AxialReflect3D",
+        "AxialRotationSymmetry3D",
+        "AxialTranslationSymmetry3D",
         "AxisAngleRotate3D",
-        "RotateMatrix3D",
-        "Scale3D",
-        "QuaternionRotate3D",
-        "Shear3D",
-        "Distort3D",
-        "Twist3D",
         "Bend3D",
-        "ReflectCoords3D",
+        "Dilate3D",
+        "Distort3D",
+        "Erode3D",
+        "EulerRotate3D",
+        "NegOnlyOnion3D",
+        "Onion3D",
+        "QuaternionRotate3D",
         "Reflect3D",
+        "ReflectCoords3D",
         "ReflectX3D",
         "ReflectY3D",
         "ReflectZ3D",
-        "AxialReflect3D",
-        "TranslationSymmetry3D",
-        "AxialTranslationSymmetry3D",
-        "TranslationSymmetryX3D",
-        "TranslationSymmetryY3D",
-        "TranslationSymmetryZ3D",
+        "RotateMatrix3D",
         "RotationSymmetry3D",
-        "AxialRotationSymmetry3D",
         "RotationSymmetryX3D",
         "RotationSymmetryY3D",
         "RotationSymmetryZ3D",
-        "Dilate3D",
-        "Erode3D",
-        "Onion3D",
-        "NegOnlyOnion3D",
-        "Revolution3D",
-        "SimpleExtrusion3D",
-        "LinearExtrude3D",
-        "QuadraticBezierExtrude3D",
-        "PolyQuadBezierExtrude3D",
-        "CubicBezierExtrude3D",
-        "LinearCurve1D",
-        "QuadraticCurve1D",
-        "PolyStraightLineCurve1D",
+        "Scale3D",
+        "Shear3D",
+        "Translate3D",
+        "TranslationSymmetry3D",
+        "TranslationSymmetryX3D",
+        "TranslationSymmetryY3D",
+        "TranslationSymmetryZ3D",
+        "Twist3D",
+        "Complement",
+        "Difference",
+        "Intersection",
+        "JoinUnion",
+        "NarySmoothIntersection",
+        "NarySmoothUnion",
+        "SmoothDifference",
+        "SmoothIntersection",
+        "SmoothUnion",
+        "SwitchedDifference",
+        "Union",
+        "XOR",
+        "AlphaMask2D",
+        "AlphaToSDF2D",
+        "ApplyColor2D",
+        "DestinationAtop",
         "DestinationIn",
         "DestinationOut",
         "DestinationOver",
-        "DestinationAtop",
+        "HSL2RGB",
+        "HSV2RGB",
+        "HueShift",
+        "ModifyColor2D",
+        "ModifyColorTritone2D",
+        "ModifyOpacity2D",
+        "RGB2HSL",
+        "RGB2HSV",
+        "SVGXOR",
+        "SourceAtop",
         "SourceIn",
         "SourceOut",
         "SourceOver",
-        "SourceAtop",
-        "SVGXOR",
-        "ApplyColor2D",
-        "ModifyOpacity2D",
-        "ModifyColor2D",
-        "ModifyColorTritone2D",
         "SourceOverSequence",
-        "AlphaMask2D",
-        "AlphaToSDF2D",
-        "RGB2HSL",
-        "RGB2HSV",
-        "HSV2RGB",
-        "HSL2RGB",
-        "HueShift",
-        "UnaryOperator",
         "BinaryOperator",
-        "VectorOperator",
-        "VecList",
         "Float",
-        "Vec2",
-        "Vec3",
-        "Vec4",
+        "UnaryOperator",
         "UniformFloat",
         "UniformVec2",
         "UniformVec3",
         "UniformVec4",
+        "Vec2",
+        "Vec3",
+        "Vec4",
+        "VecList",
+        "VectorOperator",
     ]

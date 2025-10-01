@@ -8,12 +8,41 @@ from typing import List, Callable, Type, Dict, Optional
 import inspect
 import os
 from pathlib import Path
+
+import geolipi.symbolic as gls
+import geolipi.symbolic.primitives_2d as gls_prim2d
+import geolipi.symbolic.primitives_3d as gls_prim3d
+import geolipi.symbolic.primitives_higher as gls_prim_higher
+import geolipi.symbolic.transforms_2d as gls_t2d
+import geolipi.symbolic.transforms_3d as gls_t3d
+import geolipi.symbolic.combinators as gls_comb
+import geolipi.symbolic.color as gls_color
+import geolipi.symbolic.variables as gls_vars
+
+import migumi.symbolic.base as migumi_base
+
+import sysl.symbolic.base as sysl_base
+import sysl.symbolic.materials as sysl_materials
+import sysl.symbolic.mat_solid_combinators as sysl_mat_solid_combinators
+
+from geolipi.symbolic.registry import SYMBOL_REGISTRY
+
 from .simple_registry import register_node, NODE_REGISTRY
 
 # Symbols we exclude from auto-generation; implemented manually elsewhere
 EXCLUDE_SYMBOLS = {
-    'PolyLine2D', 'EvaluateLayoutNode', 'VarSplitter',
+    "PolyArc2D", 'EvaluateLayoutNode', 'VarSplitter',
+    "RegisterGeometry",
+    "RegisterState",
 }
+
+
+def get_classes_in_module(module):
+    return {
+        name: cls
+        for name, cls in inspect.getmembers(module, inspect.isclass)
+        if cls.__module__ == module.__name__
+    }
 
 
 def generate_geolipi_nodes_file(output_dir: Optional[str] = None) -> str:
@@ -35,7 +64,13 @@ def generate_geolipi_nodes_file(output_dir: Optional[str] = None) -> str:
     output_file = os.path.join(output_dir, "geolipi_nodes.py")
     
     # Collect geolipi node information
-    geolipi_node_info = _collect_geolipi_nodes()
+    geolipi_module_dict = {}
+    modules_to_collect = [gls_prim2d, gls_prim3d, gls_prim_higher, gls_t2d, gls_t3d, gls_comb, gls_color, gls_vars]
+    for module in modules_to_collect:
+        class_dict = get_classes_in_module(module)
+        valid_subset = {name: cls for name, cls in class_dict.items() if name in SYMBOL_REGISTRY}
+        geolipi_module_dict.update(valid_subset)
+    geolipi_node_info = _collect_module_nodes(geolipi_module_dict)
     
     # Generate the Python file content
     file_content = _generate_file_content(geolipi_node_info, "GeoLIPI")
@@ -45,6 +80,7 @@ def generate_geolipi_nodes_file(output_dir: Optional[str] = None) -> str:
         f.write(file_content)
     
     print(f"Generated {len(geolipi_node_info)} GeoLIPI nodes in: {output_file}")
+    
     return str(output_file)
 
 
@@ -67,7 +103,13 @@ def generate_sysl_nodes_file(output_dir: Optional[str] = None) -> str:
     output_file = os.path.join(output_dir, "sysl_nodes.py")
     
     # Collect sysl node information
-    sysl_node_info = _collect_sysl_nodes()
+    sysl_module_dict = {}
+    modules_to_collect = [sysl_base, sysl_materials, sysl_mat_solid_combinators]
+    for module in modules_to_collect:
+        class_dict = get_classes_in_module(module)
+        valid_subset = {name: cls for name, cls in class_dict.items() if name in SYMBOL_REGISTRY}
+        sysl_module_dict.update(valid_subset)
+    sysl_node_info = _collect_module_nodes(sysl_module_dict)
     
     # Generate the Python file content
     file_content = _generate_file_content(sysl_node_info, "SySL")
@@ -79,44 +121,38 @@ def generate_sysl_nodes_file(output_dir: Optional[str] = None) -> str:
     print(f"Generated {len(sysl_node_info)} SySL nodes in: {output_file}")
     return str(output_file)
 
-
-def generate_all_nodes_files(output_dir: Optional[str] = None) -> List[str]:
+def generate_migumi_nodes_file(output_dir: Optional[str] = None) -> str:
     """
-    Generate both GeoLIPI and SySL node files.
-    
-    Args:
-        output_dir: Directory to save the generated files. Defaults to auto_nodes/
-        
-    Returns:
-        List of paths to the generated files
+    Generate a static Python file containing all Migumi nodes.
     """
     if output_dir is None:
         current_dir = Path(__file__).parent
         output_dir = os.path.join(current_dir, "auto_nodes")
-    else:
-        output_dir = Path(output_dir)
-    
+    output_dir = Path(output_dir)
+
     output_dir.mkdir(exist_ok=True)
-    
-    # Generate both files
-    geolipi_file = generate_geolipi_nodes_file(output_dir)
-    sysl_file = generate_sysl_nodes_file(output_dir)
-    
-    # Create __init__.py to import from both files
-    init_file = os.path.join(output_dir, "__init__.py")
-    with open(init_file, 'w') as f:
-        f.write('"""Auto-generated nodes for ASMBLR."""\n\n')
-        f.write('from .geolipi_nodes import *\n')
-        f.write('from .sysl_nodes import *\n')
-    
-    return [geolipi_file, sysl_file]
+    output_file = os.path.join(output_dir, "migumi_nodes.py")
 
+    # Collect migumi node information
+    migumi_module_dict = {}
+    modules_to_collect = [migumi_base]
+    for module in modules_to_collect:
+        class_dict = get_classes_in_module(module)
+        valid_subset = {name: cls for name, cls in class_dict.items() if name in SYMBOL_REGISTRY}
+        migumi_module_dict.update(valid_subset)
 
-# Backward compatibility
-def generate_symbolic_nodes_file(output_dir: Optional[str] = None) -> str:
-    """Backward compatibility wrapper for generate_all_nodes_files."""
-    files = generate_all_nodes_files(output_dir)
-    return files[0]  # Return first file path for compatibility
+    migumi_node_info = _collect_module_nodes(migumi_module_dict)
+
+    # Generate the Python file content
+    file_content = _generate_file_content(migumi_node_info, "Migumi")
+    
+    # Write the file
+    with open(output_file, 'w') as f:
+        f.write(file_content)
+    
+    print(f"Generated {len(migumi_node_info)} Migumi nodes in: {output_file}")
+    return str(output_file)
+
 
 
 def load_all_symbolic_nodes() -> List[str]:
@@ -126,8 +162,9 @@ def load_all_symbolic_nodes() -> List[str]:
     # Get registered nodes from both libraries
     geolipi_nodes = load_all_geolipi_nodes()
     sysl_nodes = load_all_sysl_nodes()
+    migumi_nodes = load_all_migumi_nodes()
     
-    return geolipi_nodes + sysl_nodes
+    return geolipi_nodes + sysl_nodes + migumi_nodes
 
 
 def load_all_geolipi_nodes() -> List[str]:
@@ -175,7 +212,20 @@ def load_all_sysl_nodes() -> List[str]:
         registered_names = register_all_nodes()
         return registered_names
 
-def _collect_geolipi_nodes() -> List[Dict]:
+def load_all_migumi_nodes() -> List[str]:
+    """
+    Load all nodes from migumi symbolic library automatically.
+    """
+    try:
+        from .auto_nodes.migumi_nodes import register_all_nodes
+        registered_names = register_all_nodes()
+        return registered_names
+    except ImportError:
+        print("Auto-generated migumi nodes not found. Generating migumi_nodes.py...")
+        generate_migumi_nodes_file()
+        return []
+
+def _collect_module_nodes(module_dict) -> List[Dict]:
     """Collect nodes from geolipi registry, organized by source files."""
     import sys
     from pathlib import Path
@@ -187,47 +237,26 @@ def _collect_geolipi_nodes() -> List[Dict]:
     if str(geolipi_path) not in sys.path:
         sys.path.insert(0, str(geolipi_path))
     
-    try:
-        # Import all geolipi.symbolic modules to trigger symbol registration
-        import geolipi.symbolic.primitives_2d
-        import geolipi.symbolic.primitives_3d
-        import geolipi.symbolic.primitives_higher
-        import geolipi.symbolic.transforms_2d
-        import geolipi.symbolic.transforms_3d
-        import geolipi.symbolic.combinators
-        import geolipi.symbolic.color
-        import geolipi.symbolic.variables
-        import geolipi.symbolic.reference
-        
-        from geolipi.symbolic.base import GLFunction
-        from geolipi.symbolic.registry import SYMBOL_REGISTRY
-    except Exception as e:
-        print(f"Warning: Could not import geolipi: {e}")
-        return []
     
     node_info_list: List[Dict] = []
     
+
     # Process all registered symbols from geolipi
-    for class_name, cls in SYMBOL_REGISTRY.items():
-        if not issubclass(cls, GLFunction):
-            continue
+    for class_name, cls in module_dict.items():
         if class_name in EXCLUDE_SYMBOLS:
             continue
             
         # Get the source module to determine category
         module_path = getattr(cls, "__module__", "")
         
-        # Only process geolipi modules
-        if not module_path.startswith("geolipi.symbolic"):
-            continue
-            
-        category = _get_category_from_module(module_path)
+
+        if hasattr(cls, "symbol_category"):
+            category = cls.symbol_category
+        else:
+            category = _get_category_from_module(module_path)
         
-        # Skip if no category could be determined
-        if not category:
+        if not hasattr(cls, "default_spec"):
             continue
-            
-        # Try to get default_spec
         try:
             spec = cls.default_spec()
             if not isinstance(spec, dict):
@@ -235,76 +264,9 @@ def _collect_geolipi_nodes() -> List[Dict]:
         except Exception:
             continue
 
-        arg_keys = list(spec.keys())
-        arg_types = {k: (v.get("type", "") if isinstance(v, dict) else "") for k, v in spec.items()}
-        is_variadic = any(isinstance(v, dict) and (v.get("varadic", False) or v.get("variadic", False)) for v in spec.values())
-        
-        # Extract default values from spec
-        default_values = {}
-        for k, v in spec.items():
-            if isinstance(v, dict) and "default" in v:
-                default_values[k] = v["default"]
-
-        node_info = {
-            'name': class_name,
-            'expr_class_name': class_name,
-            'expr_class_module': module_path,
-            'arg_keys': arg_keys,
-            'default_values': default_values,
-            'is_variadic': is_variadic,
-            'category': category,
-            'arg_types': arg_types
-        }
-        node_info_list.append(node_info)
-    
-    return node_info_list
-
-
-def _collect_sysl_nodes() -> List[Dict]:
-    """Collect nodes from sysl registry, organized by source files."""
-    try:
-        # Import all sysl.symbolic modules to trigger symbol registration
-        import sysl.symbolic.base
-        import sysl.symbolic.materials
-        import sysl.symbolic.mat_solid_combinators
-
-        from geolipi.symbolic.base import GLFunction
-        from geolipi.symbolic.registry import SYMBOL_REGISTRY
-    except Exception as e:
-        print(f"Warning: Could not import sysl: {e}")
-        import traceback
-        traceback.print_exc()
-        return []
-    
-    node_info_list: List[Dict] = []
-    
-    # Process all registered symbols from sysl
-    for class_name, cls in SYMBOL_REGISTRY.items():
-        if not issubclass(cls, GLFunction):
-            continue
-        if class_name in EXCLUDE_SYMBOLS:
-            continue
-            
-        # Get the source module to determine category
-        module_path = getattr(cls, "__module__", "")
-        
-        # Only process sysl modules
-        if not module_path.startswith("sysl.symbolic"):
-            continue
-            
-        category = _get_category_from_module(module_path)
-        
-        # Skip if no category could be determined
-        if not category:
-            continue
-            
-        # Try to get default_spec
-        try:
-            spec = cls.default_spec()
-            if not isinstance(spec, dict):
-                continue
-        except Exception:
-            continue
+        if not isinstance(spec, dict):
+            print(f"default spec for {class_name}: {spec}")
+            raise ValueError(f"Default spec for {class_name} is not a dictionary")
 
         arg_keys = list(spec.keys())
         arg_types = {k: (v.get("type", "") if isinstance(v, dict) else "") for k, v in spec.items()}
