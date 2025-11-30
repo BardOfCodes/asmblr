@@ -35,52 +35,6 @@ class BoundedSolid(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class EncodedLowPrecisionSDFGrid3D(GLNode):
-    """# sysl.symbolic.base.EncodedLowPrecisionSDFGrid3D"""
-    # Associate the expression class at class level for external tools
-    import sysl.symbolic.base as _expr_mod
-    expr_class = _expr_mod.EncodedLowPrecisionSDFGrid3D
-    
-    # Embed category metadata in the class
-    node_category = "base"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for EncodedLowPrecisionSDFGrid3D."""
-        self.arg_keys = ['data']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'data': 'Tensor[float,(D,H,W)]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class EncodedSDFGrid3D(GLNode):
-    """# sysl.symbolic.base.EncodedSDFGrid3D"""
-    # Associate the expression class at class level for external tools
-    import sysl.symbolic.base as _expr_mod
-    expr_class = _expr_mod.EncodedSDFGrid3D
-    
-    # Embed category metadata in the class
-    node_category = "base"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for EncodedSDFGrid3D."""
-        self.arg_keys = ['data']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'data': 'Tensor[float,(D,H,W)]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
 class GeomOnlySmoothUnion(GLNode):
     """# sysl.symbolic.base.GeomOnlySmoothUnion"""
     # Associate the expression class at class level for external tools
@@ -100,29 +54,6 @@ class GeomOnlySmoothUnion(GLNode):
         self.default_values = {}
         self.is_variadic = False
         self.arg_types = {'expr_0': 'Expr', 'expr_1': 'Expr', 'k': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class LowPrecisionSDFGrid3D(GLNode):
-    """# sysl.symbolic.base.LowPrecisionSDFGrid3D"""
-    # Associate the expression class at class level for external tools
-    import sysl.symbolic.base as _expr_mod
-    expr_class = _expr_mod.LowPrecisionSDFGrid3D
-    
-    # Embed category metadata in the class
-    node_category = "base"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for LowPrecisionSDFGrid3D."""
-        self.arg_keys = ['data']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'data': 'Tensor[float,(D,H,W)]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -196,25 +127,25 @@ class MatSolidV3(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class EncodedRGBGrid3D(GLNode):
-    """# sysl.symbolic.materials.EncodedRGBGrid3D"""
+class MatSolidV4(GLNode):
+    """# sysl.symbolic.base.MatSolidV4"""
     # Associate the expression class at class level for external tools
-    import sysl.symbolic.materials as _expr_mod
-    expr_class = _expr_mod.EncodedRGBGrid3D
+    import sysl.symbolic.base as _expr_mod
+    expr_class = _expr_mod.MatSolidV4
     
     # Embed category metadata in the class
-    node_category = "sysl_materials"
+    node_category = "sysl_base"
     
     def __init__(self, *args, **kwargs):
         # Keep super init simple; expr_class is already bound at class-level
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for EncodedRGBGrid3D."""
-        self.arg_keys = ['data']
+        """Create input sockets for MatSolidV4."""
+        self.arg_keys = ['solid', 'material']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'data': 'Tensor[float,(D,H,W,3)]'}
+        self.arg_types = {'solid': 'Expr', 'material': 'Expr'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -265,6 +196,29 @@ class MaterialV3(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
+class MaterialV4(GLNode):
+    """# sysl.symbolic.materials.MaterialV4"""
+    # Associate the expression class at class level for external tools
+    import sysl.symbolic.materials as _expr_mod
+    expr_class = _expr_mod.MaterialV4
+    
+    # Embed category metadata in the class
+    node_category = "sysl_materials"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for MaterialV4."""
+        self.arg_keys = ['albedo', 'emissive', 'mrc']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'albedo': 'Vector[3]', 'emissive': 'Vector[3]', 'mrc': 'Vector[3]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
 class NonEmissiveMaterialV3(GLNode):
     """# sysl.symbolic.materials.NonEmissiveMaterialV3"""
     # Associate the expression class at class level for external tools
@@ -284,29 +238,6 @@ class NonEmissiveMaterialV3(GLNode):
         self.default_values = {}
         self.is_variadic = False
         self.arg_types = {'albedo': 'Vector[3]', 'roughness': 'float', 'clearcoat': 'float', 'metallic': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class RGBGrid3D(GLNode):
-    """# sysl.symbolic.materials.RGBGrid3D"""
-    # Associate the expression class at class level for external tools
-    import sysl.symbolic.materials as _expr_mod
-    expr_class = _expr_mod.RGBGrid3D
-    
-    # Embed category metadata in the class
-    node_category = "materials"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for RGBGrid3D."""
-        self.arg_keys = ['data']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'data': 'Tensor[float,(D,H,W,3)]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -376,6 +307,29 @@ class SMPLMaterial(GLNode):
         self.default_values = {}
         self.is_variadic = False
         self.arg_types = {'smpl_index': 'int'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class SMPLMaterialV4(GLNode):
+    """# sysl.symbolic.materials.SMPLMaterialV4"""
+    # Associate the expression class at class level for external tools
+    import sysl.symbolic.materials as _expr_mod
+    expr_class = _expr_mod.SMPLMaterialV4
+    
+    # Embed category metadata in the class
+    node_category = "sysl_materials"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for SMPLMaterialV4."""
+        self.arg_keys = ['albedo', 'mr']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'albedo': 'Vector[3]', 'mr': 'Vector[2]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -476,21 +430,19 @@ def register_all_nodes() -> List[str]:
     # All nodes are registered via the @register_node_decorator
     return [
         "BoundedSolid",
-        "EncodedLowPrecisionSDFGrid3D",
-        "EncodedSDFGrid3D",
         "GeomOnlySmoothUnion",
-        "LowPrecisionSDFGrid3D",
         "MatSolidV1",
         "MatSolidV2",
         "MatSolidV3",
-        "EncodedRGBGrid3D",
+        "MatSolidV4",
         "MatReference",
         "MaterialV3",
+        "MaterialV4",
         "NonEmissiveMaterialV3",
-        "RGBGrid3D",
         "RGBMaterial",
         "RegisterMaterial",
         "SMPLMaterial",
+        "SMPLMaterialV4",
         "Avoid",
         "MatColorOnly",
         "MatSmoothColorOnly",

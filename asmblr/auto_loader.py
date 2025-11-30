@@ -31,7 +31,9 @@ from .simple_registry import register_node, NODE_REGISTRY
 
 # Symbols we exclude from auto-generation; implemented manually elsewhere
 EXCLUDE_SYMBOLS = {
-    "PolyArc2D", 'EvaluateLayoutNode', 'VarSplitter',
+    'VarSplitter',
+    'EvaluateLayoutNode', 
+    "PolyArc2D", 
     "RegisterGeometry",
     "RegisterState",
 }
@@ -163,6 +165,9 @@ def load_all_symbolic_nodes() -> List[str]:
     geolipi_nodes = load_all_geolipi_nodes()
     sysl_nodes = load_all_sysl_nodes()
     migumi_nodes = load_all_migumi_nodes()
+    # sw_nodes = load_all_splitweave_nodes()
+    # parsel_nodes = load_all_parsel_nodes()
+    
     
     return geolipi_nodes + sysl_nodes + migumi_nodes
 

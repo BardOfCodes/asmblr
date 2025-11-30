@@ -7,10 +7,6 @@ import sympy as sp
 import copy
 import uuid
 import json
-import base64
-import gzip
-from io import BytesIO
-from PIL import Image
 from typing import Optional, Any, Dict, Union, Tuple
 from .settings import Settings
 from .serialize import make_json_compatible, deduplicate_nodes, process_value_for_serialization, unprocess_value_from_serialization

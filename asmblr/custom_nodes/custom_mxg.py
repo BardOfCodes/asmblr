@@ -9,7 +9,7 @@ from typing import Dict
 
 # I think it should be the Symbols in MXG -> SOLID. 
 # Extrusion. 
-# polyline
+# polycurve
 @register_node_decorator
 class PolyArc2D(GLNode):
     node_category = 'primitives_2d'
@@ -134,27 +134,6 @@ class RegisterState(GLNode):
 
         self.register_output("expr", expr)
         self.register_output("state", state)
-
-@register_node_decorator
-class PlaneV23D(GLNode):
-
-    # Embed category metadata in the class
-    node_category = "primitives_3d"
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.expr_class = gls.Plane3D
-
-    def _create_input_sockets(self):
-        """Create input sockets for BoundedSolid."""
-        self.default_values = {}
-        self.arg_keys = ['origin', 'normal']
-        self.arg_types = {'origin': 'Vector[3]', 'normal': 'Vector[3]'}
-        self.is_variadic = False
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-    def setup_base(self):
-        self.default_values = {}
 
 @register_node_decorator
 class DifferenceV2(GLNode):

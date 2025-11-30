@@ -1829,6 +1829,29 @@ class Plane3D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
+class PlaneV23D(GLNode):
+    """# geolipi.symbolic.primitives_3d.PlaneV23D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_3d as _expr_mod
+    expr_class = _expr_mod.PlaneV23D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for PlaneV23D."""
+        self.arg_keys = ['origin', 'normal']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'origin': 'Vector[3]', 'normal': 'Vector[3]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
 class Pyramid3D(GLNode):
     """# geolipi.symbolic.primitives_3d.Pyramid3D"""
     # Associate the expression class at class level for external tools
@@ -2005,10 +2028,10 @@ class SDFGrid3D(GLNode):
     
     def _create_input_sockets(self):
         """Create input sockets for SDFGrid3D."""
-        self.arg_keys = ['sdf_grid']
+        self.arg_keys = ['sdf_grid', 'name', 'bound_threshold']
         self.default_values = {}
         self.is_variadic = False
-        self.arg_types = {'sdf_grid': 'Tensor[float, (D,H,W)]'}
+        self.arg_types = {'sdf_grid': 'Tensor[float, (D,H,W)]', 'name': 'string', 'bound_threshold': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -2860,6 +2883,29 @@ class TranslationSymmetryY2D(GLNode):
         self.default_values = {}
         self.is_variadic = False
         self.arg_types = {'expr': 'Expr', 'distance': 'float', 'count': 'int'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class Affine3D(GLNode):
+    """# geolipi.symbolic.transforms_3d.Affine3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.transforms_3d as _expr_mod
+    expr_class = _expr_mod.Affine3D
+    
+    # Embed category metadata in the class
+    node_category = "transforms_3d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Affine3D."""
+        self.arg_keys = ['expr', 'matrix']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'matrix': 'Matrix[4,4]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -4620,7 +4666,6 @@ def register_all_nodes() -> List[str]:
         "ParabolaSegment2D",
         "Parallelogram2D",
         "Pie2D",
-        "PolyArc2D",
         "Polygon2D",
         "QuadraticBezierCurve2D",
         "QuadraticCircle2D",
@@ -4672,6 +4717,7 @@ def register_all_nodes() -> List[str]:
         "NullExpression3D",
         "Octahedron3D",
         "Plane3D",
+        "PlaneV23D",
         "Pyramid3D",
         "Quadrilateral3D",
         "RevolvedVesica3D",
@@ -4717,6 +4763,7 @@ def register_all_nodes() -> List[str]:
         "TranslationSymmetry2D",
         "TranslationSymmetryX2D",
         "TranslationSymmetryY2D",
+        "Affine3D",
         "AxialReflect3D",
         "AxialRotationSymmetry3D",
         "AxialTranslationSymmetry3D",

@@ -43,7 +43,9 @@ __all__ = [
     # Converter
     "converter",
     # Custom nodes
-    "PolyLine2D", "EvaluateLayoutNode", "SplitVec2D", "SplitVec3D", "SplitVec4D",
+    "PolyLine2D", 
+    "PolyArc2D",
+    "EvaluateLayoutNode", "SplitVec2D", "SplitVec3D", "SplitVec4D",
     # SySL nodes
     "GeomOnlySmoothUnion", "MatSolidV1", "MatSolidV2", "MatSolidV3",
     "SMPLMaterial", "RGBMaterial", "MaterialV3", "NonEmissiveMaterialV3", 
