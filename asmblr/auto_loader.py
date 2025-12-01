@@ -20,6 +20,7 @@ import geolipi.symbolic.color as gls_color
 import geolipi.symbolic.variables as gls_vars
 
 import migumi.symbolic.base as migumi_base
+import migumi.symbolic.base_old as migumi_base_old
 
 import sysl.symbolic.base as sysl_base
 import sysl.symbolic.materials as sysl_materials
@@ -137,7 +138,7 @@ def generate_migumi_nodes_file(output_dir: Optional[str] = None) -> str:
 
     # Collect migumi node information
     migumi_module_dict = {}
-    modules_to_collect = [migumi_base]
+    modules_to_collect = [migumi_base_old]
     for module in modules_to_collect:
         class_dict = get_classes_in_module(module)
         valid_subset = {name: cls for name, cls in class_dict.items() if name in SYMBOL_REGISTRY}
@@ -275,7 +276,7 @@ def _collect_module_nodes(module_dict) -> List[Dict]:
 
         arg_keys = list(spec.keys())
         arg_types = {k: (v.get("type", "") if isinstance(v, dict) else "") for k, v in spec.items()}
-        is_variadic = any(isinstance(v, dict) and (v.get("varadic", False) or v.get("variadic", False)) for v in spec.values())
+        is_variadic = any(isinstance(v, dict) and (v.get("variadic", False) or v.get("variadic", False)) for v in spec.values())
         
         # Extract default values from spec
         default_values = {}

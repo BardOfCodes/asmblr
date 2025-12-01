@@ -134,19 +134,3 @@ class RegisterState(GLNode):
 
         self.register_output("expr", expr)
         self.register_output("state", state)
-
-@register_node_decorator
-class DifferenceV2(GLNode):
-
-    # Embed category metadata in the class
-    node_category = "combinators"
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.expr_class = gls.Difference
-    def _create_input_sockets(self):
-        self.arg_keys = ['expr1', 'expr2']
-        self.arg_types = {'expr1': 'Expr', 'expr2': 'Expr'}
-        self.default_values = {}
-        self.is_variadic = False
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}

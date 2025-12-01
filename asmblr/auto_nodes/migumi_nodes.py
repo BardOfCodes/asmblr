@@ -12,10 +12,79 @@ from ..simple_registry import register_node_decorator
 
 
 @register_node_decorator
-class NamedGeometry(GLNode):
-    """# migumi.symbolic.base.NamedGeometry"""
+class ApplyHeight(GLNode):
+    """# migumi.symbolic.base_old.ApplyHeight"""
     # Associate the expression class at class level for external tools
-    import migumi.symbolic.base as _expr_mod
+    import migumi.symbolic.base_old as _expr_mod
+    expr_class = _expr_mod.ApplyHeight
+    
+    # Embed category metadata in the class
+    node_category = "mxg"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for ApplyHeight."""
+        self.arg_keys = ['expr', 'height']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'height': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class LinkedHeightField3D(GLNode):
+    """# migumi.symbolic.base_old.LinkedHeightField3D"""
+    # Associate the expression class at class level for external tools
+    import migumi.symbolic.base_old as _expr_mod
+    expr_class = _expr_mod.LinkedHeightField3D
+    
+    # Embed category metadata in the class
+    node_category = "mxg"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for LinkedHeightField3D."""
+        self.arg_keys = ['plane', 'apply_height']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'plane': 'Expr', 'apply_height': 'Expr'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class MarkerNode(GLNode):
+    """# migumi.symbolic.base_old.MarkerNode"""
+    # Associate the expression class at class level for external tools
+    import migumi.symbolic.base_old as _expr_mod
+    expr_class = _expr_mod.MarkerNode
+    
+    # Embed category metadata in the class
+    node_category = "mxg"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for MarkerNode."""
+        self.arg_keys = ['expr']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class NamedGeometry(GLNode):
+    """# migumi.symbolic.base_old.NamedGeometry"""
+    # Associate the expression class at class level for external tools
+    import migumi.symbolic.base_old as _expr_mod
     expr_class = _expr_mod.NamedGeometry
     
     # Embed category metadata in the class
@@ -34,9 +103,36 @@ class NamedGeometry(GLNode):
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
+@register_node_decorator
+class SetMaterial(GLNode):
+    """# migumi.symbolic.base_old.SetMaterial"""
+    # Associate the expression class at class level for external tools
+    import migumi.symbolic.base_old as _expr_mod
+    expr_class = _expr_mod.SetMaterial
+    
+    # Embed category metadata in the class
+    node_category = "mxg"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for SetMaterial."""
+        self.arg_keys = ['expr', 'material']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr': 'Expr', 'material': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
 def register_all_nodes() -> List[str]:
     """Return list of all auto-registered Migumi nodes."""
     # All nodes are registered via the @register_node_decorator
     return [
+        "ApplyHeight",
+        "LinkedHeightField3D",
+        "MarkerNode",
         "NamedGeometry",
+        "SetMaterial",
     ]

@@ -87,7 +87,7 @@ def build_nodes_payload() -> Dict[str, Any]:
             entry = entry if isinstance(entry, dict) else {}
             type_str = entry.get('type', '')
             default_val = entry.get('default', None)
-            variadic = bool(entry.get('variadic') or entry.get('varadic') or False)
+            variadic = bool(entry.get('variadic') or entry.get('variadic') or False)
             if _is_expr_type(type_str):
                 inputs.append({
                     'key': key,
