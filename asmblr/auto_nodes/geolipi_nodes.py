@@ -633,6 +633,29 @@ class Parallelogram2D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
+class Pentagram2D(GLNode):
+    """# geolipi.symbolic.primitives_2d.Pentagram2D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_2d as _expr_mod
+    expr_class = _expr_mod.Pentagram2D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_2d"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for Pentagram2D."""
+        self.arg_keys = ['r']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'r': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
 class Pie2D(GLNode):
     """# geolipi.symbolic.primitives_2d.Pie2D"""
     # Associate the expression class at class level for external tools
@@ -978,29 +1001,6 @@ class Stairs2D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Star2D(GLNode):
-    """# geolipi.symbolic.primitives_2d.Star2D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_2d as _expr_mod
-    expr_class = _expr_mod.Star2D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_2d"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Star2D."""
-        self.arg_keys = ['r', 'rf']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'r': 'float', 'rf': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
 class TileUV2D(GLNode):
     """# geolipi.symbolic.primitives_2d.TileUV2D"""
     # Associate the expression class at class level for external tools
@@ -1139,11 +1139,11 @@ class Vesica2D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class ArbitraryCappedCone(GLNode):
-    """# geolipi.symbolic.primitives_3d.ArbitraryCappedCone"""
+class ArbitraryCappedCone3D(GLNode):
+    """# geolipi.symbolic.primitives_3d.ArbitraryCappedCone3D"""
     # Associate the expression class at class level for external tools
     import geolipi.symbolic.primitives_3d as _expr_mod
-    expr_class = _expr_mod.ArbitraryCappedCone
+    expr_class = _expr_mod.ArbitraryCappedCone3D
     
     # Embed category metadata in the class
     node_category = "primitives_3d"
@@ -1153,7 +1153,7 @@ class ArbitraryCappedCone(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for ArbitraryCappedCone."""
+        """Create input sockets for ArbitraryCappedCone3D."""
         self.arg_keys = ['a', 'b', 'ra', 'rb']
         self.default_values = {}
         self.is_variadic = False
@@ -2358,29 +2358,6 @@ class QuadraticCurve1D(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class Revolution3D(GLNode):
-    """# geolipi.symbolic.primitives_higher.Revolution3D"""
-    # Associate the expression class at class level for external tools
-    import geolipi.symbolic.primitives_higher as _expr_mod
-    expr_class = _expr_mod.Revolution3D
-    
-    # Embed category metadata in the class
-    node_category = "primitives_higher"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for Revolution3D."""
-        self.arg_keys = ['input', 'radius']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'input': 'Expr', 'radius': 'float'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
 class SimpleExtrusion3D(GLNode):
     """# geolipi.symbolic.primitives_higher.SimpleExtrusion3D"""
     # Associate the expression class at class level for external tools
@@ -2400,6 +2377,29 @@ class SimpleExtrusion3D(GLNode):
         self.default_values = {}
         self.is_variadic = False
         self.arg_types = {'input': 'Expr', 'height': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class SimpleRevolution3D(GLNode):
+    """# geolipi.symbolic.primitives_higher.SimpleRevolution3D"""
+    # Associate the expression class at class level for external tools
+    import geolipi.symbolic.primitives_higher as _expr_mod
+    expr_class = _expr_mod.SimpleRevolution3D
+    
+    # Embed category metadata in the class
+    node_category = "primitives_higher"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for SimpleRevolution3D."""
+        self.arg_keys = ['input', 'radius']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'input': 'Expr', 'radius': 'float'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -4665,6 +4665,7 @@ def register_all_nodes() -> List[str]:
         "Parabola2D",
         "ParabolaSegment2D",
         "Parallelogram2D",
+        "Pentagram2D",
         "Pie2D",
         "Polygon2D",
         "QuadraticBezierCurve2D",
@@ -4680,14 +4681,13 @@ def register_all_nodes() -> List[str]:
         "RoundedX2D",
         "Segment2D",
         "Stairs2D",
-        "Star2D",
         "TileUV2D",
         "Trapezoid2D",
         "Triangle2D",
         "Tunnel2D",
         "UnevenCapsule2D",
         "Vesica2D",
-        "ArbitraryCappedCone",
+        "ArbitraryCappedCone3D",
         "ArbitraryCappedCylinder3D",
         "ArbitraryRoundCone3D",
         "Box3D",
@@ -4740,8 +4740,8 @@ def register_all_nodes() -> List[str]:
         "PolyStraightLineCurve1D",
         "QuadraticBezierExtrude3D",
         "QuadraticCurve1D",
-        "Revolution3D",
         "SimpleExtrusion3D",
+        "SimpleRevolution3D",
         "Affine2D",
         "AxialReflect2D",
         "AxialScaleSymmetry2D",

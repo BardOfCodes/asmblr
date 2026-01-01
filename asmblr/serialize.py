@@ -8,7 +8,14 @@ import gzip
 from typing import Any, Dict
 
 def make_json_compatible(graph_data):
-    """Convert data to JSON-compatible types."""
+    """Convert data to JSON-compatible types.
+    
+    Args:
+        graph_data: Dictionary with 'nodes' key containing node data.
+        
+    Returns:
+        Modified graph_data with JSON-compatible values.
+    """
     node_data = graph_data['nodes']
     compatible_data = []
     for node in node_data:
@@ -24,21 +31,24 @@ def make_json_compatible(graph_data):
                     processed = tuple([float(x) for x in new_val])
                     key_name = key
                 elif len(socket_value.shape) == 3:
-                    # TODO: Improve handling of Image and other Tensors
-                    img = socket_value.cpu().numpy()#.dtype(np.float64)
+                    # Handle image tensors (H, W, C)
+                    img = socket_value.cpu().numpy()
                     pil_img = Image.fromarray((img * 255).astype(np.uint8))
-                    # Temp
                     buff = BytesIO()
                     pil_img.save(buff, format="PNG")
                     new_image_string = base64.b64encode(buff.getvalue()).decode("utf-8")
                     processed = f"data:image/png;base64,{new_image_string}"
                     key_name = f"{key}_IMG"
                 else:
-                    print(socket_value.shape)
-                    raise NotImplementedError("Not implemented yet.")
+                    raise NotImplementedError(
+                        f"Tensor with shape {socket_value.shape} not supported. "
+                        f"Supported shapes: scalar (0D), vector (1D), image (3D)."
+                    )
             else:
-                print(socket_value.shape)
-                raise NotImplementedError("Not implemented yet.")
+                raise NotImplementedError(
+                    f"Value type {type(socket_value).__name__} not supported in make_json_compatible. "
+                    f"Use process_value_for_serialization for general serialization."
+                )
             socket_value = processed
             key = key_name
             compatible_node[key] = socket_value
@@ -186,7 +196,7 @@ def unprocess_value_from_serialization(processed_data: Dict[str, Any]) -> Any:
         try:
             import ast
             return ast.literal_eval(data)
-        except:
+        except (ValueError, SyntaxError):
             return data
     
     else:

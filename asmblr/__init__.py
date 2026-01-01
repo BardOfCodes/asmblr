@@ -13,7 +13,7 @@ from .simple_registry import (
 from .settings import Settings, update_settings
 
 # Auto-loader (imports and registers nodes automatically)
-from .auto_loader import load_all_geolipi_nodes
+from .auto_loader import load_all_geolipi_nodes, load_all_sysl_nodes, load_all_symbolic_nodes
 
 # Node inspection utilities
 from .inspect_nodes import inspect_node, list_nodes, search_nodes
@@ -22,10 +22,8 @@ from .inspect_nodes import inspect_node, list_nodes, search_nodes
 from . import converter
 
 # Custom nodes (manual registration)
-from .custom_nodes.custom_mxg import PolyLine2D
+from .custom_nodes.custom_mxg import PolyLine2D, PolyArc2D
 from .custom_nodes.custom_geolipi import SplitVec2D, SplitVec3D, SplitVec4D
-
-# SySL custom nodes - now auto-generated in auto_nodes/sysl_nodes.py
 
 # Custom nodes are auto-registered via decorators when imported
 
@@ -37,19 +35,13 @@ __all__ = [
     # Simple Registry
     "NODE_REGISTRY", "register_node",
     # Auto-loader
-    "load_all_geolipi_nodes", "get_auto_load_summary",
+    "load_all_geolipi_nodes", "load_all_sysl_nodes", "load_all_symbolic_nodes",
     # Node inspection
     "inspect_node", "list_nodes", "search_nodes",
     # Converter
     "converter",
     # Custom nodes
-    "PolyLine2D", 
-    "PolyArc2D",
-    "EvaluateLayoutNode", "SplitVec2D", "SplitVec3D", "SplitVec4D",
-    # SySL nodes
-    "GeomOnlySmoothUnion", "MatSolidV1", "MatSolidV2", "MatSolidV3",
-    "SMPLMaterial", "RGBMaterial", "MaterialV3", "NonEmissiveMaterialV3", 
-    "MatReference", "RegisterMaterial",
+    "PolyLine2D", "PolyArc2D", "SplitVec2D", "SplitVec3D", "SplitVec4D",
     # Settings
     "Settings", "update_settings",
 ]

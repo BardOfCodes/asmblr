@@ -6,6 +6,11 @@ Usage:
     import asmblr.nodes as anode
     sphere = anode.Sphere3D(radius=1.0)
     union = anode.Union(sphere, box)
+    
+For node discovery functions, use the main asmblr module:
+    import asmblr
+    asmblr.list_nodes()
+    asmblr.search_nodes("sphere")
 """
 
 from .simple_registry import NODE_REGISTRY
@@ -18,21 +23,9 @@ def __getattr__(name):
     """
     if name in NODE_REGISTRY:
         return NODE_REGISTRY[name]
-    raise AttributeError(f"Node '{name}' not found. Available nodes: {list(NODE_REGISTRY.keys())}")
+    raise AttributeError(f"Node '{name}' not found. Use asmblr.list_nodes() to see available nodes.")
 
 
 def __dir__():
     """Support for tab completion and dir(anode)."""
     return list(NODE_REGISTRY.keys())
-
-
-def list_nodes():
-    """List all available nodes."""
-    return list(NODE_REGISTRY.keys())
-
-
-def search_nodes(pattern: str):
-    """Search for nodes matching a pattern."""
-    import re
-    regex = re.compile(pattern, re.IGNORECASE)
-    return [name for name in NODE_REGISTRY.keys() if regex.search(name)]

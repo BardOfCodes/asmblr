@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "asmblr"
+version = "0.2.0"
+description = "DAG-based Representation for Symbolic Geometry (GeoLIPI, SySL, Migumi)"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "ASMBLR Authors"}
+]
+keywords = ["dag", "symbolic", "geometry", "nodes", "geolipi", "sysl"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+]
+
+dependencies = [
+    "numpy",
+    "torch",
+    "sympy",
+    "Pillow",
+    "geolipi",
+    "sysl",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+]
+migumi = [
+    "migumi",
+]
+
+[project.urls]
+Repository = "https://github.com/your-org/asmblr"
+
+[tool.setuptools]
+packages = ["asmblr", "asmblr.auto_nodes", "asmblr.custom_nodes"]
+
+[tool.setuptools.package-data]
+asmblr = ["auto_nodes/*.py", "custom_nodes/*.py"]
+
+[tool.pytest.ini_options]
+testpaths = ["scripts"]
+python_files = ["test_*.py"]
+

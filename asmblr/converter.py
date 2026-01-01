@@ -9,9 +9,17 @@ from geolipi.torch_compute.sympy_to_torch import SYMPY_TO_TEXT
 from .base import BaseNode
 from .simple_registry import NODE_REGISTRY
 
-def encode_image(image_path):
-  with open(image_path, "rb") as image_file:
-    return base64.b64encode(image_file.read()).decode('utf-8')
+def encode_image(image_path: str) -> str:
+    """Encode an image file to base64 string.
+    
+    Args:
+        image_path: Path to the image file.
+        
+    Returns:
+        Base64 encoded string of the image contents.
+    """
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
   
 def convert_to_asmblr(expr: Any):
     if isinstance(expr, (int, float, tuple, th.Tensor, sp.Float, sp.Integer, sp.Tuple)):

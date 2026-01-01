@@ -150,11 +150,11 @@ class MatSolidV4(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class MatReference(GLNode):
-    """# sysl.symbolic.materials.MatReference"""
+class MatMixV4(GLNode):
+    """# sysl.symbolic.materials.MatMixV4"""
     # Associate the expression class at class level for external tools
     import sysl.symbolic.materials as _expr_mod
-    expr_class = _expr_mod.MatReference
+    expr_class = _expr_mod.MatMixV4
     
     # Embed category metadata in the class
     node_category = "sysl_materials"
@@ -164,11 +164,126 @@ class MatReference(GLNode):
         super().__init__(*args, **kwargs)
     
     def _create_input_sockets(self):
-        """Create input sockets for MatReference."""
+        """Create input sockets for MatMixV4."""
+        self.arg_keys = ['expr_a', 'expr_b', 't']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'expr_a': 'Expr', 'expr_b': 'Expr', 't': 'float'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class MatRefV3(GLNode):
+    """# sysl.symbolic.materials.MatRefV3"""
+    # Associate the expression class at class level for external tools
+    import sysl.symbolic.materials as _expr_mod
+    expr_class = _expr_mod.MatRefV3
+    
+    # Embed category metadata in the class
+    node_category = "sysl_materials"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for MatRefV3."""
         self.arg_keys = ['name']
         self.default_values = {}
         self.is_variadic = False
         self.arg_types = {'name': 'str'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class MatRefV4(GLNode):
+    """# sysl.symbolic.materials.MatRefV4"""
+    # Associate the expression class at class level for external tools
+    import sysl.symbolic.materials as _expr_mod
+    expr_class = _expr_mod.MatRefV4
+    
+    # Embed category metadata in the class
+    node_category = "sysl_materials"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for MatRefV4."""
+        self.arg_keys = ['name']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'name': 'str'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class MaterialV1(GLNode):
+    """# sysl.symbolic.materials.MaterialV1"""
+    # Associate the expression class at class level for external tools
+    import sysl.symbolic.materials as _expr_mod
+    expr_class = _expr_mod.MaterialV1
+    
+    # Embed category metadata in the class
+    node_category = "sysl_materials"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for MaterialV1."""
+        self.arg_keys = ['smpl_index']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'smpl_index': 'int'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class MaterialV1V4(GLNode):
+    """# sysl.symbolic.materials.MaterialV1V4"""
+    # Associate the expression class at class level for external tools
+    import sysl.symbolic.materials as _expr_mod
+    expr_class = _expr_mod.MaterialV1V4
+    
+    # Embed category metadata in the class
+    node_category = "sysl_materials"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for MaterialV1V4."""
+        self.arg_keys = ['albedo', 'mr']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'albedo': 'Vector[3]', 'mr': 'Vector[2]'}
+        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
+                for key in self.arg_keys}
+
+@register_node_decorator
+class MaterialV2(GLNode):
+    """# sysl.symbolic.materials.MaterialV2"""
+    # Associate the expression class at class level for external tools
+    import sysl.symbolic.materials as _expr_mod
+    expr_class = _expr_mod.MaterialV2
+    
+    # Embed category metadata in the class
+    node_category = "sysl_materials"
+    
+    def __init__(self, *args, **kwargs):
+        # Keep super init simple; expr_class is already bound at class-level
+        super().__init__(*args, **kwargs)
+    
+    def _create_input_sockets(self):
+        """Create input sockets for MaterialV2."""
+        self.arg_keys = ['rgb']
+        self.default_values = {}
+        self.is_variadic = False
+        self.arg_types = {'rgb': 'Vector[3]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -242,29 +357,6 @@ class NonEmissiveMaterialV3(GLNode):
                 for key in self.arg_keys}
 
 @register_node_decorator
-class RGBMaterial(GLNode):
-    """# sysl.symbolic.materials.RGBMaterial"""
-    # Associate the expression class at class level for external tools
-    import sysl.symbolic.materials as _expr_mod
-    expr_class = _expr_mod.RGBMaterial
-    
-    # Embed category metadata in the class
-    node_category = "sysl_materials"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for RGBMaterial."""
-        self.arg_keys = ['rgb']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'rgb': 'Vector[3]'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
 class RegisterMaterial(GLNode):
     """# sysl.symbolic.materials.RegisterMaterial"""
     # Associate the expression class at class level for external tools
@@ -284,52 +376,6 @@ class RegisterMaterial(GLNode):
         self.default_values = {}
         self.is_variadic = False
         self.arg_types = {'name': 'str', 'material': 'Expr'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class SMPLMaterial(GLNode):
-    """# sysl.symbolic.materials.SMPLMaterial"""
-    # Associate the expression class at class level for external tools
-    import sysl.symbolic.materials as _expr_mod
-    expr_class = _expr_mod.SMPLMaterial
-    
-    # Embed category metadata in the class
-    node_category = "sysl_materials"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for SMPLMaterial."""
-        self.arg_keys = ['smpl_index']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'smpl_index': 'int'}
-        return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
-                for key in self.arg_keys}
-
-@register_node_decorator
-class SMPLMaterialV4(GLNode):
-    """# sysl.symbolic.materials.SMPLMaterialV4"""
-    # Associate the expression class at class level for external tools
-    import sysl.symbolic.materials as _expr_mod
-    expr_class = _expr_mod.SMPLMaterialV4
-    
-    # Embed category metadata in the class
-    node_category = "sysl_materials"
-    
-    def __init__(self, *args, **kwargs):
-        # Keep super init simple; expr_class is already bound at class-level
-        super().__init__(*args, **kwargs)
-    
-    def _create_input_sockets(self):
-        """Create input sockets for SMPLMaterialV4."""
-        self.arg_keys = ['albedo', 'mr']
-        self.default_values = {}
-        self.is_variadic = False
-        self.arg_types = {'albedo': 'Vector[3]', 'mr': 'Vector[2]'}
         return {key: InputSocket(key, parent=self, value=self.default_values.get(key, None)) 
                 for key in self.arg_keys}
 
@@ -435,14 +481,16 @@ def register_all_nodes() -> List[str]:
         "MatSolidV2",
         "MatSolidV3",
         "MatSolidV4",
-        "MatReference",
+        "MatMixV4",
+        "MatRefV3",
+        "MatRefV4",
+        "MaterialV1",
+        "MaterialV1V4",
+        "MaterialV2",
         "MaterialV3",
         "MaterialV4",
         "NonEmissiveMaterialV3",
-        "RGBMaterial",
         "RegisterMaterial",
-        "SMPLMaterial",
-        "SMPLMaterialV4",
         "Avoid",
         "MatColorOnly",
         "MatSmoothColorOnly",

@@ -1,14 +1,22 @@
 """
 Automatic node loader for ASMBLR.
-This module can generate static Python files containing all symbolic nodes from GeoLIPI and SySL libraries.
-Nodes are organized by their source files and use the respective registry systems.
+This module can generate static Python files containing all symbolic nodes from GeoLIPI, SySL, 
+and optionally Migumi libraries. Nodes are organized by their source files and use the 
+respective registry systems.
+
+Required dependencies: geolipi, sysl
+Optional dependencies: migumi
 """
 
 from typing import List, Callable, Type, Dict, Optional
 import inspect
+import logging
 import os
 from pathlib import Path
 
+_logger = logging.getLogger(__name__)
+
+# Required imports - geolipi and sysl
 import geolipi.symbolic as gls
 import geolipi.symbolic.primitives_2d as gls_prim2d
 import geolipi.symbolic.primitives_3d as gls_prim3d
@@ -19,9 +27,6 @@ import geolipi.symbolic.combinators as gls_comb
 import geolipi.symbolic.color as gls_color
 import geolipi.symbolic.variables as gls_vars
 
-import migumi.symbolic.base as migumi_base
-import migumi.symbolic.base_old as migumi_base_old
-
 import sysl.symbolic.base as sysl_base
 import sysl.symbolic.materials as sysl_materials
 import sysl.symbolic.mat_solid_combinators as sysl_mat_solid_combinators
@@ -29,6 +34,19 @@ import sysl.symbolic.mat_solid_combinators as sysl_mat_solid_combinators
 from geolipi.symbolic.registry import SYMBOL_REGISTRY
 
 from .simple_registry import register_node, NODE_REGISTRY
+
+
+# Track available optional libraries
+def _check_migumi_available() -> bool:
+    """Check if migumi library is available."""
+    try:
+        import migumi
+        return True
+    except ImportError:
+        return False
+
+
+MIGUMI_AVAILABLE = _check_migumi_available()
 
 # Symbols we exclude from auto-generation; implemented manually elsewhere
 EXCLUDE_SYMBOLS = {
@@ -82,9 +100,42 @@ def generate_geolipi_nodes_file(output_dir: Optional[str] = None) -> str:
     with open(output_file, 'w') as f:
         f.write(file_content)
     
-    print(f"Generated {len(geolipi_node_info)} GeoLIPI nodes in: {output_file}")
+    _logger.info(f"Generated {len(geolipi_node_info)} GeoLIPI nodes in: {output_file}")
     
     return str(output_file)
+
+
+def generate_all_nodes_files(output_dir: Optional[str] = None) -> Dict[str, Optional[str]]:
+    """
+    Generate static Python files for all available symbolic libraries.
+    
+    This function generates node files for:
+        - geolipi (required)
+        - sysl (required)
+        - migumi (optional, if available)
+    
+    Args:
+        output_dir: Directory to save the generated files. Defaults to auto_nodes/
+        
+    Returns:
+        Dictionary mapping library name to the generated file path (or None if skipped).
+    """
+    results = {}
+    
+    # Required: GeoLIPI
+    results['geolipi'] = generate_geolipi_nodes_file(output_dir)
+    
+    # Required: SySL
+    results['sysl'] = generate_sysl_nodes_file(output_dir)
+    
+    # Optional: Migumi
+    if MIGUMI_AVAILABLE:
+        results['migumi'] = generate_migumi_nodes_file(output_dir)
+    else:
+        results['migumi'] = None
+        _logger.info("Migumi is not available, skipping migumi nodes generation.")
+    
+    return results
 
 
 def generate_sysl_nodes_file(output_dir: Optional[str] = None) -> str:
@@ -121,13 +172,24 @@ def generate_sysl_nodes_file(output_dir: Optional[str] = None) -> str:
     with open(output_file, 'w') as f:
         f.write(file_content)
     
-    print(f"Generated {len(sysl_node_info)} SySL nodes in: {output_file}")
+    _logger.info(f"Generated {len(sysl_node_info)} SySL nodes in: {output_file}")
     return str(output_file)
 
-def generate_migumi_nodes_file(output_dir: Optional[str] = None) -> str:
+def generate_migumi_nodes_file(output_dir: Optional[str] = None) -> Optional[str]:
     """
     Generate a static Python file containing all Migumi nodes.
+    
+    Returns:
+        Path to the generated file, or None if migumi is not available.
     """
+    if not MIGUMI_AVAILABLE:
+        _logger.info("Migumi is not available, skipping migumi nodes generation.")
+        return None
+    
+    # Import migumi modules only when needed
+    import migumi.symbolic.base as migumi_base
+    import migumi.symbolic.base_old as migumi_base_old
+    
     if output_dir is None:
         current_dir = Path(__file__).parent
         output_dir = os.path.join(current_dir, "auto_nodes")
@@ -153,24 +215,52 @@ def generate_migumi_nodes_file(output_dir: Optional[str] = None) -> str:
     with open(output_file, 'w') as f:
         f.write(file_content)
     
-    print(f"Generated {len(migumi_node_info)} Migumi nodes in: {output_file}")
+    _logger.info(f"Generated {len(migumi_node_info)} Migumi nodes in: {output_file}")
     return str(output_file)
 
 
 
 def load_all_symbolic_nodes() -> List[str]:
     """
-    Load all nodes from both geolipi and sysl libraries.
+    Load all nodes from available symbolic libraries.
+    
+    Required libraries (always loaded):
+        - geolipi
+        - sysl
+    
+    Optional libraries (loaded if available):
+        - migumi
+    
+    Returns:
+        List of all registered node names.
     """
-    # Get registered nodes from both libraries
+    all_nodes = []
+    
+    # Required: GeoLIPI nodes
     geolipi_nodes = load_all_geolipi_nodes()
+    all_nodes.extend(geolipi_nodes)
+    
+    # Required: SySL nodes
     sysl_nodes = load_all_sysl_nodes()
-    migumi_nodes = load_all_migumi_nodes()
-    # sw_nodes = load_all_splitweave_nodes()
-    # parsel_nodes = load_all_parsel_nodes()
+    all_nodes.extend(sysl_nodes)
     
+    # Optional: Migumi nodes (only if available)
+    if MIGUMI_AVAILABLE:
+        migumi_nodes = load_all_migumi_nodes()
+        all_nodes.extend(migumi_nodes)
     
-    return geolipi_nodes + sysl_nodes + migumi_nodes
+    # Future optional libraries:
+    # if SPLITWEAVE_AVAILABLE:
+    #     splitweave_nodes = load_all_splitweave_nodes()
+    #     all_nodes.extend(splitweave_nodes)
+    # if SUPERFIT_AVAILABLE:
+    #     superfit_nodes = load_all_superfit_nodes()
+    #     all_nodes.extend(superfit_nodes)
+    # if PARSEL_AVAILABLE:
+    #     parsel_nodes = load_all_parsel_nodes()
+    #     all_nodes.extend(parsel_nodes)
+    
+    return all_nodes
 
 
 def load_all_geolipi_nodes() -> List[str]:
@@ -187,7 +277,7 @@ def load_all_geolipi_nodes() -> List[str]:
         return registered_names
     except ImportError:
         # Auto_nodes doesn't exist, generate it
-        print("Auto-generated geolipi nodes not found. Generating geolipi_nodes.py...")
+        _logger.info("Auto-generated geolipi nodes not found. Generating geolipi_nodes.py...")
         generate_geolipi_nodes_file()
         
         # Now import and use the generated file
@@ -210,7 +300,7 @@ def load_all_sysl_nodes() -> List[str]:
         return registered_names
     except ImportError:
         # Auto_nodes doesn't exist, generate it
-        print("Auto-generated sysl nodes not found. Generating sysl_nodes.py...")
+        _logger.info("Auto-generated sysl nodes not found. Generating sysl_nodes.py...")
         generate_sysl_nodes_file()
         
         # Now import and use the generated file
@@ -221,15 +311,32 @@ def load_all_sysl_nodes() -> List[str]:
 def load_all_migumi_nodes() -> List[str]:
     """
     Load all nodes from migumi symbolic library automatically.
+    
+    This function first tries to import from auto_nodes/. If that fails,
+    it generates the auto_nodes file and then imports from it.
+    
+    Returns:
+        List of registered node names, or empty list if migumi is not available.
     """
+    if not MIGUMI_AVAILABLE:
+        return []
+    
     try:
+        # Try to import from pre-generated auto_nodes
         from .auto_nodes.migumi_nodes import register_all_nodes
         registered_names = register_all_nodes()
         return registered_names
     except ImportError:
-        print("Auto-generated migumi nodes not found. Generating migumi_nodes.py...")
-        generate_migumi_nodes_file()
-        return []
+        # Auto_nodes doesn't exist, generate it
+        _logger.info("Auto-generated migumi nodes not found. Generating migumi_nodes.py...")
+        result = generate_migumi_nodes_file()
+        if result is None:
+            return []
+        
+        # Now import and use the generated file
+        from .auto_nodes.migumi_nodes import register_all_nodes
+        registered_names = register_all_nodes()
+        return registered_names
 
 def _collect_module_nodes(module_dict) -> List[Dict]:
     """Collect nodes from geolipi registry, organized by source files."""
@@ -271,7 +378,7 @@ def _collect_module_nodes(module_dict) -> List[Dict]:
             continue
 
         if not isinstance(spec, dict):
-            print(f"default spec for {class_name}: {spec}")
+            _logger.warning(f"default spec for {class_name}: {spec}")
             raise ValueError(f"Default spec for {class_name} is not a dictionary")
 
         arg_keys = list(spec.keys())
@@ -386,7 +493,6 @@ class {name}(GLNode):
 
 
 # Auto-load nodes when module is imported
-import os
 if os.environ.get('ASMBLR_DISABLE_AUTO_LOAD') != '1':
     _loaded_nodes = load_all_symbolic_nodes()
-    print(f"Auto-registered {len(_loaded_nodes)} nodes")
+    _logger.debug(f"Auto-registered {len(_loaded_nodes)} nodes")

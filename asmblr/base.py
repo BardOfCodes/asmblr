@@ -13,6 +13,15 @@ from .serialize import make_json_compatible, deduplicate_nodes, process_value_fo
 
 
 def copy_value(value: Any):
+    """Create a deep copy of a value, handling special types appropriately.
+    
+    Args:
+        value: The value to copy. Supports torch.Tensor, numpy.ndarray,
+               sympy symbols/functions, and general Python objects.
+               
+    Returns:
+        A copy of the input value.
+    """
     if isinstance(value, th.Tensor):
         return value.clone().detach()
     elif isinstance(value, np.ndarray):
@@ -378,7 +387,15 @@ class OutputSocket:
         return None
 
 
-def serialize_node(node, graph_data, node_map, device):
+def serialize_node(node: 'BaseNode', graph_data: dict, node_map: dict, device: str) -> None:
+    """Serialize a single node and its connections to graph_data.
+    
+    Args:
+        node: The node to serialize.
+        graph_data: Dictionary to append serialized data to (modified in place).
+        node_map: Dictionary mapping node IDs to node instances.
+        device: Device to move tensors to ('cpu' or 'cuda').
+    """
     node_data = {
         "id": node.unique_id,
         "name": node.__class__.__name__,
@@ -410,7 +427,16 @@ def serialize_node(node, graph_data, node_map, device):
             graph_data["connections"].append(connection_data)
 
 
-def traverse_graph(node, visited, graph_data, node_map, device):
+def traverse_graph(node: 'BaseNode', visited: set, graph_data: dict, node_map: dict, device: str) -> None:
+    """Recursively traverse and serialize a node graph.
+    
+    Args:
+        node: The starting node to traverse from.
+        visited: Set of already visited node IDs (modified in place).
+        graph_data: Dictionary to append serialized data to (modified in place).
+        node_map: Dictionary mapping node IDs to node instances.
+        device: Device to move tensors to ('cpu' or 'cuda').
+    """
     if node.unique_id in visited:
         return
     visited.add(node.unique_id)

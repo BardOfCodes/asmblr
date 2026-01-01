@@ -11,8 +11,8 @@ import numpy as np
 import torch as th
 from pathlib import Path
 
-# Add parent directory to path
-sys.path.append('/sensei-fs-3/users/aganeshan/projects/mpspy')
+# Add parent directory to path for local development
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import asmblr
 import asmblr.nodes as anode
