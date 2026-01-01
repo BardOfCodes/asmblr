@@ -58,3 +58,4 @@ asmblr = ["auto_nodes/*.py", "custom_nodes/*.py"]
 testpaths = ["scripts"]
 python_files = ["test_*.py"]
 
+

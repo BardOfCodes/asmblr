@@ -4,6 +4,8 @@ DAG-based Representation for Symbolic Geometry (GeoLIPI, SySL, Migumi, and other
 
 ASMBLR provides a node-based programming interface for symbolic expressions. It allows you to build, manipulate, and evaluate directed acyclic graphs (DAGs) that represent geometric and material expressions.
 
+**[Quick Start](#quick-start)** | **[Generating Node Files](#generating-node-files)** | **[API Reference](#api-reference)**
+
 ## Features
 
 - **Node-based DAG construction** - Build complex expressions by connecting nodes
@@ -131,7 +133,7 @@ asmblr.inspect_node(anode.Sphere3D)
 
 ## Generating Node Files
 
-ASMBLR can auto-generate Python node files from symbolic libraries:
+ASMBLR can auto-generate Python node files from symbolic libraries. Use this whenever the underlying libraries get updated to generate nodes corresponding to updated symbols.
 
 ```bash
 # Generate all node files (GeoLIPI, SySL, Migumi if available)
